@@ -1,0 +1,284 @@
+*, *:before, *:after {
+  box-sizing: border-box;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  outline-offset: 2px;
+}
+
+html, body {
+  @extend .regular-font;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  //background-color: $colorBlackish;
+  background-color: white;
+}
+
+.regular-font {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300;
+  color: $colorLiberoGrey3;
+  font-size: 15px;
+  @media(max-width: $responsiveWidthMobileMax), (max-height: $responsiveHeightMedium)  {
+    font-size: 14px;
+  }
+  @media(max-width: $responsiveWidthVerySmall), (max-height: $responsiveHeightSmall)  {
+    font-size: 13px;
+  }
+  @media(max-width: $responsiveWidthMegaSmall), (max-height: $responsiveHeightVerySmall)  {
+    font-size: 11px;
+  }
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+b, .bold, ._bold {
+  font-weight: 800 !important;
+}
+
+h1, h2, h3, h4, h5 {
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+ul, ol, li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+
+.fontsize, .font-size {
+
+  &._0 {
+    font-size: 0 !important;;
+  }
+
+  &._07 {
+    font-size: 0.7em !important;;
+  }
+
+  &._08 {
+    font-size: 0.8em !important;;
+  }
+
+  &._09 {
+    font-size: 0.9em !important;;
+  }
+
+  &._10 {
+    font-size: 1em !important;
+  }
+
+  &._11 {
+    font-size: 1.1em !important;;
+  }
+
+  &._12 {
+    font-size: 1.2em !important;;
+  }
+
+  &._13 {
+    font-size: 1.3em !important;;
+  }
+
+  &._14 {
+    font-size: 1.4em !important;;
+  }
+
+  &._15 {
+    font-size: 1.5em !important;;
+  }
+
+  &._16 {
+    font-size: 1.6em !important;;
+  }
+
+  &._17 {
+    font-size: 1.7em !important;;
+  }
+
+  &._18 {
+    font-size: 1.8em !important;;
+  }
+
+  &._20 {
+    font-size: 2em !important;;
+  }
+}
+
+button {
+  position: relative;
+  border: none;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default !important;
+  }
+}
+
+a {
+  text-decoration: none;
+  position: relative;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+// SPACING
+
+.ultra-small-spacing {
+  width: 100%;
+  height: 3px;
+}
+
+.mega-small-spacing {
+  width: 100%;
+  height: 5px;
+}
+
+.very-small-spacing {
+  width: 100%;
+  height: 10px;
+}
+
+.small-spacing {
+  width: 100%;
+  height: 20px;
+}
+
+.middle-spacing {
+  width: 100%;
+  height: 30px;
+}
+
+.big-spacing {
+  width: 100%;
+  height: 40px;
+}
+
+.very-big-spacing {
+  width: 100%;
+  height: 60px;
+}
+
+
+// ANIMATIONS
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation-name: fadeIn;
+  animation-duration: 0.4s;
+}
+
+
+@keyframes slideIn {
+  0% {
+    transform: translateY(20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.slide-in {
+  animation-name: slideIn;
+  animation-duration: 0.1s;
+}
+
+
+// FOCUS EFFECT
+
+.focus-effect {
+  position: relative;
+  cursor: pointer;
+
+  &:after {
+    pointer-events: none;
+    content: "";
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    right: -4px;
+    left: -4px;
+    border: 1px solid transparent;
+    border-radius: 0.5em;
+    transition: all 0.2s;
+  }
+
+  @media (hover: hover) {
+    &:hover:after {
+      border-color: $colorBlackish;
+    }
+  }
+
+  @media (hover: hover) {
+    &:disabled:hover:after {
+      border-color: transparent;
+    }
+  }
+}
+
+.focus-effect-light {
+  @extend .focus-effect;
+
+  @media (hover: hover) {
+    &:hover:after {
+      border-color: $colorLiberoGrey2;
+    }
+  }
+}
+
+.focus-effect-underline {
+
+  @media (hover: hover) {
+    &:hover {
+      text-decoration: underline;
+      background-color: transparent !important;
+    }
+  }
+
+  @media (hover: hover) {
+    &:disabled:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+.focus-effect-grey {
+  transition: all 0.2s;
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+}

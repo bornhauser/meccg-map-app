@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+$colorLiberoBlue: #003A6C;
+$colorLiberoDarkBlue: #04244F;
+$colorLiberoBlueBright: #477195;
+$colorLiberoBlueBright_2: #92a9bd;
+$colorLiberoYellow: #F5CD54;
+$colorLiberoRed: #c90b70;
+$colorLiberoGrey1: #D2D6DB;
+$colorLiberoGrey2: #919AA7;
+$colorLiberoGrey2-3: #6C737F;
+$colorLiberoGrey3: #384250;
+$colorBlackish: #2E343C;
+$colorBackground: #F3F4F6;
+$responsiveWidthMobileMax: 1000px;
+$responsiveWidthMobileMin: 1001px;
+$responsiveWidthSmall: 700px;
+$responsiveWidthVerySmall: 600px;
+$responsiveWidthMegaSmall: 450px;
+
+$responsiveHeightMedium: 800px;
+$responsiveHeightSmall: 500px;
+$responsiveHeightVerySmall: 400px;
+
+$boxshadow-soft: 3px 3px 15px 0px rgba(0, 0, 0, 0.30);
+$boxshadow-card: 1px 1px 1em 0px rgba(0, 0, 0, 0.2);
+$colorDarkMode: rgba(0, 0, 0, 0.47);
+$maxColumnWidth1: 700px;
+$maxColumnWidth2: 800px;
+$headerHeight: 7em;
+
+$colorSwisspass: #c51416;
+$colorSwisspassDarken: #af1602;
+$colorSwisspassBrighten: #d31c1e;
+
+@import "./basic";
+@import "./cards";
+@import "./map";
+
