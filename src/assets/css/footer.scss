@@ -1,0 +1,46 @@
+.footer {
+  border: 1px solid #3f3f3f;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(0deg, rgb(19, 0, 36) 0%, rgb(47, 0, 51) 100%);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 1);
+
+  &._acive {
+
+  }
+
+  .footer-meta {
+    padding-left: 450px;
+  }
+
+  .meccg-card-image {
+    background-size: contain;
+    border-radius: 6%;
+    width: 400px;
+    background-color: grey;
+    display: inline-block;
+    flex-shrink: 1;
+    position: fixed;
+    left: 20px;
+    bottom: 10px;
+    @extend .fade-in;
+    box-shadow: 0 0 50px rgb(0, 0, 0);
+    border: 1px solid #3f3f3f;
+
+    &._queer {
+      transform: rotate(-90deg);
+      width: 280px;
+      left: 70px;
+      bottom: 0;
+    }
+
+    .meccg-card-inner {
+      width: 100%;
+      padding-bottom: 140%;
+    }
+  }
+
+}

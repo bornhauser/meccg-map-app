@@ -2,11 +2,8 @@
   "name": "meccg-map-app",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "version": "sudo n 20",
+    "serve": "ng serve --host 0.0.0.0 --disable-host-check --port 4100"
   },
   "private": true,
   "dependencies": {

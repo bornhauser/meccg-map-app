@@ -1,3 +1,19 @@
+.regular-font {
+  font-family: "Open Sans", sans-serif;
+  font-weight: 300;
+  color: $colorLiberoGrey3;
+  font-size: 15px;
+  @media(max-width: $responsiveWidthMobileMax), (max-height: $responsiveHeightMedium) {
+    font-size: 14px;
+  }
+  @media(max-width: $responsiveWidthVerySmall), (max-height: $responsiveHeightSmall) {
+    font-size: 13px;
+  }
+  @media(max-width: $responsiveWidthMegaSmall), (max-height: $responsiveHeightVerySmall) {
+    font-size: 11px;
+  }
+}
+
 *, *:before, *:after {
   box-sizing: border-box;
   background-size: contain;
@@ -8,29 +24,30 @@
   outline-offset: 2px;
 }
 
-html, body {
-  @extend .regular-font;
-  height: 100%;
-  margin: 0;
+body {
   padding: 0;
-  //background-color: $colorBlackish;
-  background-color: white;
+  margin: 0;
 }
 
-.regular-font {
-  font-family: "Open Sans", sans-serif;
-  font-weight: 300;
-  color: $colorLiberoGrey3;
-  font-size: 15px;
-  @media(max-width: $responsiveWidthMobileMax), (max-height: $responsiveHeightMedium)  {
-    font-size: 14px;
-  }
-  @media(max-width: $responsiveWidthVerySmall), (max-height: $responsiveHeightSmall)  {
-    font-size: 13px;
-  }
-  @media(max-width: $responsiveWidthMegaSmall), (max-height: $responsiveHeightVerySmall)  {
-    font-size: 11px;
-  }
+html, body, app-root, .leaflet-map {
+  height: 100%;
+  width: 100vw;
+}
+
+html, body {
+  @extend .regular-font;
+  padding: 0;
+  height: 100%;
+  margin: 0;
+  background-color: $colorBlackish;
+  color: white;
+  background: linear-gradient(0deg, rgba(0,10,36,1) 0%, rgb(66, 30, 0) 100%);
+}
+
+app-root {
+  display: block;
+  width: 100%;
+  padding: 50px;
 }
 
 p {

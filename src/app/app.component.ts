@@ -4,9 +4,8 @@ import {DataService} from './services/data.service';
 @Component({
   selector: 'app-root',
   template: `
-    <!--    <app-card *ngFor="let card of $data.getSites()" [card]="card"></app-card>-->
-
     <app-map></app-map>
+    <app-footer></app-footer>
   `,
 })
 export class AppComponent {
