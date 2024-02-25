@@ -8,9 +8,9 @@ export enum LanguageId_e {
 }
 
 export interface CurrentGuiContext {
-  currentSite: Card_i | null;
-  currentSiteForMove: Card_i | null;
-  currentSitesInReach: Card_i[];
+  currentSiteOrRegion: Card_i | null;
+  currentReachableRegions: Card_i[];
+  currentReachableSites: Card_i[];
 }
 
 export enum Set_e {
@@ -116,6 +116,9 @@ export interface Playables_i {
 
 export interface Card_i {
   id?: string;
+  suroundingRegions?: Card_i[];
+  routingRegions?: Card_i[];
+
   'Home'?: string;
   'title-jp'?: string;
   'flip-title'?: string;

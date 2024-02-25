@@ -41,7 +41,7 @@ html, body {
   margin: 0;
   background-color: $colorBlackish;
   color: white;
-  background: linear-gradient(0deg, rgba(0,10,36,1) 0%, rgb(66, 30, 0) 100%);
+  background: linear-gradient(0deg, rgba(0, 10, 36, 1) 0%, rgb(66, 30, 0) 100%);
 }
 
 app-root {
@@ -296,6 +296,46 @@ a {
   @media (hover: hover) {
     &:hover {
       background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+}
+
+
+.full-screen-card-container {
+  z-index: 5000;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @extend .fade-in;
+
+  .meccg-card-image {
+    position: relative;
+    border-radius: 6%;
+    width: 80vw;
+    max-width: 50vh;
+    background-color: grey;
+    background-size: cover;
+    display: inline-block;
+    flex-shrink: 0;
+    margin: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 1);
+    border: 2px solid #5b5b5b;
+
+    &._queer {
+      transform: rotate(-90deg);
+    }
+
+    .meccg-card-inner {
+      width: 100%;
+      padding-bottom: 140%;
     }
   }
 }

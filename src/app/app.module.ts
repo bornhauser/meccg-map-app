@@ -11,6 +11,8 @@ import {DataService} from './services/data.service';
 import {MapComponent} from './components/map.component';
 import {SvgComponent} from './components/resions-svg.component';
 import {FooterComponent} from './components/footer.component';
+import {SiteItemComponent} from './components/site-item.component';
+import {SiteSelectionModalComponent} from './components/site-selection-modal.component';
 
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -22,6 +24,8 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     MapComponent,
     SvgComponent,
     FooterComponent,
+    SiteItemComponent,
+    SiteSelectionModalComponent,
   ],
   imports: [
     CommonModule,
