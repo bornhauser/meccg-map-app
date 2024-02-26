@@ -10,7 +10,7 @@ $colorLiberoGrey1: #D2D6DB;
 $colorLiberoGrey2: #919AA7;
 $colorLiberoGrey2-3: #6C737F;
 $colorLiberoGrey3: #384250;
-$colorBlackish: #2E343C;
+$colorBlackish: rgba(46, 52, 60, 0.53);
 $colorBackground: #F3F4F6;
 $responsiveWidthMobileMax: 1000px;
 $responsiveWidthMobileMin: 1001px;
@@ -27,14 +27,19 @@ $boxshadow-card: 1px 1px 1em 0px rgba(0, 0, 0, 0.2);
 $colorDarkMode: rgba(0, 0, 0, 0.47);
 $maxColumnWidth1: 700px;
 $maxColumnWidth2: 800px;
-$headerHeight: 7em;
 
 $colorSwisspass: #c51416;
 $colorSwisspassDarken: #af1602;
 $colorSwisspassBrighten: #d31c1e;
 
+$colorCian: #399dbb;
+
+$headerHeight: 40px;
+$footerHeight: 200px;
+
+
 @import "./basic";
 @import "./map";
 @import "./card-item";
-@import "./footer";
+@import "./header&footer";
 

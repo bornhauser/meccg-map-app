@@ -338,4 +338,54 @@ a {
       padding-bottom: 140%;
     }
   }
+
+  .site-selection-modal {
+    position: relative;
+    width: 80vw;
+    height: 80vh;
+    max-width: 1000px;
+    max-height: 1000px;
+    box-shadow: 0 0 0 2px $colorBlackish,
+    0 0 0 5px $colorCian,
+    0 0 0 9px $colorBlackish,
+    4px 4px 9px 5px rgba(0, 0, 0, 0.2);
+    background-image: url("../img/map/old-map_sw.jpg");
+    background-size: cover;
+    border-radius: 0.2em;
+
+    &:before {
+      content: "";
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      opacity: 0.8;
+      position: absolute;
+      background: linear-gradient(0deg, rgb(0, 7, 10) 0%, rgb(30, 49, 68) 100%);
+    }
+
+    .modal-scroll-container {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      flex-wrap: wrap;
+      overflow: auto;
+      padding: 50px 10px;
+      font-size: 3.5px;
+      align-content: center;
+      justify-content: center;
+      gap: 10px 10px;
+
+      app-site-item {
+        display: block;
+        width: 200px;
+      }
+    }
+  }
+
+  .app-site-item {
+  }
 }

@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
-import {Card_i, Playable_e} from '../interfaces/interfaces';
+import {Card_i, CardType_e, Playable_e} from '../interfaces/interfaces';
 import {DataService} from '../services/data.service';
-import {copyObject} from '../services/utility-methods';
+import {LatLngBounds} from 'leaflet';
 
 @Component({
   selector: 'app-map',
@@ -29,11 +29,53 @@ export class MapComponent {
   constructor(
     public $data: DataService
   ) {
-
-    $data.refreshMapContent = () => {
+    $data.refreshContentOnMap = () => {
       this.handleVisuals();
     }
+    $data.focusOnMap = (items: Card_i[]) => {
+      this.focusItems(items);
+    }
+    $data.refreshRouteOnMap = () => {
+      this.refreshRoute();
+    }
+  }
 
+  public refreshRoute() {
+    let allRegionCards = this.$data.filterOfficial(this.$data.filterRegions(this.$data.cards));
+    allRegionCards.forEach((card) => {
+      var borderSvg: any = document.querySelector('path#' + card.id);
+      borderSvg?.setAttribute('aria-description', '0');
+    });
+    this.$data.currentRouteRegions.forEach((card) => {
+      var borderSvg: any = document.querySelector('path#' + card.id);
+      borderSvg?.setAttribute('aria-description', '1');
+    });
+
+    let allSiteCards = this.$data.filterOfficial(this.$data.filterAlignmentHero(this.$data.filterSites(this.$data.cards)));
+    allSiteCards.forEach((card) => {
+      var siteSvg: any = document.querySelector('foreignObject#' + card.id);
+      siteSvg?.setAttribute('aria-description', '0');
+    });
+    if (this.$data.currentSiteFrom) {
+      var siteSvg: any = document.querySelector('foreignObject#' + (this.$data.currentSiteFrom?.id ?? ''));
+      siteSvg?.setAttribute('aria-description', '1');
+    }
+    if (this.$data.currentSiteTo) {
+      var site2Svg: any = document.querySelector('foreignObject#' + (this.$data.currentSiteTo?.id ?? ''));
+      site2Svg?.setAttribute('aria-description', '1');
+    }
+  }
+
+  public focusItems(items: Card_i[]) {
+    const card: Card_i = items[0];
+    if (card.type === CardType_e.Region) {
+      const svgElement: any = document.querySelector('path#' + card.id);
+      const rect = svgElement.getBoundingClientRect();
+      const topLeft = this.map.containerPointToLatLng(L.point(rect.left, rect.top));
+      const bottomRight = this.map.containerPointToLatLng(L.point(rect.right, rect.bottom));
+      const bounds: LatLngBounds = L.latLngBounds(topLeft, bottomRight);
+      this.map.fitBounds(bounds, {maxZoom: -2});
+    }
   }
 
   public generateMap2() {
@@ -51,6 +93,14 @@ export class MapComponent {
     }).on('moveend', () => {
       setTimeout(() => {
         this.$data.mapIsDradding = false;
+      }, 100);
+    }).on('dblclick', () => {
+      setTimeout(() => {
+        if (this.$data.currentSiteFrom) {
+          this.$data.endJourney();
+        } else {
+          this.$data.startJourney();
+        }
       }, 100);
     });
     this.map.doubleClickZoom.disable();
@@ -158,7 +208,7 @@ export class MapComponent {
       // @ts-ignore
       const element = document.getElementById(card.id);
       element?.addEventListener('click', () => { // @ts-ignore
-        document.onSiteClick(card, this)
+        document.onSiteOrRegionClick(card, this)
       });
     })
 
@@ -200,10 +250,13 @@ export class MapComponent {
         svgElement.innerHTML = `
          <div class="content-frame" xmlns="http://www.w3.org/1999/xhtml">
             <button class="site-button" id="${id}">
-              <div class="pergament">
-                <div class="icon" style="background-image: url('assets/img/site/${this.$data.getSiteIconName(card)}.svg')"></div>
-                <div class="title">
-                    ${card.title}
+              <div class="pergament-container">
+                <div class="pergament-shadow"></div>
+                <div class="pergament">
+                  <div class="icon" style="background-image: url('assets/img/site/${this.$data.getSiteIconName(card)}.svg')"></div>
+                  <div class="title">
+                      ${card.title}
+                  </div>
                 </div>
               </div>
               ${meta}
@@ -216,7 +269,7 @@ export class MapComponent {
         // @ts-ignore
         const element = document.getElementById(id);
         element?.addEventListener('click', function () { // @ts-ignore
-          document.onSiteClick(card, this);
+          document.onSiteOrRegionClick(card, this);
         });
       }
     })

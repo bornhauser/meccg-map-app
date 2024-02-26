@@ -10,7 +10,7 @@ import {
   RegionType_e,
   Set_e
 } from '../interfaces/interfaces';
-import {copyObject, hasId} from './utility-methods';
+import {copyObject, findId, hasId} from './utility-methods';
 
 declare var meccgCards: Card_i[] | undefined;
 
@@ -20,7 +20,7 @@ export class DataService {
   public cards: Card_i[] = [];
   public mapIsDradding: boolean = false;
   public zoomCard: Card_i | null = null;
-  public searchSite: boolean = false;
+  public openSearchSite: boolean = false;
 
   public currentGuiContext: CurrentGuiContext = {
     currentSiteOrRegion: null,
@@ -29,13 +29,13 @@ export class DataService {
   }
   public currentSiteFrom: Card_i | null = null;
   public currentSiteTo: Card_i | null = null;
-  public routeRegions: Card_i[] = [];
+  public currentRouteRegions: Card_i[] = [];
 
   constructor() {
     // @ts-ignore
-    document['onSiteClick'] = (card: Card_i, event?: any) => {
+    document['onSiteOrRegionClick'] = (card: Card_i, event?: any) => {
       if (card && !this.mapIsDradding) {
-        this.onSiteClick(card);
+        this.onSiteOrRegionClick(card);
       }
     }
     if (meccgCards?.length) {
@@ -56,6 +56,15 @@ export class DataService {
     regions.forEach((card) => {
       sites.push(card);
     })
+  }
+
+  public refreshContentOnMap() {
+  }
+
+  public refreshRouteOnMap() {
+  }
+
+  public focusOnMap(focusItems: Card_i[]) {
   }
 
   public createCardId(card: Card_i): string {
@@ -139,7 +148,7 @@ export class DataService {
     return siteName.toLowerCase().replaceAll('&', 'and').replaceAll(' ', '-').replaceAll('\'', '-') ?? '';
   }
 
-  public getImageUrl(card: Card_i): string {
+  public getCardImageUrl(card: Card_i): string {
     return 'https://cardnum.net/img/cards/' + card.set_code + '/' + card.ImageName;
   }
 
@@ -209,9 +218,6 @@ export class DataService {
     return anwer;
   }
 
-  public refreshMapContent() {
-  }
-
   public calculateReachableRegionsAndSites(): void {
     if (this.currentGuiContext.currentSiteOrRegion) {
       const startSite: Card_i = copyObject(this.currentGuiContext.currentSiteOrRegion);
@@ -219,30 +225,38 @@ export class DataService {
       const reachableRegions: Card_i[] = [];
       const reachableSites: Card_i[] = [];
       if (regionLevel_1) {
+        regionLevel_1.routingSteps = 1;
         reachableRegions.push(regionLevel_1);
         const sites: Card_i[] = this.getSitesOfRegion(regionLevel_1);
         sites.forEach((site) => {
+          site.routingRegions = [regionLevel_1];
           reachableSites.push(site);
         })
-        regionLevel_1.suroundingRegions = this.getSurroundingRegionsWithoutRedundant(regionLevel_1, regionLevel_1);
+        regionLevel_1.suroundingRegions = this.getSurroundingRegionsWithoutRedundant(regionLevel_1, regionLevel_1, 1);
         regionLevel_1.suroundingRegions.forEach((regionLevel_2) => {
+          regionLevel_2.routingSteps = 2;
           reachableRegions.push(regionLevel_2);
           const sites: Card_i[] = this.getSitesOfRegion(regionLevel_2);
           sites.forEach((site) => {
+            site.routingRegions = [regionLevel_1, regionLevel_2];
             reachableSites.push(site);
           })
-          regionLevel_2.suroundingRegions = this.getSurroundingRegionsWithoutRedundant(regionLevel_2, regionLevel_1);
+          regionLevel_2.suroundingRegions = this.getSurroundingRegionsWithoutRedundant(regionLevel_2, regionLevel_1, 2);
           regionLevel_2.suroundingRegions.forEach((regionLevel_3) => {
+            regionLevel_3.routingSteps = 3;
             reachableRegions.push(regionLevel_3);
             const sites: Card_i[] = this.getSitesOfRegion(regionLevel_3);
             sites.forEach((site) => {
+              site.routingRegions = [regionLevel_1, regionLevel_2, regionLevel_3];
               reachableSites.push(site);
             })
-            regionLevel_3.suroundingRegions = this.getSurroundingRegionsWithoutRedundant(regionLevel_3, regionLevel_1);
+            regionLevel_3.suroundingRegions = this.getSurroundingRegionsWithoutRedundant(regionLevel_3, regionLevel_1, 3);
             regionLevel_3.suroundingRegions.forEach((regionLevel_4) => {
+              regionLevel_4.routingSteps = 4;
               reachableRegions.push(regionLevel_4);
               const sites: Card_i[] = this.getSitesOfRegion(regionLevel_4);
               sites.forEach((site) => {
+                site.routingRegions = [regionLevel_1, regionLevel_2, regionLevel_3, regionLevel_4];
                 reachableSites.push(site);
               })
             });
@@ -254,35 +268,37 @@ export class DataService {
     }
   }
 
-  public getSurroundingRegionsWithoutRedundant(card_region: Card_i, firstRegionComplex: Card_i): Card_i[] {
+  public getSurroundingRegionsWithoutRedundant(card_region: Card_i, firstRegionComplex?: Card_i, level?: number): Card_i[] {
     const answer: Card_i[] = [];
     const availableRegions: Card_i[] = copyObject(this.filterOfficial(this.filterRegions(this.cards)));
     availableRegions.forEach((card) => {
       if (card.text && card.text.indexOf(card_region.title ?? '') > -1) {
-        if (!this.hasRoutingId(card.id ?? '', firstRegionComplex)) {
+        const foundExistingRegion: Card_i | null = this.findExistingRegion(card.id ?? '', firstRegionComplex ?? null);
+        if (!foundExistingRegion) {
           answer.push(card);
+        } else {
         }
       }
     })
     return answer;
   };
 
-  public hasRoutingId(id: string, region_1: any): boolean {
-    let answer: boolean = false;
-    if (region_1.id === id) {
-      answer = true;
+  public findExistingRegion(id: string, region_1: any): Card_i | null {
+    let answer: Card_i | null = null;
+    if (region_1?.id === id) {
+      answer = region_1;
     }
-    region_1.suroundingRegions?.forEach((region_2: Card_i) => {
+    region_1?.suroundingRegions?.forEach((region_2: Card_i) => {
       if (region_2.id === id) {
-        answer = true;
+        answer = region_2;
       }
       region_2.suroundingRegions?.forEach((region_3: Card_i) => {
         if (region_3.id === id) {
-          answer = true;
+          answer = region_3;
         }
         region_3.suroundingRegions?.forEach((region_4: Card_i) => {
           if (region_4.id === id) {
-            answer = true;
+            answer = region_4;
           }
         });
       });
@@ -316,38 +332,73 @@ export class DataService {
     return answer;
   };
 
-  public getIconUrl(card: Card_i): string {
-    return `assets/img/site/${this.getSiteIconName(card)}.svg`;
+  public getSiteIconUrl(card: Card_i, whithShadow?: boolean): string {
+    return `assets/img/site/${this.getSiteIconName(card) + (whithShadow ? '_shadow' : '')}.svg`;
   }
 
-  public getCreatureUrl(card: Card_i): string {
+  public getCreatureIconUrl(card: Card_i): string {
     return `assets/img/creature/${this.getCreatureId(card)}.svg`;
   }
 
-  public onSiteClick(card: Card_i): void {
+  public getRegionIconUrl(card: Card_i): string {
+    return `assets/img/region/${card.RPath?.toLowerCase().replaceAll(' ', '-')}.svg`;
+  }
+
+  public onSiteOrRegionClick(card: Card_i): void {
     if (this.currentSiteFrom) {
       if (card.type === CardType_e.Site) {
-        this.currentSiteTo = card;
+        const foundCard = findId(this.currentGuiContext.currentReachableSites, card.id);
+        this.currentSiteTo = foundCard as Card_i;
+        if (!hasId(this.currentRouteRegions, this.getRegionOfSite(card)?.id)) {
+          this.currentRouteRegions = foundCard.routingRegions ?? [];
+        }
+      } else if (card.type === CardType_e.Region) {
+        if (card.id === this.currentRouteRegions[0]?.id) {
+          return;
+        }
+        const foundResions: Card_i[] = this.getSurroundingRegionsWithoutRedundant(card);
+        if (hasId(foundResions, this.currentRouteRegions[0]?.id)) {
+          this.currentRouteRegions = [this.currentRouteRegions[0], card];
+          this.currentSiteTo = null;
+        } else if (hasId(foundResions, this.currentRouteRegions[1]?.id)) {
+          this.currentRouteRegions = [this.currentRouteRegions[0], this.currentRouteRegions[1], card];
+          this.currentSiteTo = null;
+        } else if (hasId(foundResions, this.currentRouteRegions[2]?.id)) {
+          this.currentRouteRegions = [this.currentRouteRegions[0], this.currentRouteRegions[1], this.currentRouteRegions[2], card];
+          this.currentSiteTo = null;
+        }
       }
     } else {
       this.currentGuiContext.currentSiteOrRegion = card;
       this.calculateReachableRegionsAndSites();
     }
     this.saveCurrentStates();
+    this.refreshRouteOnMap();
   }
 
-  public startJourney(card: Card_i): void {
-    this.currentSiteFrom = card;
-    this.saveCurrentStates();
-    this.refreshMapContent();
+  public startJourney(): void {
+    if (this.currentGuiContext.currentSiteOrRegion?.type === CardType_e.Site) {
+      this.currentSiteFrom = copyObject(this.currentGuiContext.currentSiteOrRegion);
+      this.saveCurrentStates();
+      this.refreshContentOnMap();
+      if (this.currentSiteFrom) {
+        const region = this.getRegionOfSite(this.currentSiteFrom);
+        if (region) {
+          this.currentRouteRegions = [region]
+          this.focusOnMap([region]);
+          this.refreshRouteOnMap();
+        }
+      }
+    }
   }
 
   public endJourney(): void {
     this.currentSiteFrom = null;
     this.currentSiteTo = null;
-    this.routeRegions = [];
+    this.currentRouteRegions = [];
     this.saveCurrentStates();
-    this.refreshMapContent();
+    this.refreshContentOnMap();
+    this.refreshRouteOnMap();
   }
 
 }

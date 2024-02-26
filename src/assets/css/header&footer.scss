@@ -1,16 +1,88 @@
+//HEADER
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $headerHeight;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 1);
+  padding-left: 450px;
+  background-image: url("../img/map/old-map_sw.jpg");
+  background-size: 150%;
+
+  &:before {
+    content: "";
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0.8;
+    position: absolute;
+    background: linear-gradient(0deg, rgb(0, 7, 10) 0%, rgb(30, 49, 68) 100%);
+  }
+
+  .line-1 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-top: 4px solid $colorCian;
+  }
+
+  .line-2 {
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    right: 0;
+    border-top: 5px solid #151515;
+  }
+
+  .header-content {
+    z-index: 5;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    top: 30px;
+
+    .journey-region {
+      .journey-region-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 3px solid white;
+        box-shadow: 0 0 50px rgba(0, 0, 0, 1);
+      }
+    }
+
+    .journey-site {
+      .journey-site-icon {
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+  }
+}
+
+
 //FOOTER
 .footer {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 200px;
+  height: $footerHeight;
   box-shadow: 0 0 50px rgba(0, 0, 0, 1);
   padding: 3em;
   padding-left: 450px;
   background-image: url("../img/map/old-map_sw.jpg");
   background-size: 150%;
-
 
   &:before {
     content: "";
@@ -54,6 +126,11 @@
       flex-grow: 1;
       height: 100%;
       padding: 20px;
+      flex-shrink: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1em;
+      justify-content: center;
     }
 
     .card-items {
@@ -69,7 +146,6 @@
 
       &._journey {
         position: absolute;
-
       }
     }
 
@@ -80,6 +156,12 @@
       gap: 30px;
     }
 
+    .placeholder {
+      width: 400px;
+      flex-shrink: 1;
+      margin: 20px;
+    }
+
     .meccg-card-image {
       position: relative;
       border-radius: 6%;
@@ -87,10 +169,10 @@
       background-color: grey;
       background-size: cover;
       display: inline-block;
-      flex-shrink: 0;
       margin: 20px;
       cursor: pointer;
       transition: all 0.2s;
+      flex-shrink: 1;
 
       &:hover {
         border: 4px solid white;
@@ -106,16 +188,6 @@
         left: 60px !important;
         bottom: -60px !important;
         margin-right: 140px;
-      }
-
-      &._left {
-        //left: 20px;
-        //bottom: 10px;
-      }
-
-      &._right {
-        //right: 20px;
-        //bottom: 10px;
       }
 
       .meccg-card-inner {
@@ -136,8 +208,10 @@
     box-shadow: 0 0 50px rgba(0, 0, 0, 1);
     border: 2px solid #e7d9ba;
     height: 70px;
-    width: 300px;
+    width: 20em;
     cursor: pointer;
+    flex-shrink: 1;
+    max-width: 20vw;
 
 
     &:hover {

@@ -7,10 +7,13 @@ import {Card_i, CardType_e, Playable_e} from '../interfaces/interfaces';
   selector: 'app-site-item',
   template: `
     <button class="site-button" *ngIf="card" (click)="onClick.emit(card)">
-      <div class="pergament">
-        <div class="icon" [style.background-image]="'url(' + $data.getIconUrl(card) + ')'"></div>
-        <div class="title">
-          {{ card.title }}
+      <div class="pergament-container">
+        <div class="pergament-shadow"></div>
+        <div class="pergament">
+          <div class="icon" [style.background-image]="'url(' + $data.getSiteIconUrl(card) + ')'"></div>
+          <div class="title">
+            {{ card.title }}
+          </div>
         </div>
       </div>
       <div class="meta-container">
@@ -24,7 +27,7 @@ import {Card_i, CardType_e, Playable_e} from '../interfaces/interfaces';
         </div>
       </div>
       <div class="creature-icon" *ngIf="$data.getCreatureId(card)"
-           [style.background-image]="'url(' + $data.getCreatureUrl(card) + ')'"></div>
+           [style.background-image]="'url(' + $data.getCreatureIconUrl(card) + ')'"></div>
     </button>
 
   `,

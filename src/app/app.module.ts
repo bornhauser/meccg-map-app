@@ -13,6 +13,7 @@ import {SvgComponent} from './components/resions-svg.component';
 import {FooterComponent} from './components/footer.component';
 import {SiteItemComponent} from './components/site-item.component';
 import {SiteSelectionModalComponent} from './components/site-selection-modal.component';
+import {HeaderComponent} from './components/header.component';
 
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -26,6 +27,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     FooterComponent,
     SiteItemComponent,
     SiteSelectionModalComponent,
+    HeaderComponent,
   ],
   imports: [
     CommonModule,

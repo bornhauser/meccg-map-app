@@ -16,7 +16,7 @@ import {CardType_e} from '../interfaces/interfaces';
              *ngIf="$data.currentGuiContext.currentSiteOrRegion as card"
              (click)="$data.zoomCard = card"
              [ngClass]="{ '_region': card.type === CardType_e.Region, '_queer': this.$data.isRegionCardQueer(card) }"
-             [style.background-image]="'url(' + $data.getImageUrl(card) + ')'">
+             [style.background-image]="'url(' + $data.getCardImageUrl(card) + ')'">
           <div class="meccg-card-inner"></div>
           <button class="remove-site-button"></button>
         </div>
@@ -28,53 +28,52 @@ import {CardType_e} from '../interfaces/interfaces';
                *ngIf="$data.currentGuiContext.currentSiteOrRegion && $data.currentGuiContext?.currentSiteOrRegion?.type === CardType_e.Region">
             <app-site-item *ngFor="let card of $data.getSitesOfRegion($data.currentGuiContext.currentSiteOrRegion)"
                            [card]="card"
-                           (onClick)="$data.onSiteClick(card)">
+                           (onClick)="$data.onSiteOrRegionClick(card)">
             </app-site-item>
           </div>
 
-          <div class="option-buttons">
-
-            <button
-              *ngIf="$data.currentGuiContext.currentSiteOrRegion && $data.currentGuiContext.currentSiteOrRegion.type === CardType_e.Site && !$data.currentSiteFrom"
-              class="epic-button"
-              (click)="$data.startJourney($data.currentGuiContext.currentSiteOrRegion)">
-              <div class="button-color"></div>
-              <div class="button-text">
-                <div>
-                  start Journey
-                </div>
+          <button
+            *ngIf="$data.currentGuiContext.currentSiteOrRegion && $data.currentGuiContext.currentSiteOrRegion.type === CardType_e.Site && !$data.currentSiteFrom"
+            class="epic-button"
+            (click)="$data.startJourney()">
+            <div class="button-color"></div>
+            <div class="button-text">
+              <div>
+                start Journey
               </div>
-            </button>
+            </div>
+          </button>
 
-            <button *ngIf="$data.currentSiteFrom" class="epic-button" (click)="$data.endJourney()">
-              <div class="button-color"></div>
-              <div class="button-text">
-                <div>
-                  end Journey
-                </div>
+          <button *ngIf="$data.currentSiteFrom" class="epic-button" (click)="$data.endJourney()">
+            <div class="button-color"></div>
+            <div class="button-text">
+              <div>
+                end Journey
               </div>
-            </button>
+            </div>
+          </button>
 
-            <button *ngIf="$data.currentSiteFrom" class="epic-button"
-                    (click)="$data.searchSite = true">
-              <div class="button-color"></div>
-              <div class="button-text">
-                <div>
-                  search Site
-                </div>
+          <button *ngIf="$data.currentSiteFrom" class="epic-button"
+                  (click)="$data.openSearchSite = true">
+            <div class="button-color"></div>
+            <div class="button-text">
+              <div>
+                Sites as List
               </div>
-            </button>
-          </div>
+            </div>
+          </button>
         </div>
 
         <!-- RIGHT-->
         <div class="meccg-card-image _right"
              *ngIf="$data.currentSiteTo as card"
              (click)="$data.zoomCard = card"
-             [style.background-image]="'url(' + $data.getImageUrl(card) + ')'">
+             [style.background-image]="'url(' + $data.getCardImageUrl(card) + ')'">
           <div class="meccg-card-inner"></div>
           <button class="remove-site-button"></button>
         </div>
+
+        <div class="placeholder" *ngIf="!$data.currentSiteTo"></div>
       </div>
     </div>
   `,
@@ -89,5 +88,4 @@ export class FooterComponent {
   ) {
   }
 
-  protected readonly document = document;
 }

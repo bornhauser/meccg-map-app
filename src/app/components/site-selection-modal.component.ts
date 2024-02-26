@@ -6,16 +6,14 @@ import {DataService} from '../services/data.service';
   selector: 'app-site-selection-modal',
   template: `
 
-    <div class="full-screen-card-container" *ngIf="$data.zoomCard as card" (click)="$data.zoomCard = null">
-      <div class="site-selection">
-
-        <div class="card-items _journey" *ngIf="$data.currentSiteFrom">
-          <app-site-item *ngFor="let card of $data.currentGuiContext.currentReachableRegions"
+    <div class="full-screen-card-container" (click)="$data.openSearchSite = false">
+      <div class="site-selection-modal">
+        <div class="modal-scroll-container">
+          <app-site-item *ngFor="let card of $data.currentGuiContext.currentReachableSites"
                          [card]="card"
-                         (onClick)="$data.onSiteClick(card)">
+                         (onClick)="$data.onSiteOrRegionClick(card)">
           </app-site-item>
         </div>
-
       </div>
     </div>
 
@@ -23,7 +21,6 @@ import {DataService} from '../services/data.service';
 })
 
 export class SiteSelectionModalComponent {
-
 
   constructor(
     public $data: DataService

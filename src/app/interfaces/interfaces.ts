@@ -117,6 +117,7 @@ export interface Playables_i {
 export interface Card_i {
   id?: string;
   suroundingRegions?: Card_i[];
+  routingSteps?: number;
   routingRegions?: Card_i[];
 
   'Home'?: string;
