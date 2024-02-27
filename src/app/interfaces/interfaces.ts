@@ -80,6 +80,9 @@ export enum RegionType_e {
 export enum CardType_e {
   Site = 'Site',
   Region = 'Region',
+  Character = 'Character',
+  Resource = 'Resource',
+  Hazard = 'Hazard',
 }
 
 export enum Playable_e {

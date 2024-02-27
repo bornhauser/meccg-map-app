@@ -20,7 +20,9 @@ export class DataService {
   public cards: Card_i[] = [];
   public mapIsDradding: boolean = false;
   public zoomCard: Card_i | null = null;
-  public openSearchSite: boolean = false;
+  public openSiteSelectionModal: boolean = false;
+  public openHazardCardsModal: boolean = false;
+  public openModalReversed: boolean = false;
 
   public currentGuiContext: CurrentGuiContext = {
     currentSiteOrRegion: null,
@@ -30,6 +32,7 @@ export class DataService {
   public currentSiteFrom: Card_i | null = null;
   public currentSiteTo: Card_i | null = null;
   public currentRouteRegions: Card_i[] = [];
+  public currentPlayableHazards: Card_i[] = [];
 
   constructor() {
     // @ts-ignore
@@ -102,6 +105,12 @@ export class DataService {
   public filterRegions(cards: Card_i[]): Card_i[] {
     return cards?.filter((card) => {
       return card.type === CardType_e.Region;
+    });
+  }
+
+  public filterHazards(cards: Card_i[]): Card_i[] {
+    return cards?.filter((card) => {
+      return card.type === CardType_e.Hazard;
     });
   }
 
@@ -352,18 +361,20 @@ export class DataService {
         if (!hasId(this.currentRouteRegions, this.getRegionOfSite(card)?.id)) {
           this.currentRouteRegions = foundCard.routingRegions ?? [];
         }
+        this.calculateCurrentPlayableHazards();
       } else if (card.type === CardType_e.Region) {
         if (card.id === this.currentRouteRegions[0]?.id) {
-          return;
+          this.currentRouteRegions = [this.currentRouteRegions[0]];
+          this.currentSiteTo = null;
         }
-        const foundResions: Card_i[] = this.getSurroundingRegionsWithoutRedundant(card);
-        if (hasId(foundResions, this.currentRouteRegions[0]?.id)) {
+        const foundRegions: Card_i[] = this.getSurroundingRegionsWithoutRedundant(card);
+        if (hasId(foundRegions, this.currentRouteRegions[0]?.id)) {
           this.currentRouteRegions = [this.currentRouteRegions[0], card];
           this.currentSiteTo = null;
-        } else if (hasId(foundResions, this.currentRouteRegions[1]?.id)) {
+        } else if (hasId(foundRegions, this.currentRouteRegions[1]?.id)) {
           this.currentRouteRegions = [this.currentRouteRegions[0], this.currentRouteRegions[1], card];
           this.currentSiteTo = null;
-        } else if (hasId(foundResions, this.currentRouteRegions[2]?.id)) {
+        } else if (hasId(foundRegions, this.currentRouteRegions[2]?.id)) {
           this.currentRouteRegions = [this.currentRouteRegions[0], this.currentRouteRegions[1], this.currentRouteRegions[2], card];
           this.currentSiteTo = null;
         }
@@ -376,6 +387,22 @@ export class DataService {
     this.refreshRouteOnMap();
   }
 
+  public calculateCurrentPlayableHazards() {
+    const allHazardCards: Card_i[] = this.filterOfficial(this.filterHazards(this.cards));
+    const filteredHazards: Card_i[] = allHazardCards.filter((card: Card_i) => {
+      let answer = false;
+      if (card.text && (card.text?.toLowerCase().indexOf('playable') > -1 || card.text?.toLowerCase().indexOf('played') > -1)) {
+        this.currentRouteRegions.forEach((regionCard: Card_i) => {
+          if (card.text && card.text?.indexOf(regionCard.title ?? '') > -1) {
+            answer = true;
+          }
+        });
+      }
+      return answer
+    })
+    this.currentPlayableHazards = filteredHazards;
+  }
+
   public startJourney(): void {
     if (this.currentGuiContext.currentSiteOrRegion?.type === CardType_e.Site) {
       this.currentSiteFrom = copyObject(this.currentGuiContext.currentSiteOrRegion);
@@ -385,7 +412,6 @@ export class DataService {
         const region = this.getRegionOfSite(this.currentSiteFrom);
         if (region) {
           this.currentRouteRegions = [region]
-          this.focusOnMap([region]);
           this.refreshRouteOnMap();
         }
       }
@@ -396,9 +422,9 @@ export class DataService {
     this.currentSiteFrom = null;
     this.currentSiteTo = null;
     this.currentRouteRegions = [];
+    this.currentPlayableHazards = [];
     this.saveCurrentStates();
     this.refreshContentOnMap();
     this.refreshRouteOnMap();
   }
-
 }

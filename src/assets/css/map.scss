@@ -5,9 +5,9 @@ $colorBeige: #deb56f;
 
 .meccg-border {
   box-shadow:
-  0 0 0 2px rgba(164, 74, 151, 0.49),
-  0 0 0 20px black,
-  0 0 100px 0 rgb(33, 0, 0);
+  0 0 0 5px black,
+  0 0 0 8px rgba(164, 74, 151, 0.49),
+  0 0 0 15px black;
   border-radius: 0.5px;
 }
 
@@ -128,14 +128,23 @@ $colorBeige: #deb56f;
   //stroke: none!important;
 }
 
+$colorTurkise: #ffffff;
+
 .region-path[aria-description="1"] {
-  stroke: #ffffff !important;
-  //stroke-width: 10px!important;
+  stroke: $colorTurkise !important;
 }
 
 body .site-object[aria-description="1"] .site-button {
-  background-color: white;
-  border: 20px solid white;
+  background-color: $colorTurkise !important;
+  border: 12px solid $colorTurkise !important;
+}
+
+$colorTurkise2: #00ffc3;
+
+
+body .site-object[aria-describedby="1"] .site-button {
+  background-color: #4d4d4d;
+  border: 10px solid #4d4d4d;
 }
 
 .journey-mode {

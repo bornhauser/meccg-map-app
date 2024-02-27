@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import * as L from 'leaflet';
+import {LatLngBounds} from 'leaflet';
 import 'leaflet.markercluster';
 import {Card_i, CardType_e, Playable_e} from '../interfaces/interfaces';
 import {DataService} from '../services/data.service';
-import {LatLngBounds} from 'leaflet';
 
 @Component({
   selector: 'app-map',
@@ -37,6 +37,7 @@ export class MapComponent {
     }
     $data.refreshRouteOnMap = () => {
       this.refreshRoute();
+      this.refreshFocusedSite();
     }
   }
 
@@ -66,6 +67,18 @@ export class MapComponent {
     }
   }
 
+  public refreshFocusedSite() {
+    let allSiteCards = this.$data.filterOfficial(this.$data.filterAlignmentHero(this.$data.filterSites(this.$data.cards)));
+    allSiteCards.forEach((card) => {
+      var siteSvg: any = document.querySelector('foreignObject#' + card.id);
+      siteSvg?.setAttribute('aria-describedby', '0');
+    });
+    if (this.$data.currentGuiContext.currentSiteOrRegion?.type === CardType_e.Site) {
+      var siteSvg: any = document.querySelector('foreignObject#' + (this.$data.currentGuiContext.currentSiteOrRegion?.id ?? ''));
+      siteSvg?.setAttribute('aria-describedby', '1');
+    }
+  }
+
   public focusItems(items: Card_i[]) {
     const card: Card_i = items[0];
     if (card.type === CardType_e.Region) {
@@ -84,6 +97,7 @@ export class MapComponent {
       crs: L.CRS.Simple,
       minZoom: -100,
       maxZoom: 100,
+      zoomControl: false,
       // maxBounds: [
       //   [-bound, -bound],
       //   [this.height + bound, this.width + bound]
@@ -174,6 +188,7 @@ export class MapComponent {
     document.querySelector('path#mountain-6')?.setAttribute('class', 'mountain-svg');
     document.querySelector('path#mountain-7')?.setAttribute('class', 'mountain-svg');
     document.querySelector('path#mountain-8')?.setAttribute('class', 'mountain-svg');
+    document.querySelector('path#mountain-9')?.setAttribute('class', 'mountain-svg');
 
     // REGIONS
     let regionCards: Card_i[] = []
@@ -235,7 +250,7 @@ export class MapComponent {
         playableHtml += playables?.[Playable_e.gold_ring] ? '<div class="playable _gold_ring"></div>' : '';
         playableHtml += playables?.[Playable_e.information] ? '<div class="playable _information"></div>' : '';
         playableHtml += playables?.[Playable_e.palantiri] ? '<div class="playable _palantiri"></div>' : '';
-        playableHtml += playables?.[Playable_e.scrol_of_isildur] ? '<div class="playable _scrol_of_isildur"></div>' : '';
+        // playableHtml += playables?.[Playable_e.scrol_of_isildur] ? '<div class="playable _scrol_of_isildur"></div>' : '';
         const id = 'id_' + Math.random();
         const creatureIconId: string = this.$data.getCreatureId(card) ?
           `<div class="creature-icon" style="background-image: url('assets/img/creature/${this.$data.getCreatureId(card)}.svg')"></div>` : '';

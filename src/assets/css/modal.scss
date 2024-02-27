@@ -1,0 +1,142 @@
+// MODAL
+
+.open-modal-reversed .modal-background {
+  transform: rotate(180deg);
+}
+
+.modal-background {
+  z-index: 5000;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  @extend .fade-in;
+}
+
+.meccg-card-image {
+  position: relative;
+  border-radius: 6%;
+  width: 80vw;
+  max-width: 50vh;
+  background-color: grey;
+  background-size: cover;
+  display: inline-block;
+  flex-shrink: 0;
+  margin: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 1);
+  border: 2px solid #5b5b5b;
+
+  &._queer {
+    transform: rotate(-90deg);
+  }
+
+  .meccg-card-inner {
+    width: 100%;
+    padding-bottom: 140%;
+  }
+}
+
+.site-selection-modal {
+  position: relative;
+  width: 80vw;
+  height: 80vh;
+  max-width: 1000px;
+  max-height: 1000px;
+  box-shadow: 0 0 0 2px $colorBlackish,
+  0 0 0 5px $colorCian,
+  0 0 0 9px $colorBlackish,
+  4px 4px 9px 5px rgba(0, 0, 0, 0.2);
+  background-image: url("../img/map/old-map_sw.jpg");
+  background-size: cover;
+  border-radius: 0.2em;
+
+  &:before {
+    content: "";
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0.8;
+    position: absolute;
+    background: linear-gradient(0deg, rgb(0, 7, 10) 0%, rgb(30, 49, 68) 100%);
+  }
+
+  .modal-scroll-container {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding: 20px 10px;
+
+    .site-items {
+      position: relative;
+      width: 100%;
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-content: center;
+      justify-content: center;
+      gap: 10px 10px;
+      background-color: transparent;
+
+      app-site-item {
+        font-size: 3.5px;
+        display: block;
+        width: 200px;
+      }
+    }
+  }
+}
+
+.hazard-cards-modal {
+  position: relative;
+  width: 80vw;
+  height: 80vh;
+  max-width: 2000px;
+  max-height: 2000px;
+  box-shadow: 0 0 0 2px $colorBlackish,
+  0 0 0 5px $colorCian,
+  0 0 0 9px $colorBlackish,
+  4px 4px 9px 5px rgba(0, 0, 0, 0.2);
+  background-image: url("../img/map/old-map_sw.jpg");
+  background-size: cover;
+  border-radius: 0.2em;
+
+  &:before {
+    content: "";
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0.8;
+    position: absolute;
+    background: linear-gradient(0deg, rgb(0, 7, 10) 0%, rgb(30, 49, 68) 100%);
+  }
+
+  .modal-scroll-container {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding: 20px 10px;
+
+    .hazard-cards {
+      position: relative;
+      width: 100%;
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-content: center;
+      justify-content: center;
+      gap: 10px 10px;
+      background-color: transparent;
+
+      .meccg-card-image{
+        width: 300px;
+      }
+    }
+  }
+}

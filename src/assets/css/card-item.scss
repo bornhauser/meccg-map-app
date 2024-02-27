@@ -51,6 +51,7 @@ button.site-button {
         font-weight: 800;
         color: #333333;
         white-space: nowrap;
+        min-width: 6em;
       }
     }
   }
@@ -62,7 +63,7 @@ button.site-button {
     right: 4em;
     width: 6em;
     height: 6em;
-    background-color: $colorBeige;
+    background-color: #efcc90;
     border-radius: 50%;
     border: 0.3em solid $colorBlackish;
   }
@@ -110,10 +111,18 @@ button.site-button {
         }
 
         &._gold_ring {
-          background-color: #a88c6a;
+          transform: rotate(0deg);
+          border-radius: 50%;
+          //background-color: #a88c6a;
+          border: 0.5em solid black;
+          box-shadow:
+          0 0 0 0.8em #ffdd00,
+          0 0 0 1em black;
+          margin: 0.5em 1.5em;
         }
 
         &._information {
+          transform: rotate(0deg);
           background-color: #5e5ed5;
         }
 

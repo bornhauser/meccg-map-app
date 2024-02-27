@@ -8,13 +8,8 @@ import {DataService} from '../services/data.service';
     <div class="header">
       <div class="line-1"></div>
       <div class="line-2"></div>
-      <div class="header-content" *ngIf="$data.currentRouteRegions">
-        <div class="journey-region" *ngFor="let card of $data.currentRouteRegions">
-          <div class="journey-region-icon" [style.background-image]="'url(' + $data.getRegionIconUrl(card) + ')'"></div>
-        </div>
-        <div class="journey-site" *ngIf="$data.currentSiteTo as card">
-          <div class="journey-site-icon" [style.background-image]="'url(' + $data.getSiteIconUrl(card, true) + ')'"></div>
-        </div>
+      <div class="header-content" *ngIf="$data.currentSiteTo && $data.currentRouteRegions.length">
+        <app-route [reversed]="true"></app-route>
       </div>
     </div>
   `,
@@ -27,5 +22,4 @@ export class HeaderComponent {
   ) {
 
   }
-
 }

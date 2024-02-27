@@ -24,6 +24,25 @@ import {CardType_e} from '../interfaces/interfaces';
         <!-- MIDDLE-->
         <div class="middle-content">
 
+          <div class="footer-route-containter" *ngIf="$data.currentRouteRegions.length">
+            <app-route *ngIf="$data.currentRouteRegions.length"></app-route>
+          </div>
+
+          <div class="buttons">
+            <button class="epic-button" (click)="$data.startJourney()"
+                    *ngIf="$data.currentGuiContext.currentSiteOrRegion && $data.currentGuiContext.currentSiteOrRegion.type === CardType_e.Site && !$data.currentSiteFrom">
+              <div class="button-text">start Journey</div>
+            </button>
+
+            <button class="epic-button" *ngIf="$data.currentSiteFrom" (click)="$data.endJourney()">
+              <div class="button-text">end Journey</div>
+            </button>
+
+            <button class="epic-button" *ngIf="$data.currentSiteFrom" (click)="$data.openSiteSelectionModal = true">
+              <div class="button-text">Sites as List</div>
+            </button>
+          </div>
+
           <div class="card-items _region-sites"
                *ngIf="$data.currentGuiContext.currentSiteOrRegion && $data.currentGuiContext?.currentSiteOrRegion?.type === CardType_e.Region">
             <app-site-item *ngFor="let card of $data.getSitesOfRegion($data.currentGuiContext.currentSiteOrRegion)"
@@ -31,37 +50,6 @@ import {CardType_e} from '../interfaces/interfaces';
                            (onClick)="$data.onSiteOrRegionClick(card)">
             </app-site-item>
           </div>
-
-          <button
-            *ngIf="$data.currentGuiContext.currentSiteOrRegion && $data.currentGuiContext.currentSiteOrRegion.type === CardType_e.Site && !$data.currentSiteFrom"
-            class="epic-button"
-            (click)="$data.startJourney()">
-            <div class="button-color"></div>
-            <div class="button-text">
-              <div>
-                start Journey
-              </div>
-            </div>
-          </button>
-
-          <button *ngIf="$data.currentSiteFrom" class="epic-button" (click)="$data.endJourney()">
-            <div class="button-color"></div>
-            <div class="button-text">
-              <div>
-                end Journey
-              </div>
-            </div>
-          </button>
-
-          <button *ngIf="$data.currentSiteFrom" class="epic-button"
-                  (click)="$data.openSearchSite = true">
-            <div class="button-color"></div>
-            <div class="button-text">
-              <div>
-                Sites as List
-              </div>
-            </div>
-          </button>
         </div>
 
         <!-- RIGHT-->
