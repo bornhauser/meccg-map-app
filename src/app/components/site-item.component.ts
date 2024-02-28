@@ -22,8 +22,9 @@ import {Card_i, CardType_e, Playable_e} from '../interfaces/interfaces';
           <div class="playable _major" *ngIf="playables?.[Playable_e.major]"></div>
           <div class="playable _greater" *ngIf="playables?.[Playable_e.greater]"></div>
           <div class="playable _gold_ring" *ngIf="playables?.[Playable_e.gold_ring]"></div>
-          <div class="playable _palantiri" *ngIf="playables?.[Playable_e.palantiri]"></div>
-          <div class="playable _scrol_of_isildur" *ngIf="playables?.[Playable_e.scrol_of_isildur]"></div>
+          <div class="playable _information" *ngIf="playables?.[Playable_e.information]"></div>
+<!--          <div class="playable _palantiri" *ngIf="playables?.[Playable_e.palantiri]"></div>-->
+<!--          <div class="playable _scrol_of_isildur" *ngIf="playables?.[Playable_e.scrol_of_isildur]"></div>-->
         </div>
       </div>
       <div class="creature-icon" *ngIf="$data.getCreatureId(card)"

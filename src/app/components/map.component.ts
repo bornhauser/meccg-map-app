@@ -249,7 +249,7 @@ export class MapComponent {
         playableHtml += playables?.[Playable_e.greater] ? '<div class="playable _greater"></div>' : '';
         playableHtml += playables?.[Playable_e.gold_ring] ? '<div class="playable _gold_ring"></div>' : '';
         playableHtml += playables?.[Playable_e.information] ? '<div class="playable _information"></div>' : '';
-        playableHtml += playables?.[Playable_e.palantiri] ? '<div class="playable _palantiri"></div>' : '';
+        // playableHtml += playables?.[Playable_e.palantiri] ? '<div class="playable _palantiri"></div>' : '';
         // playableHtml += playables?.[Playable_e.scrol_of_isildur] ? '<div class="playable _scrol_of_isildur"></div>' : '';
         const id = 'id_' + Math.random();
         const creatureIconId: string = this.$data.getCreatureId(card) ?

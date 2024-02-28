@@ -113,7 +113,6 @@ button.site-button {
         &._gold_ring {
           transform: rotate(0deg);
           border-radius: 50%;
-          //background-color: #a88c6a;
           border: 0.5em solid black;
           box-shadow:
           0 0 0 0.8em #ffdd00,
@@ -122,16 +121,20 @@ button.site-button {
         }
 
         &._information {
-          transform: rotate(0deg);
-          background-color: #5e5ed5;
+          border:none;
+          background-color: transparent;
+          border-radius: 0;
+          background-image: url("../img/site/information.svg");
+          background-size: 7em;
+          width: 5em;
+          height: 5em;
+          transform: rotate(0deg) translateY(1em);
         }
 
         &._palantiri {
-          background-color: #7c3fd7;
         }
 
         &._scrol_of_isildur {
-          background-color: #9d9585;
         }
       }
     }

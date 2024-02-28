@@ -90,8 +90,8 @@ export enum Playable_e {
   major = 'major',
   greater = 'greater',
   gold_ring = 'gold ring',
-  information = 'information',
-  palantiri = 'palantiri',
+  information = 'Information',
+  palantiri = 'Palantiri',
   scrol_of_isildur = 'Scroll of Isildur',
 }
 
