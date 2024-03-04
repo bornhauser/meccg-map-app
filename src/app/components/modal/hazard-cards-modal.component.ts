@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import 'leaflet.markercluster';
 import {DataService} from '../../services/data.service';
 import {CardType_e} from '../../interfaces/interfaces';
 

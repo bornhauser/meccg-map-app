@@ -5,26 +5,30 @@ import {
   CardType_e,
   CreatureType_e,
   CurrentGuiContext,
+  LanguageId_e,
   Playable_e,
   Playables_i,
   RegionType_e,
+  SelectItem,
   Set_e
 } from '../interfaces/interfaces';
 import {copyObject, findId, hasId} from './utility-methods';
+import {AppService} from './app-service';
 
 declare var meccgCards: Card_i[] | undefined;
 
 @Injectable()
 export class DataService {
-
   public cards: Card_i[] = [];
   public mapIsDradding: boolean = false;
   public zoomCard: Card_i | null = null;
   public openSiteSelectionModal: boolean = false;
   public openHazardCardsModal: boolean = false;
   public openModalReversed: boolean = false;
+  public openMainMenuModal: boolean = false;
 
   public currentGuiContext: CurrentGuiContext = {
+    currentAlignment: AlignmentType_e.Hero,
     currentSiteOrRegion: null,
     currentReachableRegions: [],
     currentReachableSites: [],
@@ -34,7 +38,7 @@ export class DataService {
   public currentRouteRegions: Card_i[] = [];
   public currentPlayableHazards: Card_i[] = [];
 
-  constructor() {
+  constructor(public $app: AppService) {
     // @ts-ignore
     document['onSiteOrRegionClick'] = (card: Card_i, event?: any) => {
       if (card && !this.mapIsDradding) {
@@ -70,6 +74,9 @@ export class DataService {
   public focusOnMap(focusItems: Card_i[]) {
   }
 
+  public refreshMapContent() {
+  }
+
   public createCardId(card: Card_i): string {
     return card.ImageName?.replaceAll('.jpg', '') ?? '';
   }
@@ -79,9 +86,13 @@ export class DataService {
   }
 
   public filterSites(cards: Card_i[]): Card_i[] {
-    return cards?.filter((card) => {
+    let answer = cards?.filter((card) => {
       return card.type === CardType_e.Site;
     });
+    answer = answer?.filter((card) => {
+      return card.alignment === this.currentGuiContext.currentAlignment;
+    });
+    return answer;
   }
 
   public filterAlignmentMinion(cards: Card_i[]): Card_i[] {
@@ -353,6 +364,14 @@ export class DataService {
     return `assets/img/region/${card.RPath?.toLowerCase().replaceAll(' ', '-')}.svg`;
   }
 
+  public getRegionPathId(card: Card_i): string {
+    return `regionPathId_` + card.id;
+  }
+
+  public getRegionLabelId(card: Card_i): string {
+    return `regionLabelId_` + card.id;
+  }
+
   public onSiteOrRegionClick(card: Card_i): void {
     if (this.currentSiteFrom) {
       if (card.type === CardType_e.Site) {
@@ -426,5 +445,13 @@ export class DataService {
     this.saveCurrentStates();
     this.refreshContentOnMap();
     this.refreshRouteOnMap();
+  }
+
+  public getCardTitle(card: Card_i): string {
+    let answer = card.title ?? '';
+    if (this.$app.getCurrentAppLanguage() === LanguageId_e.de) {
+      answer = card['title-gr'] ?? '';
+    }
+    return answer;
   }
 }

@@ -1,18 +1,3 @@
-.regular-font {
-  font-family: "Open Sans", sans-serif;
-  font-weight: 300;
-  color: $colorLiberoGrey3;
-  font-size: 15px;
-  @media(max-width: $responsiveWidthMobileMax), (max-height: $responsiveHeightMedium) {
-    font-size: 14px;
-  }
-  @media(max-width: $responsiveWidthVerySmall), (max-height: $responsiveHeightSmall) {
-    font-size: 13px;
-  }
-  @media(max-width: $responsiveWidthMegaSmall), (max-height: $responsiveHeightVerySmall) {
-    font-size: 11px;
-  }
-}
 
 *, *:before, *:after {
   box-sizing: border-box;
@@ -27,27 +12,14 @@
 body {
   padding: 0;
   margin: 0;
-}
-
-html, body, app-root, .leaflet-map {
-  height: 100%;
-  width: 100vw;
-}
-
-html, body {
-  @extend .regular-font;
-  padding: 0;
-  height: 100%;
-  margin: 0;
   background-color: $colorBlackish;
-  color: white;
-  background: linear-gradient(0deg, rgba(0, 10, 36, 1) 0%, rgb(66, 30, 0) 100%);
 }
 
-app-root {
-  display: block;
+html, body, .app-root, .root-container {
+  height: 100%;
   width: 100%;
-  padding: 50px;
+  padding: 0;
+  margin: 0;
 }
 
 p {
@@ -229,73 +201,4 @@ a {
 .slide-in {
   animation-name: slideIn;
   animation-duration: 0.1s;
-}
-
-
-// FOCUS EFFECT
-
-.focus-effect {
-  position: relative;
-  cursor: pointer;
-
-  &:after {
-    pointer-events: none;
-    content: "";
-    position: absolute;
-    top: -4px;
-    bottom: -4px;
-    right: -4px;
-    left: -4px;
-    border: 1px solid transparent;
-    border-radius: 0.5em;
-    transition: all 0.2s;
-  }
-
-  @media (hover: hover) {
-    &:hover:after {
-      border-color: $colorBlackish;
-    }
-  }
-
-  @media (hover: hover) {
-    &:disabled:hover:after {
-      border-color: transparent;
-    }
-  }
-}
-
-.focus-effect-light {
-  @extend .focus-effect;
-
-  @media (hover: hover) {
-    &:hover:after {
-      border-color: $colorLiberoGrey2;
-    }
-  }
-}
-
-.focus-effect-underline {
-
-  @media (hover: hover) {
-    &:hover {
-      text-decoration: underline;
-      background-color: transparent !important;
-    }
-  }
-
-  @media (hover: hover) {
-    &:disabled:hover {
-      text-decoration: none;
-    }
-  }
-}
-
-.focus-effect-grey {
-  transition: all 0.2s;
-
-  @media (hover: hover) {
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.04);
-    }
-  }
 }

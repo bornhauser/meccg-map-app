@@ -1,7 +1,6 @@
-button.site-button {
-  display: flex;
+.site-button {
+  display: inline-flex;
   flex-direction: column;
-  align-items: center;
   pointer-events: auto;
   height: 12em;
   width: auto;
@@ -9,42 +8,32 @@ button.site-button {
   transition: all 0.2s;
   border-radius: 1.5em;
 
-  &:hover {
-    border: 1em solid white;
+  @media (hover: hover) {
+    &:hover {
+      border: 1em solid white;
+    }
   }
 
   .pergament-container {
-    position: relative;
-
-    .pergament-shadow {
-      z-index: -100;
-      position: absolute;
-      top: 1em;
-      right: 1.5em;
-      bottom: 1em;
-      left: 1.2em;
-      background-color: black;
-      box-shadow: 10px -10px 40px rgba(0, 0, 0, 1);
-    }
 
     .pergament {
-      position: relative;
-      z-index: 50;
       background-image: url("../img/pic/pergament.png");
       padding: 0 7em 0 4em;
       display: flex;
       align-items: center;
       background-size: 100% 100%;
       height: 8em;
+      background-color: rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 3em rgba(0, 0, 0, 0.8);
 
-      .icon {
+      .site-icon {
         display: inline-block;
         width: 8em;
         height: 8em;
         margin-right: 0.5em;
       }
 
-      .title {
+      .site-title {
         display: inline-block;
         font-size: 4em;
         font-family: "Alice", serif;
@@ -57,10 +46,8 @@ button.site-button {
   }
 
   .creature-icon {
+    display: inline-block;
     z-index: 50;
-    position: absolute;
-    top: 6em;
-    right: 4em;
     width: 6em;
     height: 6em;
     background-color: #efcc90;
@@ -69,10 +56,9 @@ button.site-button {
   }
 
   .meta-container {
+    margin-top: 4em;
+    margin-bottom: -11em;
     display: inline-block;
-    margin: auto;
-    position: relative;
-    top: -6em;
     width: 100%;
     padding: 0 4em;
     text-align: center;
@@ -89,14 +75,14 @@ button.site-button {
       padding: 0 3em;
 
       .playable {
+        margin-top: 1em;
         top: 0.8em;
-        position: relative;
         display: inline-block;
-        width: 3em;
-        height: 3em;
-        border-radius: 1em;
-        transform: rotate(45deg);
+        width: 4em;
+        height: 4em;
+        border-radius: 50%;
         border: 0.5em solid black;
+        margin-bottom: -0.5em;
 
         &._minor {
           background-color: #54c750;
@@ -111,24 +97,25 @@ button.site-button {
         }
 
         &._gold_ring {
-          transform: rotate(0deg);
+          width: 3.5em;
+          height: 3.5em;
           border-radius: 50%;
           border: 0.5em solid black;
-          box-shadow:
-          0 0 0 0.8em #ffdd00,
+          box-shadow: 0 0 0 0.8em #ffdd00,
           0 0 0 1em black;
           margin: 0.5em 1.5em;
         }
 
         &._information {
-          border:none;
+          margin-top: 1em;
+          border: none;
           background-color: transparent;
           border-radius: 0;
           background-image: url("../img/site/information.svg");
           background-size: 7em;
           width: 5em;
           height: 5em;
-          transform: rotate(0deg) translateY(1em);
+          margin-bottom: -1em
         }
 
         &._palantiri {

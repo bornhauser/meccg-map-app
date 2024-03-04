@@ -1,21 +1,11 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import 'leaflet.markercluster';
 import {DataService} from '../services/data.service';
-import {Card_i, CardType_e, Playable_e} from '../interfaces/interfaces';
+import {Card_i, Playable_e} from '../interfaces/interfaces';
 
 @Component({
   selector: 'app-site-item',
   template: `
-    <button class="site-button" *ngIf="card" (click)="onClick.emit(card)">
-      <div class="pergament-container">
-        <div class="pergament-shadow"></div>
-        <div class="pergament">
-          <div class="icon" [style.background-image]="'url(' + $data.getSiteIconUrl(card) + ')'"></div>
-          <div class="title">
-            {{ card.title }}
-          </div>
-        </div>
-      </div>
+    <div class="site-button" *ngIf="card" (click)="onClick.emit(card)">
       <div class="meta-container">
         <div class="meta" *ngIf="this.$data.getPlayables(card) as playables">
           <div class="playable _minor" *ngIf="playables?.[Playable_e.minor]"></div>
@@ -27,9 +17,17 @@ import {Card_i, CardType_e, Playable_e} from '../interfaces/interfaces';
 <!--          <div class="playable _scrol_of_isildur" *ngIf="playables?.[Playable_e.scrol_of_isildur]"></div>-->
         </div>
       </div>
-      <div class="creature-icon" *ngIf="$data.getCreatureId(card)"
-           [style.background-image]="'url(' + $data.getCreatureIconUrl(card) + ')'"></div>
-    </button>
+      <div class="pergament-container">
+        <div class="pergament">
+          <div class="site-icon" [style.background-image]="'url(' + $data.getSiteIconUrl(card) + ')'"></div>
+          <div class="site-title">
+            {{ this.$data.getCardTitle(card) }}
+          </div>
+        </div>
+      </div>
+<!--      <div class="creature-icon" *ngIf="$data.getCreatureId(card)"-->
+<!--           [style.background-image]="'url(' + $data.getCreatureIconUrl(card) + ')'"></div>-->
+    </div>
 
   `,
 })

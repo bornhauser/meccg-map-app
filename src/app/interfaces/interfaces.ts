@@ -4,10 +4,11 @@ export enum PagePath_e {
 
 export enum LanguageId_e {
   de = 'de',
-  fr = 'fr',
+  en = 'en',
 }
 
 export interface CurrentGuiContext {
+  currentAlignment: AlignmentType_e;
   currentSiteOrRegion: Card_i | null;
   currentReachableRegions: Card_i[];
   currentReachableSites: Card_i[];
@@ -172,3 +173,9 @@ export interface Card_i {
   'MajorItem'?: boolean;
   'GreaterItem': boolean;
 }
+
+export interface SelectItem {
+  available: string[];
+  selected: string | null;
+}
+

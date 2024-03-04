@@ -17,6 +17,9 @@ import {SiteSelectionModalComponent} from './components/modal/site-selection-mod
 import {HazardCardsModalComponent} from './components/modal/hazard-cards-modal.component';
 import {CardZoomModalComponent} from './components/modal/card-zoom-modal.component';
 import {RouteComponent} from './components/route.component';
+import {MainMenuModalComponent} from './components/modal/main-menu-modal.component';
+import {SelectItemComponent} from './components/modal/select-item.component';
+import {AppService} from './services/app-service';
 
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -34,6 +37,8 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     HazardCardsModalComponent,
     CardZoomModalComponent,
     RouteComponent,
+    MainMenuModalComponent,
+    SelectItemComponent,
   ],
   imports: [
     CommonModule,
@@ -50,7 +55,8 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     BrowserAnimationsModule,
   ],
   providers: [
-    DataService
+    DataService,
+    AppService
   ],
   bootstrap: [AppComponent]
 })

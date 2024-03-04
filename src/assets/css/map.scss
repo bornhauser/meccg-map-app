@@ -1,45 +1,58 @@
 $colorBeigeDark: #4e4025;
 $colorBeige: #deb56f;
 
-@import url('https://fonts.googleapis.com/css2?family=Alice&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
-
 .meccg-border {
-  box-shadow:
-  0 0 0 5px black,
+  box-shadow: 0 0 0 5px black,
   0 0 0 8px rgba(164, 74, 151, 0.49),
   0 0 0 15px black;
   border-radius: 0.5px;
 }
 
-.leaflet-map {
+.map-image-layer {
+  box-shadow: 0 0 0 5px black,
+  0 0 0 8px rgba(164, 74, 151, 0.49),
+  0 0 0 15px black;
+  border-radius: 0.5px;
+}
+
+.leaflet-map-container {
   position: fixed;
   top: $headerHeight;
   right: 0;
-  bottom: $footerHeight;
-  height: auto;
-  width: auto;
   left: 0;
-  background-image: url("../img/map/wood.jpg");
+  bottom: $footerHeight;
   background-size: cover;
   background-position: center;
+  overflow: hidden;
 
-  .leaflet-bottom{
-    display: none;
-  }
 
-  &:before {
-    content: "";
+  .leaflet-map {
+    background-image: url("../img/map/wood.jpg");
+    position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    opacity: 0.9;
-    position: absolute;
-    background: linear-gradient(0deg, rgb(10, 3, 0) 0%, rgb(24, 7, 0) 100%);
+
+    &:before {
+      content: "";
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      opacity: 0.9;
+      position: absolute;
+      background: linear-gradient(0deg, rgb(10, 3, 0) 0%, rgb(24, 7, 0) 100%);
+    }
+
+    .leaflet-bottom {
+      display: none;
+    }
   }
 }
 
-.region-object {
+// REGION-LABEL
+foreignObject.region-label {
   pointer-events: none;
 
   .region-title-object {
@@ -48,29 +61,23 @@ $colorBeige: #deb56f;
     font-size: 100px;
     text-align: center;
 
-    .title-container {
-      display: block;
+    .title {
       width: 100%;
       height: 120px;
-      position: relative;
-
-      .title {
-        font-family: "Alice", serif;
-        display: inline-block;
-        font-weight: 500;
-        color: $colorBeige;
-        position: absolute;
-        white-space: nowrap;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-
-        &._2 {
-          color: $colorBeigeDark;
-          -webkit-text-stroke: 8px $colorBeigeDark;
-          text-shadow: -8px 0 $colorBeigeDark, 0 8px $colorBeigeDark, 8px 0 $colorBeigeDark, 0 -8px $colorBeigeDark, 5px 5px 10px #000;
-        }
-      }
+      font-family: "Alice", serif;
+      display: inline-block;
+      font-weight: 500;
+      color: $colorBeige;
+      white-space: nowrap;
+      text-shadow: -8px 0 0px $colorBeigeDark,
+      0 8px 0px $colorBeigeDark,
+      8px 0 0px $colorBeigeDark,
+      0 -8px 0px $colorBeigeDark,
+      -4px -4px $colorBeigeDark,
+      -4px 4px $colorBeigeDark,
+      4px -4px $colorBeigeDark,
+      4px 4px $colorBeigeDark,
+      0px 0px 50px #000;
     }
 
     .icon {
@@ -84,40 +91,41 @@ $colorBeige: #deb56f;
   }
 }
 
-.site-object {
+// SITE-LABEL
+foreignObject.site-object {
   pointer-events: none;
 
   .content-frame {
     height: 100%;
+    padding: 20px 0 0 30px;
     width: 100%;
-    padding: 5px;
-    position: relative;
-    top: 20px;
-    left: 20px;
   }
 }
 
 .region-svg {
   opacity: 0;
+  display: none;
 }
 
-.meccg-regions {
+.leaflet-tile-pane {
+  display: none;
+}
+
+.svg-layer {
   overflow: hidden;
 
   .region-path {
     opacity: 1;
     transition: stroke 0.2s;
     fill: transparent;
-
-    &:hover {
-    }
   }
 }
 
-.root:not(.journey-mode) .meccg-regions .region-path:hover {
-  stroke: white;
+@media (hover: hover) {
+  .root-container:not(.journey-mode) .svg-layer .region-path:hover {
+    stroke: white;
+  }
 }
-
 
 .region-path, .mountain-svg {
   transition: all 0.2s;

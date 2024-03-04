@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import 'leaflet.markercluster';
 import {DataService} from '../services/data.service';
 import {CardType_e} from '../interfaces/interfaces';
 
@@ -31,15 +30,15 @@ import {CardType_e} from '../interfaces/interfaces';
           <div class="buttons">
             <button class="epic-button" (click)="$data.startJourney()"
                     *ngIf="$data.currentGuiContext.currentSiteOrRegion && $data.currentGuiContext.currentSiteOrRegion.type === CardType_e.Site && !$data.currentSiteFrom">
-              <div class="button-text">start Journey</div>
+              <div class="button-text">{{ 'app.startJourney' | translate }}</div>
             </button>
 
             <button class="epic-button" *ngIf="$data.currentSiteFrom" (click)="$data.endJourney()">
-              <div class="button-text">end Journey</div>
+              <div class="button-text">{{ 'app.endJourney' | translate }}</div>
             </button>
 
             <button class="epic-button" *ngIf="$data.currentSiteFrom" (click)="$data.openSiteSelectionModal = true">
-              <div class="button-text">Sites as List</div>
+              <div class="button-text">{{ 'app.sitesAsList' | translate }}</div>
             </button>
           </div>
 

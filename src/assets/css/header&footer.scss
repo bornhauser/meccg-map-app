@@ -68,6 +68,57 @@
       position: absolute;
       background: linear-gradient(0deg, rgb(0, 7, 10) 0%, rgb(30, 49, 68) 100%);
     }
+
+  }
+
+  .main-menu-button {
+    font-size: 10px;
+    position: absolute;
+    bottom: 2px;
+    right: 20px;
+    padding: 1em;
+    cursor: pointer;
+    transform: translateY(50%);
+
+    .menu-circle {
+      width: 3em;
+      height: 3em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      box-shadow: 0 0 0 2px $colorBlackish,
+      0 0 0 5px $colorCian,
+      0 0 0 9px $colorBlackish,
+      4px 4px 9px 5px rgba(0, 0, 0, 0.2);
+      background-color: #151515;
+      border-radius: 50%;
+      gap: 0.4em;
+      transition: all 0.2s;
+
+      .line {
+        display: inline-block;
+        height: 0.2em;
+        background-color: $colorCian;
+        border-radius: 0.1em;
+        width: 60%;
+        transition: all 0.2s;
+      }
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        .menu-circle {
+          box-shadow: 0 0 0 2px $colorBlackish,
+          0 0 0 5px lighten($colorCian, 30%),
+          0 0 0 9px $colorBlackish;
+
+          .line {
+            background-color: lighten($colorCian, 30%),
+          }
+        }
+      }
+    }
   }
 }
 
@@ -107,8 +158,10 @@
       border-radius: 10px;
       border: 2px solid transparent;
 
-      &:hover {
-        border: 2px solid white;
+      @media (hover: hover) {
+        &:hover {
+          border: 2px solid white;
+        }
       }
     }
   }
@@ -241,9 +294,11 @@
             background: linear-gradient(0deg, rgb(250, 211, 170) 0%, rgb(222, 197, 176) 100%);
           }
 
-          &:hover {
-            .button-text {
-              color: white;
+          @media (hover: hover) {
+            &:hover {
+              .button-text {
+                color: white;
+              }
             }
           }
 
@@ -263,12 +318,13 @@
       }
 
       .card-items {
+        margin-top: 20px;
         height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         flex-wrap: wrap;
-        font-size: 4px;
+        font-size: 5px;
         align-items: flex-start;
         align-content: flex-start;
         gap: 0 4em;
@@ -298,8 +354,10 @@
       transition: all 0.2s;
       flex-shrink: 0;
 
-      &:hover {
-        border: 1px solid white;
+      @media (hover: hover) {
+        &:hover {
+          border: 1px solid white;
+        }
       }
 
       @extend .fade-in;

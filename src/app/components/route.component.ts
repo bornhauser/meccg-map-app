@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import 'leaflet.markercluster';
 import {DataService} from '../services/data.service';
 
 @Component({
