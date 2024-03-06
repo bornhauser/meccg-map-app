@@ -7,7 +7,7 @@ import {AlignmentType_e, SelectItem} from '../../interfaces/interfaces';
   selector: 'app-main-menu-modal',
   template: `
 
-    <div class="modal-background" (click)="$data.openMainMenuModal = false;">
+    <div class="modal-background" (click)="$app.openMainMenuModal = false;">
       <div class="main-menu-modal">
         <div class="menu-title">{{ 'app.edition' | translate }}</div>
         <app-select-item [selectItem]="currentAlignment"
@@ -32,24 +32,25 @@ export class MainMenuModalComponent {
   }
 
   public onLanguageChange($event: any){
+    this.$data.resetCurrentGuiContext();
     this.$app.changeAppLanguage($event?.selected ?? null)
-    this.$data.refreshMapContent();
+    this.$app.refreshMapContent();
     setTimeout(()=>{
-      this.$data.openMainMenuModal = false;
+      this.$app.openMainMenuModal = false;
     },300)
   }
 
   public onAlignmentChange($event: any){
-    this.$data.currentGuiContext.currentSiteOrRegion = null;
+    this.$data.resetCurrentGuiContext();
     this.$data.currentGuiContext.currentAlignment = $event?.selected ?? AlignmentType_e.Hero;
-    this.$data.refreshMapContent();
+    this.$app.refreshMapContent();
     setTimeout(()=>{
-      this.$data.openMainMenuModal = false;
+      this.$app.openMainMenuModal = false;
     },300)
   }
 
   public currentLanguage: SelectItem = {
-    available: this.$app.appLanguages,
+    available: this.$app.availableAppLanguages,
     selected: this.$app.getCurrentAppLanguage(),
   }
 

@@ -4,6 +4,7 @@ import {LatLngBounds} from 'leaflet';
 import {Card_i, CardType_e, Playable_e, Playables_i} from '../interfaces/interfaces';
 import {DataService} from '../services/data.service';
 import {AppService} from '../services/app-service';
+import {CardUtilService} from '../services/card-util.service';
 
 @Component({
   selector: 'app-map',
@@ -27,18 +28,19 @@ export class MapComponent {
   constructor(
     public $data: DataService,
     public $app: AppService,
+    public $carUtil: CardUtilService,
   ) {
-    $data.refreshContentOnMap = () => {
+    $app.refreshContentOnMap = () => {
       this.handleVisuals();
     }
-    $data.focusOnMap = (items: Card_i[]) => {
+    $app.focusOnMap = (items: Card_i[]) => {
       this.focusItems(items);
     }
-    $data.refreshRouteOnMap = () => {
+    $app.refreshRouteOnMap = () => {
       this.refreshRoute();
       this.refreshFocusedSite();
     }
-    $data.refreshMapContent = () => {
+    $app.refreshMapContent = () => {
       this.refreshMapContent();
     }
   }
@@ -54,10 +56,10 @@ export class MapComponent {
     }
     this.map = L.map('leafletMap', mapSettings1)
       .on('movestart', () => {
-        this.$data.mapIsDradding = true;
+        this.$app.mapIsDradding = true;
       }).on('moveend', () => {
         setTimeout(() => {
-          this.$data.mapIsDradding = false;
+          this.$app.mapIsDradding = false;
         }, 100);
       }).on('dblclick', () => {
         setTimeout(() => {
@@ -103,13 +105,13 @@ export class MapComponent {
     document.querySelector('path#mountain-7')?.setAttribute('class', 'mountain-svg');
     document.querySelector('path#mountain-8')?.setAttribute('class', 'mountain-svg');
     document.querySelector('path#mountain-9')?.setAttribute('class', 'mountain-svg');
-    let allRegionCards: Card_i[] = this.$data.filterOfficial(this.$data.filterRegions(this.$data.cards));
+    let allRegionCards: Card_i[] = this.$carUtil.filterOfficial(this.$carUtil.filterRegions(this.$data.all_cards));
     allRegionCards.forEach((card) => {
       var regionPathSvg: any = document.querySelector('path' + this.$data.getSvgId(card));
       regionPathSvg?.setAttribute('stroke', '#492045');
       regionPathSvg?.setAttribute('class', 'region-path')
       regionPathSvg?.setAttribute('aria-label', '0');
-      regionPathSvg?.setAttribute('id', this.$data.getRegionPathId(card));
+      regionPathSvg?.setAttribute('id', this.$carUtil.getRegionPathId(card));
       var passmarkerForRegionLabel: any = document.querySelector('circle' + this.$data.getSvgId(card));
       passmarkerForRegionLabel?.setAttribute('fill', 'none');
       var regionLabelSvg: any = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
@@ -122,11 +124,11 @@ export class MapComponent {
       regionLabelSvg.setAttribute('height', '300');
       regionLabelSvg.innerHTML = `
         <div class="region-title-object" xmlns="http://www.w3.org/1999/xhtml">
-            <div class="title">${ this.$data.getCardTitle(card) }</div>
-            <div class="icon" style="background-image: url('${this.$data.getRegionIconUrl(card)}')"></div>
+            <div class="title">${this.$carUtil.getCardTitle(card)}</div>
+            <div class="icon" style="background-image: url('${this.$carUtil.getRegionIconUrl(card)}')"></div>
         </div>
         `;
-      regionLabelSvg?.setAttribute('id', this.$data.getRegionLabelId(card));
+      regionLabelSvg?.setAttribute('id', this.$carUtil.getRegionLabelId(card));
       this.svgLayer?.appendChild(regionLabelSvg);
       regionPathSvg?.addEventListener('click', () => {
         // @ts-ignore
@@ -141,7 +143,7 @@ export class MapComponent {
 
   public renderMapSites() {
     // SITES
-    const siteCards: Card_i[] = this.$data.filterOfficial(this.$data.filterSites(this.$data.cards));
+    const siteCards: Card_i[] = this.$carUtil.filterOfficial(this.$carUtil.filterSites(this.$data.all_cards));
     siteCards.forEach((card) => {
       var siteSvg: any = document.querySelector('rect' + this.$data.getSvgId(card));
       if (siteSvg) {
@@ -154,7 +156,8 @@ export class MapComponent {
         svgElement.setAttribute('y', y - 50);
         svgElement.setAttribute('width', '1200');
         svgElement.setAttribute('height', '200');
-        const playables: Playables_i | null = this.$data.getPlayables(card);
+        svgElement?.setAttribute('id', this.$carUtil.getSiteLabelId(card));
+        const playables: Playables_i | null = this.$carUtil.getPlayablesOfCard(card);
         let playableHtml: string = '';
         playableHtml += playables?.[Playable_e.minor] ? '<div class="playable _minor"></div>' : '';
         playableHtml += playables?.[Playable_e.major] ? '<div class="playable _major"></div>' : '';
@@ -163,15 +166,15 @@ export class MapComponent {
         playableHtml += playables?.[Playable_e.information] ? '<div class="playable _information"></div>' : '';
         // playableHtml += playables?.[Playable_e.palantiri] ? '<div class="playable _palantiri"></div>' : '';
         // playableHtml += playables?.[Playable_e.scrol_of_isildur] ? '<div class="playable _scrol_of_isildur"></div>' : '';
-        const creatureIcon: string = this.$data.getCreatureId(card) ?
-          `<div class="creature-icon" style="background-image: url('${this.$data.getCreatureIconUrl(card)}')"></div>` : '';
+        const creatureIcon: string = this.$carUtil.getCreatureId(card) ?
+          `<div class="creature-icon" style="background-image: url('${this.$carUtil.getCreatureIconUrl(card)}')"></div>` : '';
         const meta: string = playableHtml ? `
           <div class="meta-container">
             <div class="meta">
               ${playableHtml}
             </div>
           </div>` : '';
-        this.$data.getCreatureId(card);
+        this.$carUtil.getCreatureId(card);
         const id = 'id_' + Math.random();
         svgElement.innerHTML = `
           <div class="content-frame" xmlns="http://www.w3.org/1999/xhtml">
@@ -179,14 +182,13 @@ export class MapComponent {
               ${meta}
               <div class="pergament-container">
                 <div class="pergament">
-                  <div class="site-icon" style="background-image: url('${this.$data.getSiteIconUrl(card)}')"></div>
-                  <div class="site-title">${ this.$data.getCardTitle(card) }</div>
+                  <div class="site-icon" style="background-image: url('${this.$carUtil.getSiteIconUrl(card)}')"></div>
+                  <div class="site-title">${this.$carUtil.getCardTitle(card)}</div>
                 </div>
               </div>
             </div>
           </div>
         `;
-        svgElement?.setAttribute('id', card.id);
         this.svgLayer?.appendChild(svgElement);
         // @ts-ignore
         const element = document.getElementById(id);
@@ -198,39 +200,39 @@ export class MapComponent {
   }
 
   public refreshRoute() {
-    let allRegionCards = this.$data.filterOfficial(this.$data.filterRegions(this.$data.cards));
+    let allRegionCards = this.$carUtil.filterOfficial(this.$carUtil.filterRegions(this.$data.all_cards));
     allRegionCards.forEach((card) => {
-      var borderSvg: any = document.querySelector('#' + this.$data.getRegionPathId(card));
+      var borderSvg: any = document.querySelector('#' + this.$carUtil.getRegionPathId(card));
       borderSvg?.setAttribute('aria-description', '0');
     });
     this.$data.currentRouteRegions.forEach((card) => {
-      var borderSvg: any = document.querySelector('#' + this.$data.getRegionPathId(card));
+      var borderSvg: any = document.querySelector('#' + this.$carUtil.getRegionPathId(card));
       borderSvg?.setAttribute('aria-description', '1');
     });
 
-    let allSiteCards = this.$data.filterOfficial(this.$data.filterAlignmentHero(this.$data.filterSites(this.$data.cards)));
+    let allSiteCards = this.$carUtil.filterOfficial(this.$carUtil.filterAlignmentHero(this.$carUtil.filterSites(this.$data.all_cards)));
     allSiteCards.forEach((card) => {
-      var siteSvg: any = document.querySelector('foreignObject#' + card.id);
+      var siteSvg: any = document.querySelector('#' + this.$carUtil.getSiteLabelId(card));
       siteSvg?.setAttribute('aria-description', '0');
     });
     if (this.$data.currentSiteFrom) {
-      var siteSvg: any = document.querySelector('foreignObject#' + (this.$data.currentSiteFrom?.id ?? ''));
+      var siteSvg: any = document.querySelector('#' + this.$carUtil.getSiteLabelId(this.$data.currentSiteFrom));
       siteSvg?.setAttribute('aria-description', '1');
     }
     if (this.$data.currentSiteTo) {
-      var site2Svg: any = document.querySelector('foreignObject#' + (this.$data.currentSiteTo?.id ?? ''));
+      var site2Svg: any = document.querySelector('#' + this.$carUtil.getSiteLabelId(this.$data.currentSiteTo));
       site2Svg?.setAttribute('aria-description', '1');
     }
   }
 
   public refreshFocusedSite() {
-    let allSiteCards = this.$data.filterOfficial(this.$data.filterAlignmentHero(this.$data.filterSites(this.$data.cards)));
+    let allSiteCards = this.$carUtil.filterOfficial(this.$carUtil.filterAlignmentHero(this.$carUtil.filterSites(this.$data.all_cards)));
     allSiteCards.forEach((card) => {
-      var siteSvg: any = document.querySelector('foreignObject#' + card.id);
+      var siteSvg: any = document.querySelector('#' + this.$carUtil.getSiteLabelId(card));
       siteSvg?.setAttribute('aria-describedby', '0');
     });
     if (this.$data.currentGuiContext.currentSiteOrRegion?.type === CardType_e.Site) {
-      var siteSvg: any = document.querySelector('foreignObject#' + (this.$data.currentGuiContext.currentSiteOrRegion?.id ?? ''));
+      var siteSvg: any = document.querySelector('#' + this.$carUtil.getSiteLabelId(this.$data.currentGuiContext.currentSiteOrRegion));
       siteSvg?.setAttribute('aria-describedby', '1');
     }
   }
@@ -238,7 +240,7 @@ export class MapComponent {
   public focusItems(items: Card_i[]) {
     const card: Card_i = items[0];
     if (card.type === CardType_e.Region) {
-      const svgElement: any = document.querySelector('path#' + card.id);
+      const svgElement: any = document.querySelector('#' + this.$carUtil.getRegionPathId(card));
       const rect = svgElement.getBoundingClientRect();
       const topLeft = this.map.containerPointToLatLng(L.point(rect.left, rect.top));
       const bottomRight = this.map.containerPointToLatLng(L.point(rect.right, rect.bottom));
@@ -248,31 +250,31 @@ export class MapComponent {
   }
 
   public handleVisuals() {
-    let regionCards = this.$data.filterOfficial(this.$data.filterRegions(this.$data.cards));
+    let regionCards = this.$carUtil.filterOfficial(this.$carUtil.filterRegions(this.$data.all_cards));
     if (this.$data.currentSiteFrom && this.$data.currentGuiContext.currentReachableRegions) {
       regionCards.forEach((card) => {
-        var borderSvg: any = document.querySelector('path#' + card.id);
-        var labelSvg: any = document.querySelector('foreignObject#' + card.id);
+        var borderSvg: any = document.querySelector('#' + this.$carUtil.getRegionPathId(card));
+        var labelSvg: any = document.querySelector('#' + this.$carUtil.getRegionLabelId(card));
         borderSvg?.setAttribute('aria-label', '1');
         labelSvg?.setAttribute('display', 'none');
       });
       regionCards = this.$data.currentGuiContext.currentReachableRegions;
       regionCards.forEach((card) => {
-        var borderSvg: any = document.querySelector('path#' + card.id);
-        var labelSvg: any = document.querySelector('foreignObject#' + card.id);
+        var borderSvg: any = document.querySelector('#' + this.$carUtil.getRegionPathId(card));
+        var labelSvg: any = document.querySelector('#' + this.$carUtil.getRegionLabelId(card));
         borderSvg?.setAttribute('aria-label', '0');
         labelSvg?.setAttribute('display', 'block');
       });
     } else {
       regionCards.forEach((card) => {
-        var borderSvg: any = document.querySelector('path#' + card.id);
-        var labelSvg: any = document.querySelector('foreignObject#' + card.id);
+        var borderSvg: any = document.querySelector('#' + this.$carUtil.getRegionPathId(card));
+        var labelSvg: any = document.querySelector('#' + this.$carUtil.getRegionLabelId(card));
         borderSvg?.setAttribute('aria-label', '0');
         labelSvg?.setAttribute('display', 'block');
       });
     }
 
-    let siteCards = this.$data.filterOfficial(this.$data.filterAlignmentHero(this.$data.filterSites(this.$data.cards)));
+    let siteCards = this.$carUtil.filterOfficial(this.$carUtil.filterAlignmentHero(this.$carUtil.filterSites(this.$data.all_cards)));
     if (this.$data.currentSiteFrom && this.$data.currentGuiContext.currentReachableSites) {
       siteCards.forEach((card) => {
         var siteSvg: any = document.querySelector('foreignObject#' + card.id);

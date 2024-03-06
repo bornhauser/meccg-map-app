@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {DataService} from '../services/data.service';
+import {AppService} from '../services/app-service';
 
 @Component({
   selector: 'app-header',
@@ -10,7 +11,7 @@ import {DataService} from '../services/data.service';
       <div class="header-content" *ngIf="$data.currentSiteTo && $data.currentRouteRegions.length">
         <app-route [reversed]="true"></app-route>
       </div>
-      <div (click)="$data.openMainMenuModal = true" class="main-menu-button">
+      <div (click)="$app.openMainMenuModal = true" class="main-menu-button">
         <div class="menu-circle">
           <div class="line _1"></div>
           <div class="line _2"></div>
@@ -24,7 +25,8 @@ import {DataService} from '../services/data.service';
 export class HeaderComponent {
 
   constructor(
-    public $data: DataService
+    public $data: DataService,
+    public $app: AppService,
   ) {
 
   }

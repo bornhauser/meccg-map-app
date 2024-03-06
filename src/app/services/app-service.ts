@@ -1,24 +1,50 @@
 import {Injectable} from '@angular/core';
-import {LanguageId_e} from '../interfaces/interfaces';
+import {Card_i, LanguageId_e} from '../interfaces/interfaces';
 import {TranslateService} from '@ngx-translate/core';
+import {DataService} from './data.service';
 
 
 @Injectable()
 export class AppService {
   public translationsAreLoaded = false;
-  public appLanguages: string[] = [LanguageId_e.en, LanguageId_e.de];
+  public availableAppLanguages: string[] = [LanguageId_e.en, LanguageId_e.de];
+  public openSiteSelectionModal: boolean = false;
+  public openHazardCardsModal: boolean = false;
+  public openModalReversed: boolean = false;
+  public openMainMenuModal: boolean = false;
+  public mapIsDradding: boolean = false;
+  public zoomCard: Card_i | null = null;
+  public $data: DataService | null = null;
 
   constructor(
     private translate: TranslateService,
   ) {
+    // @ts-ignore
+    document['onSiteOrRegionClick'] = (card: Card_i, event?: any) => {
+      if (card && !this.mapIsDradding) {
+        this.$data?.onSiteOrRegionClick(card);
+      }
+    }
+  }
+
+  public refreshContentOnMap() {
+  }
+
+  public refreshRouteOnMap() {
+  }
+
+  public focusOnMap(focusItems: Card_i[]) {
+  }
+
+  public refreshMapContent() {
   }
 
   public initAppService(): void {
-    this.translate.addLangs(this.appLanguages);
+    this.translate.addLangs(this.availableAppLanguages);
     let defaultLanguage = LanguageId_e.en;
     this.translate.setDefaultLang(defaultLanguage);
     const storedLanguageId = localStorage.getItem('app-language') as LanguageId_e;
-    if (storedLanguageId && this.appLanguages.indexOf(storedLanguageId) !== -1) {
+    if (storedLanguageId && this.availableAppLanguages.indexOf(storedLanguageId) !== -1) {
       defaultLanguage = storedLanguageId;
     }
     this.translate.use(defaultLanguage).subscribe(() => {
@@ -30,7 +56,7 @@ export class AppService {
   }
 
   public changeAppLanguage(languageId: LanguageId_e | string | null): void {
-    if (languageId && this.appLanguages.indexOf(languageId) !== -1) {
+    if (languageId && this.availableAppLanguages.indexOf(languageId) !== -1) {
       this.translate.use(languageId);
       localStorage.setItem('app-language', languageId);
     }

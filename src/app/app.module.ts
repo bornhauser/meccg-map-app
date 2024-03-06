@@ -20,6 +20,7 @@ import {RouteComponent} from './components/route.component';
 import {MainMenuModalComponent} from './components/modal/main-menu-modal.component';
 import {SelectItemComponent} from './components/modal/select-item.component';
 import {AppService} from './services/app-service';
+import {CardUtilService} from './services/card-util.service';
 
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -56,7 +57,8 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   ],
   providers: [
     DataService,
-    AppService
+    AppService,
+    CardUtilService,
   ],
   bootstrap: [AppComponent]
 })

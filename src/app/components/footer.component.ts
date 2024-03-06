@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {DataService} from '../services/data.service';
 import {CardType_e} from '../interfaces/interfaces';
+import {AppService} from '../services/app-service';
+import {CardUtilService} from '../services/card-util.service';
 
 @Component({
   selector: 'app-footer',
@@ -13,9 +15,9 @@ import {CardType_e} from '../interfaces/interfaces';
         <!-- LEFT-->
         <div class="meccg-card-image _left"
              *ngIf="$data.currentGuiContext.currentSiteOrRegion as card"
-             (click)="$data.zoomCard = card"
-             [ngClass]="{ '_region': card.type === CardType_e.Region, '_queer': this.$data.isRegionCardQueer(card) }"
-             [style.background-image]="'url(' + $data.getCardImageUrl(card) + ')'">
+             (click)="$app.zoomCard = card"
+             [ngClass]="{ '_region': card.type === CardType_e.Region, '_queer': this.$cardUtil.isRegionCardQueer(card) }"
+             [style.background-image]="'url(' + $cardUtil.getCardImageUrl(card) + ')'">
           <div class="meccg-card-inner"></div>
           <button class="remove-site-button"></button>
         </div>
@@ -37,7 +39,7 @@ import {CardType_e} from '../interfaces/interfaces';
               <div class="button-text">{{ 'app.endJourney' | translate }}</div>
             </button>
 
-            <button class="epic-button" *ngIf="$data.currentSiteFrom" (click)="$data.openSiteSelectionModal = true">
+            <button class="epic-button" *ngIf="$data.currentSiteFrom" (click)="$app.openSiteSelectionModal = true">
               <div class="button-text">{{ 'app.sitesAsList' | translate }}</div>
             </button>
           </div>
@@ -54,8 +56,8 @@ import {CardType_e} from '../interfaces/interfaces';
         <!-- RIGHT-->
         <div class="meccg-card-image _right"
              *ngIf="$data.currentSiteTo as card"
-             (click)="$data.zoomCard = card"
-             [style.background-image]="'url(' + $data.getCardImageUrl(card) + ')'">
+             (click)="$app.zoomCard = card"
+             [style.background-image]="'url(' + $cardUtil.getCardImageUrl(card) + ')'">
           <div class="meccg-card-inner"></div>
           <button class="remove-site-button"></button>
         </div>
@@ -71,7 +73,9 @@ export class FooterComponent {
   CardType_e = CardType_e;
 
   constructor(
-    public $data: DataService
+    public $data: DataService,
+    public $app: AppService,
+    public $cardUtil: CardUtilService,
   ) {
   }
 

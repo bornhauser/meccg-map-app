@@ -1,13 +1,14 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {DataService} from '../services/data.service';
 import {Card_i, Playable_e} from '../interfaces/interfaces';
+import {CardUtilService} from '../services/card-util.service';
 
 @Component({
   selector: 'app-site-item',
   template: `
     <div class="site-button" *ngIf="card" (click)="onClick.emit(card)">
-      <div class="meta-container">
-        <div class="meta" *ngIf="this.$data.getPlayables(card) as playables">
+      <div class="meta-container" *ngIf="$cardUtils.getPlayablesOfCard(card) as playables">
+        <div class="meta">
           <div class="playable _minor" *ngIf="playables?.[Playable_e.minor]"></div>
           <div class="playable _major" *ngIf="playables?.[Playable_e.major]"></div>
           <div class="playable _greater" *ngIf="playables?.[Playable_e.greater]"></div>
@@ -19,9 +20,9 @@ import {Card_i, Playable_e} from '../interfaces/interfaces';
       </div>
       <div class="pergament-container">
         <div class="pergament">
-          <div class="site-icon" [style.background-image]="'url(' + $data.getSiteIconUrl(card) + ')'"></div>
+          <div class="site-icon" [style.background-image]="'url(' + $cardUtils.getSiteIconUrl(card) + ')'"></div>
           <div class="site-title">
-            {{ this.$data.getCardTitle(card) }}
+            {{ this.$cardUtils.getCardTitle(card) }}
           </div>
         </div>
       </div>
@@ -38,7 +39,8 @@ export class SiteItemComponent {
   @Output() public onClick = new EventEmitter<Card_i>();
 
   constructor(
-    public $data: DataService
+    public $data: DataService,
+    public $cardUtils: CardUtilService,
   ) {
   }
 }

@@ -1,11 +1,12 @@
 import {Component} from '@angular/core';
 import {DataService} from '../../services/data.service';
+import {AppService} from '../../services/app-service';
 
 @Component({
   selector: 'app-site-selection-modal',
   template: `
 
-    <div class="modal-background" (click)="$data.openSiteSelectionModal = false">
+    <div class="modal-background" (click)="$app.openSiteSelectionModal = false">
       <div class="site-selection-modal">
         <div class="modal-scroll-container">
           <div class="site-items">
@@ -24,7 +25,8 @@ import {DataService} from '../../services/data.service';
 export class SiteSelectionModalComponent {
 
   constructor(
-    public $data: DataService
+    public $data: DataService,
+    public $app: AppService,
   ) {
   }
 }

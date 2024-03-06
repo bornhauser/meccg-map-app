@@ -9,7 +9,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class SvgComponent {
 
   public svg: any;
-
   @Output() svgIsReady = new EventEmitter<void>();
 
   constructor(

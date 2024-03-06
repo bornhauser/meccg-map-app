@@ -9,15 +9,15 @@ import {AppService} from './services/app-service';
     <div class="root-container"
          [ngClass]="{
          'journey-mode': $data.currentSiteFrom,
-         'open-modal-reversed': $data.openModalReversed,
+         'open-modal-reversed': $app.openModalReversed,
          }">
       <app-map></app-map>
       <app-header></app-header>
       <app-footer></app-footer>
-      <app-site-selection-modal *ngIf="$data.openSiteSelectionModal"></app-site-selection-modal>
-      <app-hazard-cards-modal *ngIf="$data.openHazardCardsModal"></app-hazard-cards-modal>
-      <app-main-menu-modal *ngIf="$data.openMainMenuModal"></app-main-menu-modal>
-      <app-card-zoom-modal *ngIf="$data.zoomCard"></app-card-zoom-modal>
+      <app-site-selection-modal *ngIf="$app.openSiteSelectionModal"></app-site-selection-modal>
+      <app-hazard-cards-modal *ngIf="$app.openHazardCardsModal"></app-hazard-cards-modal>
+      <app-main-menu-modal *ngIf="$app.openMainMenuModal"></app-main-menu-modal>
+      <app-card-zoom-modal *ngIf="$app.zoomCard"></app-card-zoom-modal>
     </div>
   `,
 })
