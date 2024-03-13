@@ -10,7 +10,7 @@ import {AppService} from '../../services/app-service';
       <div class="site-selection-modal">
         <div class="modal-scroll-container">
           <div class="site-items">
-            <app-site-item *ngFor="let card of $data.currentGuiContext.currentReachableSites"
+            <app-site-item *ngFor="let card of $data.currentGuiContext_persistent.currentReachableSites"
                            [card]="card"
                            (onClick)="$data.onSiteOrRegionClick(card)">
             </app-site-item>
@@ -29,4 +29,5 @@ export class SiteSelectionModalComponent {
     public $app: AppService,
   ) {
   }
+
 }

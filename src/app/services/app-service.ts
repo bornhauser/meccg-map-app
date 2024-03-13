@@ -15,28 +15,30 @@ export class AppService {
   public mapIsDradding: boolean = false;
   public zoomCard: Card_i | null = null;
   public $data: DataService | null = null;
+  public turnDisplay: boolean = false;
 
   constructor(
     private translate: TranslateService,
   ) {
     // @ts-ignore
-    document['onSiteOrRegionClick'] = (card: Card_i, event?: any) => {
+    document['onSiteOrRegionClick'] = (card: Card_i, event: any, isUnderDeep: boolean) => {
       if (card && !this.mapIsDradding) {
         this.$data?.onSiteOrRegionClick(card);
       }
     }
-  }
-
-  public refreshContentOnMap() {
-  }
-
-  public refreshRouteOnMap() {
-  }
-
-  public focusOnMap(focusItems: Card_i[]) {
-  }
-
-  public refreshMapContent() {
+    // @ts-ignore
+    document['onSiteOrRegionDoubleClick'] = (card: Card_i, event: any, isUnderDeep: boolean) => {
+      if (card && !this.mapIsDradding) {
+        if (card.id === this.$data?.currentGuiContext_notPersitent.currentJourneySiteFrom?.id) {
+          this.$data?.endJourney();
+        } else if (this.$data) {
+          this.$data.endJourney();
+          this.$data.onSiteOrRegionClick(card);
+          this.$data.startJourney();
+        }
+      }
+      event.stopPropagation();
+    }
   }
 
   public initAppService(): void {

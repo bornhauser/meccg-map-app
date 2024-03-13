@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="200px" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>site/ruins-and-lairs_shadow</title>
+    <defs>
+        <filter x="-24.5%" y="-24.5%" width="149.1%" height="149.1%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="10" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <polygon id="path-2" points="112.0947 96.0727 106.1417 79.4657 99.3387 88.1357 94.2367 87.8527 92.0976562 71.4117 91.1187 71.4117 90.8347 96.9227 66.4567 96.6397 67.0237 57.2377 68.1577 52.1357 71.0337 48.4507 69.0077 45.8997 65.0397 49.5847 58.8037 48.7337 53.1337 16.9857 43.2127 16.7027 43.2127 37.6787 50.5827 48.7337 42.7027 142.2287 116.0627 142.2287"></polygon>
+    </defs>
+    <g id="site/ruins-and-lairs_shadow" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linejoin="round">
+        <g id="site/ruins-and-lairs" transform="translate(20.000000, 20.249900)" filter="url(#filter-1)">
+            <g id="Stroke-4">
+                <use fill="#1D1D1B" fill-rule="evenodd" xlink:href="#path-2"></use>
+                <path stroke="#FFFFFF" stroke-width="9" d="M38.7127,12.0725055 L56.9201928,12.5918806 L62.6577104,44.717932 L63.5380203,44.8380641 L69.5079407,39.2939218 L76.7609521,48.4264155 L72.3301134,54.1036201 L71.5165963,57.7637301 L71.0211634,92.1923849 L86.3850956,92.3707421 L86.6685172,66.9117 L96.0501134,66.9117 L98.073,82.458 L107.629364,70.2800542 L116.528078,95.1046694 L120.96616,146.7287 L37.8074737,146.7287 L45.9665901,49.9220256 L38.7127,39.0411904 L38.7127,12.0725055 Z"></path>
+                <use stroke="#1D1D1B" stroke-width="5" xlink:href="#path-2"></use>
+            </g>
+        </g>
+    </g>
+</svg>

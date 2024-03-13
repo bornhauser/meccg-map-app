@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="9890px" height="6639px" viewBox="0 0 9890 6639" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>map/underdeeps</title>
+    <defs>
+        <path d="M502.546875,451.415811 C515.526224,757.730271 578.198899,1014.75205 690.5649,1222.48115 C802.930901,1430.21026 947.591559,1563.18848 1124.54687,1621.41581" id="path-1"></path>
+        <path d="M1874,1664.86475 C2424.89727,1682.69624 2890.6775,1672.63979 3271.3407,1634.69542 C3652.0039,1596.75105 3895.89033,1487.65784 4003,1307.41581" id="path-2"></path>
+        <path d="M4679.99905,1615.99905 C4783.75207,1615.99905 4891.87323,1615.99905 5004.36253,1615.99905 C5167.51934,1615.99905 5254.99905,1585.97838 5254.99905,1486.99905" id="path-3"></path>
+        <path d="M3588,1108 L3784,1170" id="path-4"></path>
+        <path d="M3637.51086,857 C3708.79904,709 3871.63751,635 4126.02625,635 C4380.41499,635 4598.86545,747 4781.37761,971" id="path-5"></path>
+        <path d="M3665.88295,2131.92665 C3797.30501,2034.47555 3986.18688,1985.75 4232.52855,1985.75 C4478.87022,1985.75 4910.98836,2115.08333 5528.88295,2373.75" id="path-6"></path>
+        <path d="M3912.25781,3733.53906 C4028.27009,3645.01823 4168.26074,3600.75781 4332.22978,3600.75781 C4496.19881,3600.75781 4675.87482,3713.58594 4871.25781,3939.24219" id="path-7"></path>
+        <path d="M5415.34899,3712.14587 C5541.89066,3880.74304 5754.26566,3973.4583 6052.47399,3990.29163 C6350.68232,4007.12497 6531.92712,4088.02601 6596.20837,4232.99476" id="path-8"></path>
+        <path d="M6136.21415,4164.21415 C6149.80856,4028.30224 6262.98564,3920.82426 6475.7454,3841.78022 C6688.50515,3762.73617 6901.51864,3723.21415 7114.78585,3723.21415" id="path-9"></path>
+        <path d="M7060.8114,4516.45643 C7324.08244,4653.68767 7580.88462,4620.08975 7831.21796,4415.66267 C8081.55129,4211.23559 8200.37942,3794.62704 8187.70233,3165.83704" id="path-10"></path>
+        <path d="M6886.05656,2248.01977 C6872.36572,1567.98568 6887.09091,1097.31522 6930.23214,836.008406 C6973.37337,574.701587 7041.99912,405.372042 7136.10938,328.019769" id="path-11"></path>
+        <path d="M7411.35376,5075.55364 C7309.83076,4956.90781 7271.56406,4815.32447 7296.55364,4650.80364 C7321.54322,4486.28281 7407.54322,4366.63177 7554.55364,4291.85052" id="path-12"></path>
+        <path d="M4846,4747.5 C4846.32421,4573.76042 4858.47265,4467.32552 4882.44531,4428.19531 C4906.41797,4389.0651 4940.60287,4364.5 4985,4354.5" id="path-13"></path>
+        <path d="M4701.48437,2410.98437 C4866.76719,2606.98437 5060.79323,2704.98437 5283.5625,2704.98437 C5506.33177,2704.98437 5677.31615,2704.98437 5796.51563,2704.98437" id="path-14"></path>
+        <path d="M5810.92578,2771.57422 C5808.16016,3001.94401 5804.44401,3166.8112 5799.77734,3266.17578 C5795.11068,3365.54036 5767.94401,3535.07422 5718.27734,3774.77734" id="path-15"></path>
+        <path d="M1327.07194,1410 L1327,1555" id="path-16"></path>
+        <path d="M3964,929 L3964,1087" id="path-17"></path>
+        <path d="M4422,1162 L4686,1138" id="path-18"></path>
+        <path d="M5309,1125 L5676,1090" id="path-19"></path>
+        <path d="M4882,873 L4882,1027" id="path-20"></path>
+        <path d="M5827,833 L5827,987" id="path-21"></path>
+        <path d="M8150,1173 L8150,1327" id="path-22"></path>
+        <path d="M5155,1613 L5155,1767" id="path-23"></path>
+        <path d="M4719,2980 L4719,3134" id="path-24"></path>
+        <path d="M6407,3082 L6407,3238" id="path-25"></path>
+        <path d="M4505,4105 L4505,4259" id="path-26"></path>
+        <path d="M5264,4354 L5264,4508" id="path-27"></path>
+        <path d="M7179,4227 L7179,4381" id="path-28"></path>
+        <path d="M7825,4327 L7825,4481" id="path-29"></path>
+        <path d="M3144,2739 L3144,3037" id="path-30"></path>
+        <path d="M3538,554 L3538,900" id="path-31"></path>
+        <linearGradient x1="0.651496941%" y1="49.3485031%" x2="99.3485031%" y2="49.3485031%" id="linearGradient-32">
+            <stop stop-color="#9E8F89" offset="0%"></stop>
+            <stop stop-color="#94847F" offset="44.6869263%"></stop>
+            <stop stop-color="#BDAFA5" offset="73.8636364%"></stop>
+            <stop stop-color="#9D918A" offset="99.4973776%"></stop>
+        </linearGradient>
+        <polygon id="path-33" points="44.3333333 13 170.333333 13 189 76 35 76"></polygon>
+        <filter x="-26.0%" y="-60.3%" width="151.9%" height="227.0%" filterUnits="objectBoundingBox" id="filter-34">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="13" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <linearGradient x1="0.651496941%" y1="49.3485031%" x2="98.8524298%" y2="49.3485031%" id="linearGradient-35">
+            <stop stop-color="#9E8F89" offset="0%"></stop>
+            <stop stop-color="#94847F" offset="41.8433129%"></stop>
+            <stop stop-color="#BDAFA5" offset="73.8636364%"></stop>
+            <stop stop-color="#9D918A" offset="100%"></stop>
+        </linearGradient>
+        <polygon id="path-36" points="157 0 206 0 203.030303 82 162.939394 82"></polygon>
+        <filter x="-81.6%" y="-46.3%" width="263.3%" height="197.6%" filterUnits="objectBoundingBox" id="filter-37">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="13" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+        <linearGradient x1="0.651496941%" y1="49.3485031%" x2="99.3485031%" y2="49.3485031%" id="linearGradient-38">
+            <stop stop-color="#9E8F89" offset="0%"></stop>
+            <stop stop-color="#94847F" offset="44.6869263%"></stop>
+            <stop stop-color="#BDAFA5" offset="73.8636364%"></stop>
+            <stop stop-color="#9D918A" offset="99.4973776%"></stop>
+        </linearGradient>
+        <polygon id="path-39" points="2.96969697 7 43.0606061 7 49 89 0 89"></polygon>
+        <filter x="-81.6%" y="-46.3%" width="263.3%" height="197.6%" filterUnits="objectBoundingBox" id="filter-40">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="13" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="map/underdeeps" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="the-under-gates" fill="#00FFC1" x="4634" y="3200" width="70" height="70"></rect>
+        <rect id="the-under-leas" fill="#00FFC1" x="4803" y="1090" width="70" height="70"></rect>
+        <rect id="the-under-grottos" fill="#00FFC1" x="5097" y="1817" width="70" height="70"></rect>
+        <rect id="the-wind-deeps" fill="#00FFC1" x="5764" y="1033" width="70" height="70"></rect>
+        <rect id="the-rusted-deeps" fill="#00FFC1" x="8084" y="1377" width="70" height="70"></rect>
+        <rect id="the-under-courts" fill="#00FFC1" x="7765" y="4537" width="70" height="70"></rect>
+        <rect id="the-under-galleries" fill="#00FFC1" x="6945" y="4426" width="70" height="70"></rect>
+        <rect id="the-sulfur-deeps" fill="#00FFC1" x="6354" y="3299" width="70" height="70"></rect>
+        <rect id="the-pukel-deeps" fill="#00FFC1" x="5194" y="4563" width="70" height="70"></rect>
+        <rect id="the-gem-deeps" fill="#00FFC1" x="4429" y="4317" width="70" height="70"></rect>
+        <rect id="the-iron-deeps" fill="#00FFC1" x="3314" y="963" width="70" height="70"></rect>
+        <rect id="the-under-vaults" fill="#00FFC1" x="3842" y="1149" width="70" height="70"></rect>
+        <rect id="the-drowning-deeps" fill="#00FFC1" x="1238" y="1621" width="70" height="70"></rect>
+        <rect id="remains-of-thangorodrim" fill="#00FFC1" x="395" y="307" width="70" height="70"></rect>
+        <rect id="ancient-deep-hold" fill="#00FFC1" opacity="0.600000024" x="2939" y="3084" width="70" height="70"></rect>
+        <rect id="moria" fill="#FF00B2" x="4634" y="2830" width="70" height="70"></rect>
+        <rect id="mount-gundabad" fill="#FF00B2" x="4803" y="720" width="70" height="70"></rect>
+        <rect id="carn-dum" fill="#FF00B2" x="3445" y="377" width="70" height="70"></rect>
+        <rect id="mount-gram" fill="#FF00B2" x="3837" y="778" width="70" height="70"></rect>
+        <rect id="blue-mountain-dwarf-hold" fill="#FF00B2" x="1238" y="1251" width="70" height="70"></rect>
+        <rect id="glittering-caves" fill="#FF00B2" x="4429" y="3947" width="70" height="70"></rect>
+        <rect id="dunharrow" fill="#FF00B2" x="5194" y="4193" width="70" height="70"></rect>
+        <rect id="dol-guldur" fill="#FF00B2" x="6354" y="2935" width="70" height="70"></rect>
+        <rect id="goblin-gate" fill="#FF00B2" x="5097" y="1447" width="70" height="70"></rect>
+        <rect id="the-wind-throne" fill="#FF00B2" x="5764" y="665" width="70" height="70"></rect>
+        <rect id="iron-hill-dwarf-hold" fill="#FF00B2" x="8084" y="1006" width="70" height="70"></rect>
+        <rect id="cirith-gorgor" fill="#FF00B2" x="7122" y="4079" width="70" height="70"></rect>
+        <rect id="barad-dur" fill="#FF00B2" x="7765" y="4158" width="70" height="70"></rect>
+        <g id="the-drowning-deeps_remains-of-thangorodrim" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-1"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-1"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-1"></use>
+        </g>
+        <g id="the-drowning-deeps_the-under-vaults" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-2"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-2"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-2"></use>
+        </g>
+        <g id="the-under-leas_the-under-grottos" stroke-linecap="round" stroke-dasharray="0,60" transform="translate(4967.499046, 1551.499046) rotate(90.000000) translate(-4967.499046, -1551.499046) ">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-3"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-3"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-3"></use>
+        </g>
+        <g id="the-iron-deeps_the-under-vaults" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-4"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-4"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-4"></use>
+        </g>
+        <g id="the-iron-deeps_the-under-leas" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-5"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-5"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-5"></use>
+        </g>
+        <g id="the-under-leas_the-under-gates" stroke-linecap="round" stroke-dasharray="0,60" transform="translate(4597.382955, 2179.750000) rotate(-90.000000) translate(-4597.382955, -2179.750000) ">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-6"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-6"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-6"></use>
+        </g>
+        <g id="the-under-gates_the-gem-deeps" stroke-linecap="round" stroke-dasharray="0,60" transform="translate(4391.757812, 3770.000000) rotate(-90.000000) translate(-4391.757812, -3770.000000) ">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-7"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-7"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-7"></use>
+        </g>
+        <g id="the-pukel-deeps_the-sulfur-deeps" stroke-linecap="round" stroke-dasharray="0,60" transform="translate(6005.778678, 3972.570312) rotate(-90.000000) translate(-6005.778678, -3972.570312) ">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-8"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-8"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-8"></use>
+        </g>
+        <g id="the-sulfur-deeps_the-under-galleries" stroke-linecap="round" stroke-dasharray="0,60" transform="translate(6625.500000, 3943.714150) rotate(-90.000000) translate(-6625.500000, -3943.714150) ">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-9"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-9"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-9"></use>
+        </g>
+        <g id="the-sulfur-deeps_the-under-courts" stroke-linecap="round" stroke-dasharray="0,60" transform="translate(7624.715144, 3882.487189) rotate(-90.000000) translate(-7624.715144, -3882.487189) ">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-10"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-10"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-10"></use>
+        </g>
+        <g id="the-wind-deeps_the-rusted-deeps" stroke-linecap="round" stroke-dasharray="0,60" transform="translate(7008.609375, 1288.019769) rotate(-90.000000) translate(-7008.609375, -1288.019769) ">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-11"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-11"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-11"></use>
+        </g>
+        <g id="the-under-galleries_the-under-courts" stroke-linecap="round" stroke-dasharray="0,60" transform="translate(7421.851562, 4683.702078) rotate(-90.000000) translate(-7421.851562, -4683.702078) ">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-12"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-12"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-12"></use>
+        </g>
+        <g id="the-gem-deeps_the-pukel-deeps" stroke-linecap="round" stroke-dasharray="0,60" transform="translate(4915.500000, 4551.000000) rotate(-90.000000) translate(-4915.500000, -4551.000000) ">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-13"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-13"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-13"></use>
+        </g>
+        <g id="the-under-grottos_the-under-gates" stroke-linecap="round" stroke-dasharray="0,60" transform="translate(5249.000000, 2557.984375) rotate(-90.000000) translate(-5249.000000, -2557.984375) ">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-14"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-14"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-14"></use>
+        </g>
+        <g id="the-under-gates_the-sulfur-deeps" stroke-linecap="round" stroke-dasharray="0,60" transform="translate(5764.601563, 3273.175781) rotate(-90.000000) translate(-5764.601563, -3273.175781) ">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-15"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-15"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-15"></use>
+        </g>
+        <g id="the-drowning-deeps_blue-mountain-dwarf-hold" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-16"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-16"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-16"></use>
+        </g>
+        <g id="the-under-vaults_mount-gram" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-17"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-17"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-17"></use>
+        </g>
+        <g id="the-under-vaults_the-under-leas" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-18"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-18"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-18"></use>
+        </g>
+        <g id="the-under-leas_the-wind-deeps" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-19"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-19"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-19"></use>
+        </g>
+        <g id="the-under-leas_mount-gundabad" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-20"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-20"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-20"></use>
+        </g>
+        <g id="the-wind-deeps_the-wind-throne" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-21"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-21"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-21"></use>
+        </g>
+        <g id="the-rusted-deeps_iron-hill-dwarf-hold" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-22"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-22"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-22"></use>
+        </g>
+        <g id="the-under-grottos_goblin-gate" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-23"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-23"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-23"></use>
+        </g>
+        <g id="the-under-gates_moria" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-24"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-24"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-24"></use>
+        </g>
+        <g id="the-sulfur-deeps_dol-guldur" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-25"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-25"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-25"></use>
+        </g>
+        <g id="the-gem-deeps_glittering-caves" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-26"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-26"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-26"></use>
+        </g>
+        <g id="the-pukel-deeps_dunharrow" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-27"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-27"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-27"></use>
+        </g>
+        <g id="the-under-galleries_cirith-gorgor" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-28"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-28"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-28"></use>
+        </g>
+        <g id="the-under-courts_barad-dur" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-29"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-29"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-29"></use>
+        </g>
+        <g id="x_ancient-deep-hold" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-30"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-30"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-30"></use>
+        </g>
+        <g id="the-iron-deeps_carn-dum" stroke-linecap="round" stroke-dasharray="0,60">
+            <use stroke="#281226" stroke-width="50" xlink:href="#path-31"></use>
+            <use stroke="#CA7DB1" stroke-width="25" xlink:href="#path-31"></use>
+            <use stroke="#DDC3D5" stroke-width="10" xlink:href="#path-31"></use>
+        </g>
+        <circle id="the-drowning-deeps_remains-of-thangorodrim" fill="#281226" cx="434" cy="708" r="50"></circle>
+        <circle id="the-iron-deeps_carn-dum" fill="#281226" cx="3438" cy="705" r="50"></circle>
+        <circle id="the-under-vaults_mount-gram" fill="#281226" cx="4064" cy="987" r="50"></circle>
+        <circle id="the-under-vaults_the-under-leas" fill="#281226" cx="4530" cy="1061" r="50"></circle>
+        <circle id="the-iron-deeps_the-under-vaults" fill="#281226" cx="3638" cy="1230" r="50"></circle>
+        <circle id="the-under-grottos_the-under-gates" fill="#281226" cx="5290" cy="2638" r="50"></circle>
+        <circle id="the-under-leas_the-under-gates" fill="#281226" cx="4326" cy="2344" r="50"></circle>
+        <circle id="the-under-gates_moria" fill="#281226" cx="4819" cy="3038" r="50"></circle>
+        <circle id="the-sulfur-deeps_dol-guldur" fill="#281226" cx="6509" cy="3144" r="50"></circle>
+        <circle id="the-sulfur-deeps_the-under-galleries" fill="#281226" cx="6591" cy="3967" r="50"></circle>
+        <circle id="the-gem-deeps_glittering-caves" fill="#281226" cx="4604" cy="4164" r="50"></circle>
+        <circle id="the-gem-deeps_the-pukel-deeps" fill="#281226" cx="4852" cy="4724" r="50"></circle>
+        <circle id="the-pukel-deeps_dunharrow" fill="#281226" cx="5376" cy="4416" r="50"></circle>
+        <circle id="the-pukel-deeps_the-sulfur-deeps" fill="#281226" cx="5941" cy="3747" r="50"></circle>
+        <circle id="the-under-gates_the-sulfur-deeps" fill="#281226" cx="5815" cy="3141" r="50"></circle>
+        <circle id="the-sulfur-deeps_the-under-courts" fill="#281226" cx="8150" cy="3520" r="50"></circle>
+        <circle id="the-under-galleries_cirith-gorgor" fill="#281226" cx="7286" cy="4284" r="50"></circle>
+        <circle id="the-under-courts_barad-dur" fill="#281226" cx="7930" cy="4383" r="50"></circle>
+        <circle id="the-under-galleries_the-under-courts" fill="#281226" cx="7348" cy="4899" r="50"></circle>
+        <circle id="the-under-gates_the-gem-deeps" fill="#281226" cx="4124" cy="3875" r="50"></circle>
+        <circle id="the-under-leas_mount-gundabad" fill="#281226" cx="4982" cy="937" r="50"></circle>
+        <circle id="the-under-leas_the-under-grottos" fill="#281226" cx="4812" cy="1699" r="50"></circle>
+        <circle id="the-under-grottos_goblin-gate" fill="#281226" cx="5259" cy="1675" r="50"></circle>
+        <circle id="the-under-leas_the-wind-deeps" fill="#281226" cx="5476" cy="1009" r="50"></circle>
+        <circle id="the-wind-deeps_the-wind-throne" fill="#281226" cx="5927" cy="887" r="50"></circle>
+        <circle id="the-rusted-deeps_iron-hill-dwarf-hold" fill="#281226" cx="8245" cy="1230" r="50"></circle>
+        <circle id="x_ancient-deep-hold" fill="#281226" cx="3247" cy="2855" r="50"></circle>
+        <circle id="the-wind-deeps_the-rusted-deeps" fill="#281226" cx="7456" cy="1509" r="50"></circle>
+        <circle id="the-iron-deeps_the-under-leas" fill="#281226" cx="4301" cy="558" r="50"></circle>
+        <circle id="the-drowning-deeps_the-under-vaults" fill="#281226" cx="3024" cy="1751" r="50"></circle>
+        <circle id="the-drowning-deeps_blue-mountain-dwarf-hold" fill="#281226" cx="1427" cy="1472" r="50"></circle>
+        <g id="any-ancient-deep-hold" transform="translate(3041.000000, 2558.000000)">
+            <g id="Rectangle-Copy-4">
+                <use fill="black" fill-opacity="1" filter="url(#filter-34)" xlink:href="#path-33"></use>
+                <use fill="url(#linearGradient-32)" fill-rule="evenodd" xlink:href="#path-33"></use>
+            </g>
+            <g id="Rectangle-Copy-2">
+                <use fill="black" fill-opacity="1" filter="url(#filter-37)" xlink:href="#path-36"></use>
+                <use fill="url(#linearGradient-35)" fill-rule="evenodd" xlink:href="#path-36"></use>
+            </g>
+            <g id="Rectangle-Copy-3">
+                <use fill="black" fill-opacity="1" filter="url(#filter-40)" xlink:href="#path-39"></use>
+                <use fill="url(#linearGradient-38)" fill-rule="evenodd" xlink:href="#path-39"></use>
+            </g>
+            <g id="ruins-and-lairs_shadow" transform="translate(84.000000, 8.000000)">
+                <g id="path-2-link" transform="translate(2.000000, 3.000000)" fill="#1D1D1B">
+                    <polygon id="path-2" points="42.05682 47.9175213 38.48502 37.979474 34.40322 43.1678205 31.34202 42.9984661 30.0585937 33.1597575 29.47122 33.1597575 29.30082 48.4261827 14.67402 48.2568283 15.01422 24.6776787 15.69462 21.6245134 17.42022 19.4193165 16.20462 17.8927339 13.82382 20.0979307 10.08222 19.5886709 6.68022 0.589867717 0.72762 0.420513386 0.72762 12.9730803 5.14962 19.5886709 0.42162 75.5384346 44.43762 75.5384346"></polygon>
+                </g>
+                <polygon id="Path" stroke="#FFFFFF" stroke-width="9" points="0.533390926 0 11.2618811 0.312420704 14.6426267 19.6372663 15.161336 19.7095296 18.6790214 16.374551 22.9527489 21.8680375 20.3419441 25.2830573 19.8625914 27.4847303 19.570665 48.1946654 28.6236301 48.3019529 28.790632 32.9875263 34.3185958 32.9875263 35.5105512 42.3391221 41.1414944 35.0136989 46.3849272 49.9464975 49 81 0 81 4.80763612 22.7676947 0.533390926 16.222525"></polygon>
+                <g id="path-2-link" transform="translate(2.000000, 3.000000)" stroke="#1D1D1B" stroke-width="5">
+                    <polygon id="path-2" points="42.05682 47.9175213 38.48502 37.979474 34.40322 43.1678205 31.34202 42.9984661 30.0585937 33.1597575 29.47122 33.1597575 29.30082 48.4261827 14.67402 48.2568283 15.01422 24.6776787 15.69462 21.6245134 17.42022 19.4193165 16.20462 17.8927339 13.82382 20.0979307 10.08222 19.5886709 6.68022 0.589867717 0.72762 0.420513386 0.72762 12.9730803 5.14962 19.5886709 0.42162 75.5384346 44.43762 75.5384346"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

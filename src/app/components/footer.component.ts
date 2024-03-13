@@ -7,62 +7,57 @@ import {CardUtilService} from '../services/card-util.service';
 @Component({
   selector: 'app-footer',
   template: `
-    <div class="footer" [ngClass]="{ '_active': $data.currentGuiContext.currentSiteOrRegion }">
+    <div class="footer" [ngClass]="{ '_active': $data.currentGuiContext_persistent.currentSiteOrRegion }">
       <div class="line-1"></div>
       <div class="line-2"></div>
       <div class="footer-content">
-
         <!-- LEFT-->
         <div class="meccg-card-image _left"
-             *ngIf="$data.currentGuiContext.currentSiteOrRegion as card"
+             *ngIf="$data.currentGuiContext_persistent.currentSiteOrRegion as card"
              (click)="$app.zoomCard = card"
              [ngClass]="{ '_region': card.type === CardType_e.Region, '_queer': this.$cardUtil.isRegionCardQueer(card) }"
              [style.background-image]="'url(' + $cardUtil.getCardImageUrl(card) + ')'">
           <div class="meccg-card-inner"></div>
           <button class="remove-site-button"></button>
         </div>
-
         <!-- MIDDLE-->
         <div class="middle-content">
-
-          <div class="footer-route-containter" *ngIf="$data.currentRouteRegions.length">
-            <app-route *ngIf="$data.currentRouteRegions.length"></app-route>
+          <div class="footer-route-containter"
+               *ngIf="$data.currentGuiContext_notPersitent.currentJourneyRegions.length || $data.currentGuiContext_notPersitent.currentJourneySiteTo">
+            <app-route></app-route>
           </div>
-
           <div class="buttons">
             <button class="epic-button" (click)="$data.startJourney()"
-                    *ngIf="$data.currentGuiContext.currentSiteOrRegion && $data.currentGuiContext.currentSiteOrRegion.type === CardType_e.Site && !$data.currentSiteFrom">
+                    *ngIf="$data.currentGuiContext_persistent.currentSiteOrRegion && $data.currentGuiContext_persistent.currentSiteOrRegion.type === CardType_e.Site && !$data.currentGuiContext_notPersitent.currentJourneySiteFrom">
               <div class="button-text">{{ 'app.startJourney' | translate }}</div>
             </button>
-
-            <button class="epic-button" *ngIf="$data.currentSiteFrom" (click)="$data.endJourney()">
-              <div class="button-text">{{ 'app.endJourney' | translate }}</div>
-            </button>
-
-            <button class="epic-button" *ngIf="$data.currentSiteFrom" (click)="$app.openSiteSelectionModal = true">
+            <button class="epic-button" *ngIf="$data.currentGuiContext_notPersitent.currentJourneySiteFrom"
+                    (click)="$app.openSiteSelectionModal = true">
               <div class="button-text">{{ 'app.sitesAsList' | translate }}</div>
             </button>
+            <button class="epic-button" *ngIf="$data.currentGuiContext_notPersitent.currentJourneySiteFrom"
+                    (click)="$data.endJourney()">
+              <div class="button-text">{{ 'app.endJourney' | translate }}</div>
+            </button>
           </div>
-
           <div class="card-items _region-sites"
-               *ngIf="$data.currentGuiContext.currentSiteOrRegion && $data.currentGuiContext?.currentSiteOrRegion?.type === CardType_e.Region">
-            <app-site-item *ngFor="let card of $data.getSitesOfRegion($data.currentGuiContext.currentSiteOrRegion)"
-                           [card]="card"
-                           (onClick)="$data.onSiteOrRegionClick(card)">
+               *ngIf="$data.currentGuiContext_persistent.currentSiteOrRegion && $data.currentGuiContext_persistent?.currentSiteOrRegion?.type === CardType_e.Region">
+            <app-site-item
+              *ngFor="let card of $data.currentGuiContext_persistent.currentSitesOfRegion"
+              [card]="card"
+              (onClick)="$data.onSiteOrRegionClick(card)">
             </app-site-item>
           </div>
         </div>
-
         <!-- RIGHT-->
         <div class="meccg-card-image _right"
-             *ngIf="$data.currentSiteTo as card"
+             *ngIf="$data.currentGuiContext_notPersitent.currentJourneySiteTo as card"
              (click)="$app.zoomCard = card"
              [style.background-image]="'url(' + $cardUtil.getCardImageUrl(card) + ')'">
           <div class="meccg-card-inner"></div>
           <button class="remove-site-button"></button>
         </div>
-
-        <div class="placeholder" *ngIf="!$data.currentSiteTo"></div>
+        <div class="placeholder" *ngIf="!$data.currentGuiContext_notPersitent.currentJourneySiteTo"></div>
       </div>
     </div>
   `,

@@ -75,7 +75,7 @@
     font-size: 10px;
     position: absolute;
     bottom: 2px;
-    right: 20px;
+    right: 15px;
     padding: 1em;
     cursor: pointer;
     transform: translateY(50%);
@@ -104,6 +104,98 @@
         width: 60%;
         transition: all 0.2s;
       }
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        .menu-circle {
+          box-shadow: 0 0 0 2px $colorBlackish,
+          0 0 0 5px lighten($colorCian, 30%),
+          0 0 0 9px $colorBlackish;
+
+          .line {
+            background-color: lighten($colorCian, 30%),
+          }
+        }
+      }
+    }
+  }
+
+  .underdeep-toggle-button {
+    font-size: 10px;
+    position: absolute;
+    bottom: 2px;
+    left: 62px;
+    padding: 1em;
+    cursor: pointer;
+    transform: translateY(50%);
+
+    &._active {
+      .menu-circle {
+        transform: rotate3d(1, 0, 0, 180deg)
+
+
+      }
+    }
+
+    .menu-circle {
+      width: 3em;
+      height: 3em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      box-shadow: 0 0 0 2px $colorBlackish,
+      0 0 0 5px $colorCian,
+      0 0 0 9px $colorBlackish,
+      4px 4px 9px 5px rgba(0, 0, 0, 0.2);
+      background-color: #151515;
+      border-radius: 50%;
+      gap: 0.4em;
+      transition: all 0.4s;
+      background-image: url("../img/region/underdeep.svg");
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        .menu-circle {
+          box-shadow: 0 0 0 2px $colorBlackish,
+          0 0 0 5px lighten($colorCian, 30%),
+          0 0 0 9px $colorBlackish;
+
+          .line {
+            background-color: lighten($colorCian, 30%),
+          }
+        }
+      }
+    }
+  }
+
+  .turn-toggle-button {
+    font-size: 10px;
+    position: absolute;
+    bottom: 2px;
+    left: 15px;
+    padding: 1em;
+    cursor: pointer;
+    transform: translateY(50%);
+
+    .menu-circle {
+      width: 3em;
+      height: 3em;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      box-shadow: 0 0 0 2px $colorBlackish,
+      0 0 0 5px $colorCian,
+      0 0 0 9px $colorBlackish,
+      4px 4px 9px 5px rgba(0, 0, 0, 0.2);
+      background-color: #151515;
+      border-radius: 50%;
+      gap: 0.4em;
+      transition: all 0.2s;
+      background-image: url("../img/region/turn.svg");
     }
 
     @media (hover: hover) {
@@ -356,7 +448,7 @@
 
       @media (hover: hover) {
         &:hover {
-          border: 1px solid white;
+          border-color: grey;
         }
       }
 

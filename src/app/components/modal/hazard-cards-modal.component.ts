@@ -13,7 +13,7 @@ import {CardUtilService} from '../../services/card-util.service';
         <div class="modal-scroll-container">
           <div class="hazard-cards">
             <div class="meccg-card-image"
-                 *ngFor="let card of $data.currentPlayableHazards"
+                 *ngFor="let card of $data.currentGuiContext_notPersitent.currentPlayableHazards"
                  (click)="$event.stopPropagation(); $app.zoomCard = card"
                  [ngClass]="{ '_region': card.type === CardType_e.Region, '_queer': $cardUtil.isRegionCardQueer(card) }"
                  [style.background-image]="'url(' + $cardUtil.getCardImageUrl(card) + ')'">

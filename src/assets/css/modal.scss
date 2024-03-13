@@ -44,6 +44,7 @@
 }
 
 .site-selection-modal {
+  @extend .slide-in;
   position: relative;
   width: 80vw;
   height: 80vh;
@@ -94,6 +95,7 @@
 }
 
 .hazard-cards-modal {
+  @extend .slide-in;
   position: relative;
   width: 80vw;
   height: 80vh;
@@ -136,17 +138,26 @@
 
       .meccg-card-image {
         width: 300px;
+        transition: all 0.2s;
+        border-width: 1px;
+
+        @media (hover: hover) {
+          &:hover {
+            border-color: grey;
+          }
+        }
       }
     }
   }
 }
 
 .main-menu-modal {
+  @extend .slide-in;
   position: relative;
   width: 80vw;
   height: 80vh;
-  max-width: 2000px;
-  max-height: 2000px;
+  max-width: 1000px;
+  max-height: 1000px;
   box-shadow: 0 0 0 2px $colorBlackish,
   0 0 0 5px $colorCian,
   0 0 0 9px $colorBlackish,

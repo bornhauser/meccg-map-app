@@ -7,11 +7,20 @@ export enum LanguageId_e {
   en = 'en',
 }
 
-export interface CurrentGuiContext {
+export interface CurrentGuiContext_1 {
   currentAlignment: AlignmentType_e;
   currentSiteOrRegion: Card_i | null;
   currentReachableRegions: Card_i[];
   currentReachableSites: Card_i[];
+  currentSitesOfRegion: Card_i[];
+  underDeep: boolean;
+}
+
+export interface CurrentGuiContext_2 {
+  currentJourneySiteFrom: Card_i | null;
+  currentJourneySiteTo: Card_i | null ;
+  currentJourneyRegions: Card_i[] ;
+  currentPlayableHazards: Card_i[];
 }
 
 export enum Set_e {
@@ -59,7 +68,9 @@ export enum AlignmentType_e {
   Neutral = 'Neutral',
   Hero = 'Hero',
   Dual = 'Dual',
-  Fallen_Lord = 'Fallen/Lord',
+  'Fallen-wizard' = 'Fallen-wizard',
+  'Fallen-wizard_dark' = 'Fallen-wizard_dark',
+  'Fallen-wizard_bright' = 'Fallen-wizard_bright',
   Balrog = 'Balrog',
 }
 

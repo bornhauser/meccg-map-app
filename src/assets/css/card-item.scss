@@ -8,6 +8,12 @@
   transition: all 0.2s;
   border-radius: 1.5em;
 
+  &._under-deep {
+    .pergament {
+      background-image: url("../img/pic/pergament_2.png")!important;
+    }
+  }
+
   @media (hover: hover) {
     &:hover {
       border: 1em solid white;

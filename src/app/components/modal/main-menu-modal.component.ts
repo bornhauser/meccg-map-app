@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {DataService} from '../../services/data.service';
 import {AppService} from '../../services/app-service';
 import {AlignmentType_e, SelectItem} from '../../interfaces/interfaces';
+import {MapService} from '../../services/map-service';
 
 @Component({
   selector: 'app-main-menu-modal',
@@ -28,13 +29,14 @@ export class MainMenuModalComponent {
   constructor(
     public $data: DataService,
     public $app: AppService,
+    public $map: MapService,
   ) {
   }
 
   public onLanguageChange($event: any){
     this.$data.resetCurrentGuiContext();
     this.$app.changeAppLanguage($event?.selected ?? null)
-    this.$app.refreshMapContent();
+    this.$map.renderRegionLabelAndSites();
     setTimeout(()=>{
       this.$app.openMainMenuModal = false;
     },300)
@@ -42,8 +44,8 @@ export class MainMenuModalComponent {
 
   public onAlignmentChange($event: any){
     this.$data.resetCurrentGuiContext();
-    this.$data.currentGuiContext.currentAlignment = $event?.selected ?? AlignmentType_e.Hero;
-    this.$app.refreshMapContent();
+    this.$data.currentGuiContext_persistent.currentAlignment = $event?.selected ?? AlignmentType_e.Hero;
+    this.$map.renderRegionLabelAndSites();
     setTimeout(()=>{
       this.$app.openMainMenuModal = false;
     },300)
@@ -55,7 +57,7 @@ export class MainMenuModalComponent {
   }
 
   public currentAlignment: SelectItem = {
-    available: [AlignmentType_e.Hero, AlignmentType_e.Minion, AlignmentType_e.Balrog],
-    selected: this.$data.currentGuiContext.currentAlignment,
+    available: [AlignmentType_e.Hero, AlignmentType_e.Minion, AlignmentType_e['Fallen-wizard_dark'], AlignmentType_e['Fallen-wizard_bright'], AlignmentType_e.Balrog],
+    selected: this.$data.currentGuiContext_persistent.currentAlignment,
   }
 }

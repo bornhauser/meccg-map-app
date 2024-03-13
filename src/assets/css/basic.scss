@@ -22,6 +22,15 @@ html, body, .app-root, .root-container {
   margin: 0;
 }
 
+.root-container {
+  position: relative;
+  transition: transform 0.5s;
+
+  &._turned {
+    transform: rotate(180deg);
+  }
+}
+
 p {
   margin: 0;
   padding: 0;
@@ -189,6 +198,23 @@ a {
 }
 
 
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    display: block;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+.fade-out {
+  animation-name: fadeOut;
+  animation-duration: 0.4s;
+}
+
+
 @keyframes slideIn {
   0% {
     transform: translateY(20px);
@@ -200,5 +226,5 @@ a {
 
 .slide-in {
   animation-name: slideIn;
-  animation-duration: 0.1s;
+  animation-duration: 0.4s;
 }

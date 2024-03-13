@@ -11,6 +11,7 @@ import {
 } from '../interfaces/interfaces';
 import {AppService} from './app-service';
 import {DataService} from './data.service';
+import {hasId} from './utility-methods';
 
 
 @Injectable()
@@ -28,32 +29,52 @@ export class CardUtilService {
     return card.ImageName?.replaceAll('.jpg', '') ?? '';
   }
 
-  public filterSites(cards: Card_i[]): Card_i[] {
-    let answer = cards?.filter((card) => {
+  public filterSites(cards: Card_i[], withUnderDeeps?: boolean, alignment?: AlignmentType_e): Card_i[] {
+    const relevantAlignment: AlignmentType_e = this.$data?.currentGuiContext_persistent.currentAlignment ?? AlignmentType_e.Hero;
+    let currentAlignment: AlignmentType_e = relevantAlignment;
+    if (currentAlignment === AlignmentType_e['Fallen-wizard_bright'] || currentAlignment === AlignmentType_e['Fallen-wizard_dark']) {
+      currentAlignment = AlignmentType_e['Fallen-wizard'];
+    }
+    if (alignment) {
+      currentAlignment = alignment;
+    }
+    const allSiteCards: Card_i[] = cards?.filter((card: Card_i) => {
       return card.type === CardType_e.Site;
     });
-    answer = answer?.filter((card) => {
-      return card.alignment === this.$data?.currentGuiContext.currentAlignment;
+    let answer = allSiteCards?.filter((card: Card_i) => {
+      return card.alignment === currentAlignment;
     });
+    if (currentAlignment === AlignmentType_e.Balrog) {
+      allSiteCards.forEach((card: Card_i) => {
+        if (card.alignment === AlignmentType_e.Minion && !hasId(answer, card.normalizedtitle, 'normalizedtitle')) {
+          answer?.push(card);
+        }
+      });
+    }
+    if (relevantAlignment === AlignmentType_e['Fallen-wizard_dark']) {
+      allSiteCards.forEach((card: Card_i) => {
+        if (card.alignment === AlignmentType_e.Minion && !hasId(answer, card.normalizedtitle, 'normalizedtitle')) {
+          answer?.push(card);
+        }
+      });
+    }
+    if (relevantAlignment === AlignmentType_e['Fallen-wizard_bright']) {
+      allSiteCards.forEach((card: Card_i) => {
+        if (card.alignment === AlignmentType_e.Hero && !hasId(answer, card.normalizedtitle, 'normalizedtitle')) {
+          answer?.push(card);
+        }
+      });
+    }
+    if (!withUnderDeeps) {
+      answer = answer?.filter((card: Card_i) => {
+        return card.RPath !== 'Under-deeps';
+      });
+    }
     return answer;
   }
 
-  public filterAlignmentMinion(cards: Card_i[]): Card_i[] {
-    return cards?.filter((card) => {
-      return card.alignment === AlignmentType_e.Minion;
-    });
-  }
-
-  public filterAlignmentHero(cards: Card_i[]): Card_i[] {
-    return cards?.filter((card) => {
-      return card.alignment === AlignmentType_e.Hero;
-    });
-  }
-
-  public filterAlignmentBalrog(cards: Card_i[]): Card_i[] {
-    return cards?.filter((card) => {
-      return card.alignment === AlignmentType_e.Balrog;
-    });
+  public isUnderDeepSite(card: Card_i): boolean {
+    return card.RPath === 'Under-deeps';
   }
 
   public filterRegions(cards: Card_i[]): Card_i[] {
@@ -65,6 +86,12 @@ export class CardUtilService {
   public filterHazards(cards: Card_i[]): Card_i[] {
     return cards?.filter((card) => {
       return card.type === CardType_e.Hazard;
+    });
+  }
+
+  public filterUnderDeeps(cards: Card_i[]): Card_i[] {
+    return cards?.filter((card) => {
+      return this.isUnderDeepSite(card);
     });
   }
 

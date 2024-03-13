@@ -6,7 +6,7 @@ import {CardUtilService} from '../services/card-util.service';
 @Component({
   selector: 'app-site-item',
   template: `
-    <div class="site-button" *ngIf="card" (click)="onClick.emit(card)">
+    <div class="site-button" *ngIf="card" (click)="onClick.emit(card)" [ngClass]="{'_under-deep': $cardUtils.isUnderDeepSite(card)}">
       <div class="meta-container" *ngIf="$cardUtils.getPlayablesOfCard(card) as playables">
         <div class="meta">
           <div class="playable _minor" *ngIf="playables?.[Playable_e.minor]"></div>

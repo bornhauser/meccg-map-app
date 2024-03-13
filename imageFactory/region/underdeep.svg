@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="200px" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>region/underdeep</title>
+    <g id="region/underdeep" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linejoin="round">
+        <polygon id="Stroke-4" stroke="#1D1D1B" stroke-width="5" fill="#E8782C" points="40 116.689453 100 183.398438 160 116.689453"></polygon>
+        <polygon id="Stroke-4-Copy" stroke="#1D1D1B" stroke-width="5" fill="#5CB2DE" transform="translate(100.000000, 54.509766) scale(1, -1) translate(-100.000000, -54.509766) " points="40 20.7988281 100 88.2207031 160 20.7988281"></polygon>
+    </g>
+</svg>

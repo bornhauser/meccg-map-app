@@ -1,4 +1,3 @@
-
 export function copyObject(object: any): any {
   if (object || object === 0 || object === false) {
     return JSON.parse(JSON.stringify(object));
@@ -67,4 +66,9 @@ export function findIdAndReplace(array?: any[] | null, id?: string | number | nu
 
 export function isDifferent(a: any, b: any) {
   return JSON.stringify(a) !== JSON.stringify(b);
+}
+
+export function getStringBetweenStrings(startStr: string, endStr: string, str: string) {
+  const pos: number = str.indexOf(startStr) + startStr.length;
+  return str.substring(pos, str.indexOf(endStr, pos));
 }

@@ -1,14 +1,7 @@
 $colorBeigeDark: #4e4025;
 $colorBeige: #deb56f;
 
-.meccg-border {
-  box-shadow: 0 0 0 5px black,
-  0 0 0 8px rgba(164, 74, 151, 0.49),
-  0 0 0 15px black;
-  border-radius: 0.5px;
-}
-
-.map-image-layer {
+.meccg-underdeeps-image {
   box-shadow: 0 0 0 5px black,
   0 0 0 8px rgba(164, 74, 151, 0.49),
   0 0 0 15px black;
@@ -24,7 +17,6 @@ $colorBeige: #deb56f;
   background-size: cover;
   background-position: center;
   overflow: hidden;
-
 
   .leaflet-map {
     background-image: url("../img/map/wood.jpg");
@@ -51,44 +43,61 @@ $colorBeige: #deb56f;
   }
 }
 
+
 // REGION-LABEL
-foreignObject.region-label {
-  pointer-events: none;
+svg.svg-layer-region-labels {
 
-  .region-title-object {
-    height: 100%;
-    width: 100%;
-    font-size: 100px;
-    text-align: center;
+  foreignObject.region-label {
+    pointer-events: none;
 
-    .title {
+    .region-title-object {
+      height: 100%;
       width: 100%;
-      height: 120px;
-      font-family: "Alice", serif;
-      display: inline-block;
-      font-weight: 500;
-      color: $colorBeige;
-      white-space: nowrap;
-      text-shadow: -8px 0 0px $colorBeigeDark,
-      0 8px 0px $colorBeigeDark,
-      8px 0 0px $colorBeigeDark,
-      0 -8px 0px $colorBeigeDark,
-      -4px -4px $colorBeigeDark,
-      -4px 4px $colorBeigeDark,
-      4px -4px $colorBeigeDark,
-      4px 4px $colorBeigeDark,
-      0px 0px 50px #000;
-    }
+      font-size: 100px;
+      text-align: center;
 
-    .icon {
-      display: inline-block;
-      width: 100px;
-      height: 100px;
-      border: 5px solid white;
-      background-color: white;
-      border-radius: 50%;
+      .title {
+        width: 100%;
+        height: 120px;
+        font-family: "Alice", serif;
+        display: inline-block;
+        font-weight: 500;
+        color: $colorBeige;
+        white-space: nowrap;
+        text-shadow: -8px 0 0px $colorBeigeDark,
+        0 8px 0px $colorBeigeDark,
+        8px 0 0px $colorBeigeDark,
+        0 -8px 0px $colorBeigeDark,
+        -4px -4px $colorBeigeDark,
+        -4px 4px $colorBeigeDark,
+        4px -4px $colorBeigeDark,
+        4px 4px $colorBeigeDark,
+        0px 0px 50px #000;
+      }
+
+      .icon {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        border: 5px solid white;
+        background-color: white;
+        border-radius: 50%;
+      }
     }
   }
+}
+
+
+._surface {
+  z-index: 500 !important;
+}
+
+.leaflet-map-pane svg {
+  //z-index: auto!important;
+}
+
+.svg-layer-sites {
+  pointer-events: none !important;
 }
 
 // SITE-LABEL
@@ -99,6 +108,7 @@ foreignObject.site-object {
     height: 100%;
     padding: 20px 0 0 30px;
     width: 100%;
+    font-size: 10px;
   }
 }
 
@@ -111,13 +121,58 @@ foreignObject.site-object {
   display: none;
 }
 
+
+body .site-object[aria-description="1"] .site-button {
+  background-color: white !important;
+  border: 12px solid white !important;
+}
+
+$colorTurkise2: #00ffc3;
+
+body .site-object[aria-describedby="1"] .site-button {
+  background-color: #4d4d4d;
+  border: 10px solid #4d4d4d;
+}
+
+.leaflet-map-container:not(._undergorund-mode) ._surface {
+  @extend .fade-in;
+}
+
+.leaflet-map-container._undergorund-mode ._surface {
+  @extend .fade-out;
+  //opacity: 0;
+  //pointer-events: none;
+  display: none;
+}
+
 .svg-layer {
   overflow: hidden;
+
+  rect {
+    display: none;
+  }
+
+  circle {
+    display: none;
+  }
+
+  .region-path, .mountain-svg {
+    transition: all 0.2s;
+  }
 
   .region-path {
     opacity: 1;
     transition: stroke 0.2s;
     fill: transparent;
+    stroke: #492045;
+
+    &[aria-label="1"] {
+      fill: rgba(141, 141, 141, 0.9);
+    }
+
+    &[aria-description="1"] {
+      stroke: white !important;
+    }
   }
 }
 
@@ -127,35 +182,78 @@ foreignObject.site-object {
   }
 }
 
-.region-path, .mountain-svg {
-  transition: all 0.2s;
-}
-
-.region-path[aria-label="1"] {
-  fill: rgba(141, 141, 141, 0.9);
-}
-
-$colorTurkise: #ffffff;
-
-.region-path[aria-description="1"] {
-  stroke: $colorTurkise !important;
-}
-
-body .site-object[aria-description="1"] .site-button {
-  background-color: $colorTurkise !important;
-  border: 12px solid $colorTurkise !important;
-}
-
-$colorTurkise2: #00ffc3;
-
-
-body .site-object[aria-describedby="1"] .site-button {
-  background-color: #4d4d4d;
-  border: 10px solid #4d4d4d;
-}
-
 .journey-mode {
   .mountain-svg {
     fill: rgba(141, 141, 141, 0.9);
+  }
+}
+
+.svg-layer-underdeeps {
+  pointer-events: none;
+
+  rect {
+    display: none;
+  }
+
+  circle {
+    display: none;
+  }
+
+  g[stroke-linecap="round"] {
+    display: none;
+
+    &[aria-description="1"] {
+      display: block;
+    }
+  }
+
+  #any-ancient-deep-hold {
+    display: none;
+
+    &[aria-description="1"] {
+      display: block;
+    }
+  }
+}
+
+.svg-layer-underdeep-numbers {
+
+  .under-deep-number-foreign-object {
+    display: none;
+
+    &[aria-description="1"] {
+      display: block;
+    }
+
+    .under-deep-number {
+      padding: 20px;
+      font-family: "Open Sans", sans-serif;
+
+      .under-deep-circle-1 {
+        border: 10px solid #281226;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        box-shadow: 0 0 30px 0 $colorBlackish;
+
+        .under-deep-circle-2 {
+          width: 100%;
+          height: 100%;
+          border: 4px solid #b6b5b5;
+          border-radius: 50%;
+          padding-top: 2px;
+          background: linear-gradient(0deg, #a8a194 0%, #cbbbb6 50%, #938783 100%);
+
+          .text-content {
+            padding-top: 20px;
+            font-size: 55px;
+            font-weight: 800;
+            margin-top: -30px;
+            color: #333333;
+            text-align: center;
+          }
+        }
+      }
+    }
   }
 }
