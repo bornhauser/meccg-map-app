@@ -15,7 +15,6 @@ export class AppService {
   public mapIsDradding: boolean = false;
   public zoomCard: Card_i | null = null;
   public $data: DataService | null = null;
-  public turnDisplay: boolean = false;
 
   constructor(
     private translate: TranslateService,

@@ -3,8 +3,9 @@ import {
   AlignmentType_e,
   Card_i,
   CardType_e,
-  CurrentGuiContext_1,
   CurrentGuiContext_2,
+  CurrentGuiContext_3,
+  PlayerId_e,
   RegionType_e,
 } from '../interfaces/interfaces';
 import {copyObject, findId, findIdAndDelete, getStringBetweenStrings, hasId} from './utility-methods';
@@ -17,15 +18,17 @@ declare var meccgCards: Card_i[] | undefined;
 @Injectable()
 export class DataService {
   public all_cards: Card_i[] = [];
-  public currentGuiContext_persistent: CurrentGuiContext_1 = {
+  public currentGuiContext_persistent: CurrentGuiContext_2 = {
     currentAlignment: AlignmentType_e.Hero,
     currentSiteOrRegion: null,
     currentReachableRegions: [],
     currentReachableSites: [],
     currentSitesOfRegion: [],
     underDeep: false,
+    currentPlayer: PlayerId_e.player_1,
+    otherPlayersGuiContext: null,
   }
-  public currentGuiContext_notPersitent: CurrentGuiContext_2 = {
+  public currentGuiContext_notPersitent: CurrentGuiContext_3 = {
     currentJourneySiteFrom: null,
     currentJourneySiteTo: null,
     currentJourneyRegions: [],
@@ -56,6 +59,9 @@ export class DataService {
         }
         if (card.normalizedtitle === 'remains of thangorodrim') {
           card.text = card.text?.replace('the Drowning-deeps', 'The Drowning-deeps')
+        }
+        if (card.normalizedtitle === 'the under-gates') {
+          card.text = card.text?.replace('the Under-grottos', 'The Under-grottos')
         }
       });
       this.all_cards = meccgCards;

@@ -1,6 +1,9 @@
 import {Component} from '@angular/core';
 import {DataService} from '../services/data.service';
 import {AppService} from '../services/app-service';
+import {AlignmentType_e, CurrentGuiContext_1, CurrentGuiContext_2, PlayerId_e} from '../interfaces/interfaces';
+import {copyObject} from '../services/utility-methods';
+import {MapService} from '../services/map-service';
 
 @Component({
   selector: 'app-header',
@@ -34,12 +37,31 @@ export class HeaderComponent {
   constructor(
     public $data: DataService,
     public $app: AppService,
+    public $map: MapService,
   ) {
 
   }
 
   public toggleTurnDisplay() {
-    this.$app.turnDisplay = !this.$app.turnDisplay;
+    const currentGuiContext: CurrentGuiContext_2 = this.$data.currentGuiContext_persistent;
+    currentGuiContext.currentPlayer = currentGuiContext.currentPlayer === PlayerId_e.player_1 ? PlayerId_e.player_2 : PlayerId_e.player_1;
+    const otherPlayersGuiContextCopy: CurrentGuiContext_1 | null = copyObject(currentGuiContext.otherPlayersGuiContext);
+    currentGuiContext.otherPlayersGuiContext = {
+      currentAlignment: currentGuiContext?.currentAlignment ?? AlignmentType_e.Hero,
+      currentSiteOrRegion: currentGuiContext?.currentSiteOrRegion ?? null,
+      currentReachableRegions: currentGuiContext?.currentReachableRegions ?? [],
+      currentReachableSites: currentGuiContext?.currentReachableSites ?? [],
+      currentSitesOfRegion: currentGuiContext?.currentSitesOfRegion ?? [],
+      underDeep: currentGuiContext?.underDeep ?? false,
+    };
+    currentGuiContext.currentAlignment = otherPlayersGuiContextCopy?.currentAlignment ?? AlignmentType_e.Hero;
+    currentGuiContext.currentSiteOrRegion = otherPlayersGuiContextCopy?.currentSiteOrRegion ?? null;
+    currentGuiContext.currentReachableRegions = otherPlayersGuiContextCopy?.currentReachableRegions ?? [];
+    currentGuiContext.currentReachableSites = otherPlayersGuiContextCopy?.currentReachableSites ?? [];
+    currentGuiContext.currentSitesOfRegion = otherPlayersGuiContextCopy?.currentSitesOfRegion ?? [];
+    currentGuiContext.underDeep = otherPlayersGuiContextCopy?.underDeep ?? false;
+    this.$data.saveCurrentStates();
+    this.$map.renderRegionLabelAndSites();
   }
 
   public toggleUnderdeep() {

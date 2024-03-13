@@ -7,6 +7,11 @@ export enum LanguageId_e {
   en = 'en',
 }
 
+export enum PlayerId_e {
+  player_1 = 'player_1',
+  player_2 = 'player_2',
+}
+
 export interface CurrentGuiContext_1 {
   currentAlignment: AlignmentType_e;
   currentSiteOrRegion: Card_i | null;
@@ -16,10 +21,15 @@ export interface CurrentGuiContext_1 {
   underDeep: boolean;
 }
 
-export interface CurrentGuiContext_2 {
+export interface CurrentGuiContext_2 extends CurrentGuiContext_1 {
+  currentPlayer: PlayerId_e;
+  otherPlayersGuiContext: CurrentGuiContext_1 | null;
+}
+
+export interface CurrentGuiContext_3 {
   currentJourneySiteFrom: Card_i | null;
-  currentJourneySiteTo: Card_i | null ;
-  currentJourneyRegions: Card_i[] ;
+  currentJourneySiteTo: Card_i | null;
+  currentJourneyRegions: Card_i[];
   currentPlayableHazards: Card_i[];
 }
 
