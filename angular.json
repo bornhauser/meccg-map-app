@@ -18,7 +18,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "baseHref": "/meccg/",
-            "outputPath": "dist/meccg-map-app",
+            "outputPath": "dist/meccg",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
