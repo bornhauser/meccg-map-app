@@ -5,11 +5,12 @@ import * as L from 'leaflet';
 import {AlignmentType_e, Card_i, CardType_e, Playable_e, Playables_i} from '../interfaces/interfaces';
 import {DataService} from './data.service';
 import {copyObject} from './utility-methods';
+import {Map, MapOptions} from 'leaflet';
 
 @Injectable()
 export class MapService {
 
-  public map: any;
+  public map: Map | null = null;
   public height: number = 663;
   public width: number = 989;
   public bounds: any = [[0, 0], [this.height, this.width]];
@@ -35,7 +36,7 @@ export class MapService {
   }
 
   public generateMap() {
-    const mapSettings1 = {
+    const mapSettings1: MapOptions = {
       crs: L.CRS.Simple,
       minZoom: -0.5,
       maxZoom: 27,
@@ -89,51 +90,55 @@ export class MapService {
   }
 
   public renderRegionLabelAndSites() {
-    this.$data.endJourney();
-    if (this.layerWithUnderdeepSites) {
-      this.map.removeLayer(this.layerWithUnderdeepSites);
+    if (this.map) {
+
+      this.$data.endJourney();
+      if (this.layerWithUnderdeepSites) {
+        this.map.removeLayer(this.layerWithUnderdeepSites);
+      }
+      if (this.layerWithUnderdeepSites) {
+        this.map.removeLayer(this.layerWithUnderdeepSites);
+      }
+      if (this.layerWithUnderdeepNumbers) {
+        this.map.removeLayer(this.layerWithUnderdeepNumbers);
+      }
+      if (this.layerWithSites) {
+        this.map.removeLayer(this.layerWithSites);
+      }
+      if (this.layerWithRegionLabel) {
+        this.map.removeLayer(this.layerWithRegionLabel);
+      }
+      this.renderRegions();
+      this.renderUnderDeeps();
+      this.renderMapSites(false);
+      this.renderMapSites(true);
+      this.layerWithUnderdeepSites?.bringToBack();
+      this.layerWithUnderdeepSvg?.bringToBack();
+      this.layerWithUnderdeepImage?.bringToBack();
+      this.renderActivities();
     }
-    if (this.layerWithUnderdeepSites) {
-      this.map.removeLayer(this.layerWithUnderdeepSites);
-    }
-    if (this.layerWithUnderdeepNumbers) {
-      this.map.removeLayer(this.layerWithUnderdeepNumbers);
-    }
-    if (this.layerWithSites) {
-      this.map.removeLayer(this.layerWithSites);
-    }
-    if (this.layerWithRegionLabel) {
-      this.map.removeLayer(this.layerWithRegionLabel);
-    }
-    this.renderRegions();
-    this.renderUnderDeeps();
-    this.renderMapSites(false);
-    this.renderMapSites(true);
-    this.layerWithUnderdeepSites?.bringToBack();
-    this.layerWithUnderdeepSvg?.bringToBack();
-    this.layerWithUnderdeepImage?.bringToBack();
-    this.renderActivities();
   }
 
   public renderUnderDeeps() {
-    this.layerWithUnderdeepNumbers = L.svgOverlay(this.getEmptySvg(), this.bounds, {
-      className: this.layerWithUnderdeepNumbersClass,
-      interactive: false
-    }).addTo(this.map);
-    const underdeepNumbers = this.$data.getUnderdeepMoveNumbers();
-    for (let key in underdeepNumbers) {
-      const underDeepsCircle: any = document.querySelector('.svg-layer-underdeeps circle#' + key);
-      if (underDeepsCircle) {
-        const x: number = underDeepsCircle.cx.animVal.value;
-        const y: number = underDeepsCircle.cy.animVal.value;
-        var regionLabelSvg: any = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
-        regionLabelSvg.setAttribute('class', 'under-deep-number-foreign-object');
-        regionLabelSvg.setAttribute('id', key);
-        regionLabelSvg.setAttribute('x', x - 70);
-        regionLabelSvg.setAttribute('y', y - 70);
-        regionLabelSvg.setAttribute('width', '200');
-        regionLabelSvg.setAttribute('height', '200');
-        regionLabelSvg.innerHTML = `
+    if (this.map) {
+      this.layerWithUnderdeepNumbers = L.svgOverlay(this.getEmptySvg(), this.bounds, {
+        className: this.layerWithUnderdeepNumbersClass,
+        interactive: false
+      }).addTo(this.map);
+      const underdeepNumbers = this.$data.getUnderdeepMoveNumbers();
+      for (let key in underdeepNumbers) {
+        const underDeepsCircle: any = document.querySelector('.svg-layer-underdeeps circle#' + key);
+        if (underDeepsCircle) {
+          const x: number = underDeepsCircle.cx.animVal.value;
+          const y: number = underDeepsCircle.cy.animVal.value;
+          var regionLabelSvg: any = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
+          regionLabelSvg.setAttribute('class', 'under-deep-number-foreign-object');
+          regionLabelSvg.setAttribute('id', key);
+          regionLabelSvg.setAttribute('x', x - 70);
+          regionLabelSvg.setAttribute('y', y - 70);
+          regionLabelSvg.setAttribute('width', '200');
+          regionLabelSvg.setAttribute('height', '200');
+          regionLabelSvg.innerHTML = `
         <div class="under-deep-number" xmlns="http://www.w3.org/1999/xhtml">
           <div class="under-deep-circle-1">
             <div class="under-deep-circle-2">
@@ -142,7 +147,8 @@ export class MapService {
           </div>
         </div>
         `;
-        document.querySelector('.' + this.layerWithUnderdeepNumbersClass)?.appendChild(regionLabelSvg);
+          document.querySelector('.' + this.layerWithUnderdeepNumbersClass)?.appendChild(regionLabelSvg);
+        }
       }
     }
   }
@@ -155,99 +161,102 @@ export class MapService {
   }
 
   public renderRegions() {
-    this.layerWithRegionLabel = L.svgOverlay(this.getEmptySvg(), this.bounds, {
-      className: this.layerWithRegionLabelClass + ' _surface',
-      interactive: false,
-    }).addTo(this.map);
-    let allRegionCards: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterRegions(this.$data.all_cards));
-    allRegionCards.forEach((card) => {
-      const regionPathSvg: any = document.querySelector('.svg-layer path' + this.$data.getSketchId(card));
-      regionPathSvg?.setAttribute('class', 'region-path');
-      regionPathSvg?.setAttribute('aria-label', '0');
-      regionPathSvg?.setAttribute('aria-description', '0');
-      regionPathSvg?.setAttribute('id', this.$cardUtil.getRegionPathId(card));
-      const passmarkerForRegionLabel: any = document.querySelector('circle' + this.$data.getSketchId(card));
-      const x = passmarkerForRegionLabel.cx.animVal.value;
-      const y = passmarkerForRegionLabel.cy.animVal.value;
-      const regionLabelSvg: any = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
-      regionLabelSvg.setAttribute('class', 'region-label');
-      regionLabelSvg.setAttribute('x', x - 600);
-      regionLabelSvg.setAttribute('y', y - 180);
-      regionLabelSvg.setAttribute('width', '1200');
-      regionLabelSvg.setAttribute('height', '300');
-      regionLabelSvg.setAttribute('id', this.$cardUtil.getRegionLabelId(card));
-      regionLabelSvg.innerHTML = `
+    if (this.map) {
+      this.layerWithRegionLabel = L.svgOverlay(this.getEmptySvg(), this.bounds, {
+        className: this.layerWithRegionLabelClass + ' _surface',
+        interactive: false,
+      }).addTo(this.map);
+      let allRegionCards: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterRegions(this.$data.all_cards));
+      allRegionCards.forEach((card) => {
+        const regionPathSvg: any = document.querySelector('.svg-layer path' + this.$data.getSketchId(card));
+        regionPathSvg?.setAttribute('class', 'region-path');
+        regionPathSvg?.setAttribute('aria-label', '0');
+        regionPathSvg?.setAttribute('aria-description', '0');
+        regionPathSvg?.setAttribute('id', this.$cardUtil.getRegionPathId(card));
+        const passmarkerForRegionLabel: any = document.querySelector('circle' + this.$data.getSketchId(card));
+        const x = passmarkerForRegionLabel.cx.animVal.value;
+        const y = passmarkerForRegionLabel.cy.animVal.value;
+        const regionLabelSvg: any = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
+        regionLabelSvg.setAttribute('class', 'region-label');
+        regionLabelSvg.setAttribute('x', x - 600);
+        regionLabelSvg.setAttribute('y', y - 180);
+        regionLabelSvg.setAttribute('width', '1200');
+        regionLabelSvg.setAttribute('height', '300');
+        regionLabelSvg.setAttribute('id', this.$cardUtil.getRegionLabelId(card));
+        regionLabelSvg.innerHTML = `
         <div class="region-title-object" xmlns="http://www.w3.org/1999/xhtml">
             <div class="title">${this.$cardUtil.getCardTitle(card)}</div>
             <div class="icon" style="background-image: url('${this.$cardUtil.getRegionIconUrl(card)}')"></div>
         </div>
         `;
-      document.querySelector('.svg-layer-region-labels')?.appendChild(regionLabelSvg);
-      regionPathSvg?.addEventListener('click', ($event: any) => {
-        // @ts-ignore
-        document.onSiteOrRegionClick(card, $event, this)
-      });
-    })
+        document.querySelector('.svg-layer-region-labels')?.appendChild(regionLabelSvg);
+        regionPathSvg?.addEventListener('click', ($event: any) => {
+          // @ts-ignore
+          document.onSiteOrRegionClick(card, $event, this)
+        });
+      })
+    }
   }
 
   public renderMapSites(isUnderDeeps: boolean) {
-    if (isUnderDeeps) {
-      this.layerWithUnderdeepSites = L.svgOverlay(this.getEmptySvg(), this.bounds, {
-        className: this.layerWithUnderdeepSitesClass,
-        interactive: true,
-      }).addTo(this.map);
-    } else {
-      this.layerWithSites = L.svgOverlay(this.getEmptySvg(), this.bounds, {
-        className: this.layerWithSitesClass + ' _surface',
-        interactive: true,
-      }).addTo(this.map);
-    }
-    let all_siteCards: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.$data.all_cards, isUnderDeeps));
-    all_siteCards.forEach((card) => {
-      let siteSvg: any
+    if (this.map) {
       if (isUnderDeeps) {
-        if (
-          this.$data.currentGuiContext_persistent.currentAlignment !== AlignmentType_e.Balrog &&
-          (card.normalizedtitle === 'iron hill dwarf-hold' ||
-            card.normalizedtitle === 'the wind throne' ||
-            card.normalizedtitle === 'blue mountain dwarf-hold')
-        ) {
-          return;
-        }
-        siteSvg = document.querySelector('.svg-layer-underdeeps' + ' rect' + this.$data.getSketchId(card));
+        this.layerWithUnderdeepSites = L.svgOverlay(this.getEmptySvg(), this.bounds, {
+          className: this.layerWithUnderdeepSitesClass,
+          interactive: true,
+        }).addTo(this.map);
       } else {
-        siteSvg = document.querySelector('.svg-layer' + ' rect' + this.$data.getSketchId(card));
+        this.layerWithSites = L.svgOverlay(this.getEmptySvg(), this.bounds, {
+          className: this.layerWithSitesClass + ' _surface',
+          interactive: true,
+        }).addTo(this.map);
       }
-      if (siteSvg) {
-        const svgElement: any = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
-        const x = siteSvg.x.animVal.value;
-        const y = siteSvg.y.animVal.value;
-        svgElement.setAttribute('class', 'site-object')
-        svgElement.setAttribute('x', x - 70);
-        svgElement.setAttribute('y', y - 50);
-        svgElement.setAttribute('width', '1200');
-        svgElement.setAttribute('height', '200');
-        svgElement?.setAttribute('id', this.$cardUtil.getSiteLabelId(card));
-        const playables: Playables_i | null = this.$cardUtil.getPlayablesOfCard(card);
-        let playableHtml: string = '';
-        playableHtml += playables?.[Playable_e.minor] ? '<div class="playable _minor"></div>' : '';
-        playableHtml += playables?.[Playable_e.major] ? '<div class="playable _major"></div>' : '';
-        playableHtml += playables?.[Playable_e.greater] ? '<div class="playable _greater"></div>' : '';
-        playableHtml += playables?.[Playable_e.gold_ring] ? '<div class="playable _gold_ring"></div>' : '';
-        playableHtml += playables?.[Playable_e.information] ? '<div class="playable _information"></div>' : '';
-        // playableHtml += playables?.[Playable_e.palantiri] ? '<div class="playable _palantiri"></div>' : '';
-        // playableHtml += playables?.[Playable_e.scrol_of_isildur] ? '<div class="playable _scrol_of_isildur"></div>' : '';
-        const creatureIcon: string = this.$cardUtil.getCreatureId(card) ?
-          `<div class="creature-icon" style="background-image: url('${this.$cardUtil.getCreatureIconUrl(card)}')"></div>` : '';
-        const meta: string = playableHtml ? `
+      let all_siteCards: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.$data.all_cards, isUnderDeeps));
+      all_siteCards.forEach((card) => {
+        let siteSvg: any
+        if (isUnderDeeps) {
+          if (
+            this.$data.currentGuiContext_persistent.currentAlignment !== AlignmentType_e.Balrog &&
+            (card.normalizedtitle === 'iron hill dwarf-hold' ||
+              card.normalizedtitle === 'the wind throne' ||
+              card.normalizedtitle === 'blue mountain dwarf-hold')
+          ) {
+            return;
+          }
+          siteSvg = document.querySelector('.svg-layer-underdeeps' + ' rect' + this.$data.getSketchId(card));
+        } else {
+          siteSvg = document.querySelector('.svg-layer' + ' rect' + this.$data.getSketchId(card));
+        }
+        if (siteSvg) {
+          const svgElement: any = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
+          const x = siteSvg.x.animVal.value;
+          const y = siteSvg.y.animVal.value;
+          svgElement.setAttribute('class', 'site-object')
+          svgElement.setAttribute('x', x - 70);
+          svgElement.setAttribute('y', y - 50);
+          svgElement.setAttribute('width', '1200');
+          svgElement.setAttribute('height', '200');
+          svgElement?.setAttribute('id', this.$cardUtil.getSiteLabelId(card));
+          const playables: Playables_i | null = this.$cardUtil.getPlayablesOfCard(card);
+          let playableHtml: string = '';
+          playableHtml += playables?.[Playable_e.minor] ? '<div class="playable _minor"></div>' : '';
+          playableHtml += playables?.[Playable_e.major] ? '<div class="playable _major"></div>' : '';
+          playableHtml += playables?.[Playable_e.greater] ? '<div class="playable _greater"></div>' : '';
+          playableHtml += playables?.[Playable_e.gold_ring] ? '<div class="playable _gold_ring"></div>' : '';
+          playableHtml += playables?.[Playable_e.information] ? '<div class="playable _information"></div>' : '';
+          // playableHtml += playables?.[Playable_e.palantiri] ? '<div class="playable _palantiri"></div>' : '';
+          // playableHtml += playables?.[Playable_e.scrol_of_isildur] ? '<div class="playable _scrol_of_isildur"></div>' : '';
+          const creatureIcon: string = this.$cardUtil.getCreatureId(card) ?
+            `<div class="creature-icon" style="background-image: url('${this.$cardUtil.getCreatureIconUrl(card)}')"></div>` : '';
+          const meta: string = playableHtml ? `
           <div class="meta-container">
             <div class="meta">
               ${playableHtml}
             </div>
           </div>` : '';
-        this.$cardUtil.getCreatureId(card);
-        const id: string = 'id_' + Math.random();
-        svgElement.innerHTML = `
+          this.$cardUtil.getCreatureId(card);
+          const id: string = 'id_' + Math.random();
+          svgElement.innerHTML = `
           <div class="content-frame" xmlns="http://www.w3.org/1999/xhtml">
             <div class="site-button ${(this.$cardUtil.isUnderDeepSite(card) ? '_under-deep' : '')}" id="${id}">
               ${meta}
@@ -260,22 +269,23 @@ export class MapService {
             </div>
           </div>
         `;
-        document.querySelector('app-regions-svg svg')?.appendChild(svgElement);
-        if (isUnderDeeps) {
-          document.querySelector('.' + this.layerWithUnderdeepSitesClass)?.appendChild(svgElement);
-        } else {
-          document.querySelector('.' + this.layerWithSitesClass)?.appendChild(svgElement);
+          document.querySelector('app-regions-svg svg')?.appendChild(svgElement);
+          if (isUnderDeeps) {
+            document.querySelector('.' + this.layerWithUnderdeepSitesClass)?.appendChild(svgElement);
+          } else {
+            document.querySelector('.' + this.layerWithSitesClass)?.appendChild(svgElement);
+          }
+          // @ts-ignore
+          const element: any = document.getElementById(id);
+          element?.addEventListener('click', function ($event: any) { // @ts-ignore
+            document.onSiteOrRegionClick(card, $event, isUnderDeeps);
+          });
+          element?.addEventListener('dblclick', function ($event: any) { // @ts-ignore
+            document.onSiteOrRegionDoubleClick(card, $event, isUnderDeeps);
+          });
         }
-        // @ts-ignore
-        const element: any = document.getElementById(id);
-        element?.addEventListener('click', function ($event: any) { // @ts-ignore
-          document.onSiteOrRegionClick(card, $event, isUnderDeeps);
-        });
-        element?.addEventListener('dblclick', function ($event: any) { // @ts-ignore
-          document.onSiteOrRegionDoubleClick(card, $event, isUnderDeeps);
-        });
-      }
-    })
+      })
+    }
   }
 
   public renderActivities() {

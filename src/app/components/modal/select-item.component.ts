@@ -11,7 +11,7 @@ import {SelectItem} from '../../interfaces/interfaces';
         <div class="indicator">
           <div></div>
         </div>
-        <div class="label">{{ available}}</div>
+        <div class="label">{{ 'app.selectItem.' + available | translate }}</div>
       </div>
     </div>
   `,

@@ -220,41 +220,68 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 1em;
   flex-wrap: wrap;
+  font-size: 16px;
+  @media only screen and (max-width: $responsiveWidthSmall) {
+    font-size: 13px;
+  }
+  @media only screen and (max-width: $responsiveWidthMegaSmall) {
+    font-size: 10px;
+  }
 
-  .journey-region {
-    .journey-region-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      border: 3px solid white;
-      box-shadow: 0 0 50px rgba(0, 0, 0, 1);
+  .journey-icon-container {
+    position: relative;
+    width: 2.5em;
+
+    .spacing {
+      width: 100%;
+      padding-top: 100%;
     }
+
+    .journey-icon {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      border-radius: 50%;
+
+
+      &._region {
+        box-shadow: 0 0 50px rgba(0, 0, 0, 1);
+        border: 3px solid white;
+      }
+
+      &._site {
+        transform: scale(130%);
+      }
+
+      &._hazard {
+        transform: scale(130%);
+        background-image: url("../img/region/playableHazard.svg");
+        transition: all 0.2s;
+        border-radius: 10px;
+        border: 2px solid transparent;
+
+        @media (hover: hover) {
+          &:hover {
+            border: 2px solid white;
+          }
+        }
+      }
+    }
+
   }
 
   .journey-site {
-    .journey-site-icon {
-      width: 60px;
-      height: 60px;
-    }
+
 
   }
 
   .journey-hazard {
     button.journey-hazard-icon {
-      width: 65px;
-      height: 65px;
-      background-image: url("../img/region/playableHazard.svg");
-      transition: all 0.2s;
-      border-radius: 10px;
-      border: 2px solid transparent;
 
-      @media (hover: hover) {
-        &:hover {
-          border: 2px solid white;
-        }
-      }
     }
   }
 }
@@ -308,6 +335,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    max-width: 100vw;
 
     .footer-route-containter {
       position: absolute;
@@ -320,7 +348,7 @@
       transform: translate(-50%);
       background-image: url("../img/map/old-map_sw.jpg");
       background-size: 150%;
-      padding: 10px 20px;
+      padding: 10px 15px;
       box-shadow: 0 0 0 2px $colorBlackish,
       0 0 0 5px $colorCian,
       0 0 0 9px $colorBlackish,
@@ -345,35 +373,47 @@
       flex-grow: 1;
       flex-shrink: 1;
       height: 100%;
-      padding: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      max-width: 30vw;
+      gap: 1em;
+      width: 30vw;
+      flex-wrap: wrap;
+      font-size: 16px;
 
-      .buttons {
+      @media only screen and (max-width: $responsiveWidthSmall) {
+        font-size: 13px;
+      }
+      @media only screen and (max-width: $responsiveWidthMegaSmall) {
+        font-size: 10px;
+      }
+
+      .buttons-container {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 30px;
+        flex-wrap: wrap;
+        max-width: 30vw;
+        gap: 4%;
+        width: 100%;
 
         .epic-button {
-          width: 300px;
-          max-width: 15vw;
+          width: 10em;
           display: inline-block;
           position: relative;
+          white-space: normal;
           background-image: url("../img/map/old-map_sw.jpg");
           background-size: 500%;
-          font-size: 15px;
           border-radius: 0.5em;
           overflow: hidden;
-          box-shadow: 0 0 50px rgba(0, 0, 0, 1);
+          box-shadow: 0 0 20px rgba(0, 0, 0, 1);
           border: 2px solid #e7d9ba;
           height: 70px;
           cursor: pointer;
           flex-shrink: 1;
+          padding: 0.5em;
+          max-width: 100%;
 
           &:before {
             content: "";
@@ -410,16 +450,18 @@
       }
 
       .card-items {
-        margin-top: 20px;
+        padding-left: 2vw;
+        padding-top: 6em;
         height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         flex-wrap: wrap;
-        font-size: 5px;
         align-items: flex-start;
         align-content: flex-start;
         gap: 0 4em;
+        flex-grow: 1;
+        width: 100%;
 
         &._region-sites {
           font-size: 4px;
@@ -427,46 +469,55 @@
       }
     }
 
-    .placeholder {
-      width: 400px;
-      margin: 20px;
-      max-width: 30vw;
-    }
 
-    .meccg-card-image {
-      position: relative;
-      border-radius: 6%;
+    .card-container, .placeholder {
       width: 400px;
       max-width: 30vw;
-      background-color: grey;
-      background-size: cover;
-      display: inline-block;
-      margin: 20px;
-      cursor: pointer;
-      transition: all 0.2s;
       flex-shrink: 0;
 
-      @media (hover: hover) {
-        &:hover {
-          border-color: grey;
-        }
+      &._left {
+        padding-left: 1vw;
+        padding-bottom: 1vw;
       }
 
-      @extend .fade-in;
-      box-shadow: 0 0 50px rgb(0, 0, 0);
-      border: 1px solid #3f3f3f;
-
-      &._queer {
-        transform: rotate(-90deg);
-        width: 280px;
-        left: 60px !important;
-        bottom: -60px !important;
-        margin-right: 140px;
+      &._right {
+        padding-right: 1vw;
+        padding-bottom: 1vw;
       }
 
-      .meccg-card-inner {
+      .meccg-card-image {
+        position: relative;
+        border-radius: 6%;
         width: 100%;
-        padding-bottom: 135%;
+        max-width: 30vw;
+        background-color: grey;
+        background-size: cover;
+        display: inline-block;
+        cursor: pointer;
+        transition: all 0.2s;
+        @extend .fade-in;
+        box-shadow: 0 0 50px rgb(0, 0, 0);
+        border: 1px solid #3f3f3f;
+
+        @media (hover: hover) {
+          &:hover {
+            border-color: grey;
+          }
+        }
+
+        &._queer {
+          transform: rotate(-90deg);
+          width: 280px;
+          max-width: 25vw;
+          left: 60px !important;
+          bottom: -60px !important;
+          margin-right: 140px;
+        }
+
+        .meccg-card-inner {
+          width: 100%;
+          padding-bottom: 140%;
+        }
       }
     }
   }

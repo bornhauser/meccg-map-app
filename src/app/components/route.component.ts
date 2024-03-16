@@ -8,17 +8,22 @@ import {AppService} from '../services/app-service';
   template: `
     <div class="route"
          *ngIf="$data.currentGuiContext_notPersitent.currentJourneyRegions || $data.currentGuiContext_notPersitent.currentJourneySiteTo">
-      <div class="journey-region" *ngFor="let card of $data.currentGuiContext_notPersitent.currentJourneyRegions">
-        <div class="journey-region-icon"
+      <div class="journey-icon-container _region"
+           *ngFor="let card of $data.currentGuiContext_notPersitent.currentJourneyRegions">
+        <div class="spacing"></div>
+        <div class="journey-icon _region"
              [style.background-image]="'url(' + $cardUtil.getRegionIconUrl(card) + ')'"></div>
       </div>
-      <div class="journey-site" *ngIf="$data.currentGuiContext_notPersitent.currentJourneySiteTo as card">
-        <div class="journey-site-icon"
+      <div class="journey-icon-container" *ngIf="$data.currentGuiContext_notPersitent.currentJourneySiteTo as card">
+        <div class="spacing"></div>
+        <div class="journey-icon _site"
              [style.background-image]="'url(' + $cardUtil.getSiteIconUrl(card, true) + ')'"></div>
       </div>
-      <div class="journey-hazard" *ngIf="$data.currentGuiContext_notPersitent.currentPlayableHazards.length">
-        <button class="journey-hazard-icon"
-                (click)="$app.openModalReversed = reversed; $app.openHazardCardsModal = true"></button>
+      <div class="journey-icon-container" *ngIf="$data.currentGuiContext_notPersitent.currentPlayableHazards.length">
+        <div class="spacing"></div>
+        <div class="journey-icon _hazard"
+                (click)="$app.openModalReversed = reversed; $app.openHazardCardsModal = true">
+        </div>
       </div>
     </div>
   `,

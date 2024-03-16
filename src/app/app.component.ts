@@ -10,9 +10,9 @@ import {PlayerId_e} from './interfaces/interfaces';
     <div class="root-container"
          [ngClass]="{
          'journey-mode': $data.currentGuiContext_notPersitent.currentJourneySiteFrom,
-         '_turned': $data.currentGuiContext_persistent.currentPlayer === PlayerId_e.player_2,
          'open-modal-reversed': $app.openModalReversed,
          }">
+<!--         '_turned': $data.currentGuiContext_persistent.currentPlayer === PlayerId_e.player_2,-->
       <app-map></app-map>
       <app-header></app-header>
       <app-footer></app-footer>
@@ -25,7 +25,7 @@ import {PlayerId_e} from './interfaces/interfaces';
 })
 export class AppComponent {
 
-  PlayerId_e = PlayerId_e;
+  // PlayerId_e = PlayerId_e;
 
   constructor(
     public $data: DataService,

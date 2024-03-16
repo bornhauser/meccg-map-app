@@ -12,6 +12,7 @@ import {
 import {AppService} from './app-service';
 import {DataService} from './data.service';
 import {hasId} from './utility-methods';
+import {challengeDecksSites} from '../../assets/data/challengeDecks';
 
 
 @Injectable()
@@ -30,13 +31,19 @@ export class CardUtilService {
   }
 
   public filterSites(cards: Card_i[], withUnderDeeps?: boolean, alignment?: AlignmentType_e): Card_i[] {
-    const relevantAlignment: AlignmentType_e = this.$data?.currentGuiContext_persistent.currentAlignment ?? AlignmentType_e.Hero;
+    let relevantAlignment: AlignmentType_e = this.$data?.currentGuiContext_persistent.currentAlignment ?? AlignmentType_e.Hero;
+    if (alignment) {
+      relevantAlignment = alignment;
+    }
     let currentAlignment: AlignmentType_e = relevantAlignment;
+    if (currentAlignment.indexOf('Challenge') > -1) {
+      currentAlignment = AlignmentType_e.Hero;
+      if (relevantAlignment === AlignmentType_e.Challenge_Deck_V) {
+        currentAlignment = AlignmentType_e.Balrog;
+      }
+    }
     if (currentAlignment === AlignmentType_e['Fallen-wizard_bright'] || currentAlignment === AlignmentType_e['Fallen-wizard_dark']) {
       currentAlignment = AlignmentType_e['Fallen-wizard'];
-    }
-    if (alignment) {
-      currentAlignment = alignment;
     }
     const allSiteCards: Card_i[] = cards?.filter((card: Card_i) => {
       return card.type === CardType_e.Site;
@@ -63,6 +70,11 @@ export class CardUtilService {
         if (card.alignment === AlignmentType_e.Hero && !hasId(answer, card.normalizedtitle, 'normalizedtitle')) {
           answer?.push(card);
         }
+      });
+    }
+    if (relevantAlignment.indexOf('Challenge') > -1) {
+      answer = answer?.filter((card: Card_i) => {
+        return challengeDecksSites[relevantAlignment].indexOf(card.normalizedtitle ?? '') > -1;
       });
     }
     if (!withUnderDeeps) {

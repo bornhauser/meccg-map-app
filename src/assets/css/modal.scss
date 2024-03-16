@@ -16,30 +16,30 @@
   align-items: center;
   justify-content: center;
   @extend .fade-in;
-}
 
-.meccg-card-image {
-  position: relative;
-  border-radius: 6%;
-  width: 80vw;
-  max-width: 50vh;
-  background-color: grey;
-  background-size: cover;
-  display: inline-block;
-  flex-shrink: 0;
-  margin: 20px;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 0 50px rgba(0, 0, 0, 1);
-  border: 2px solid #5b5b5b;
+  .meccg-card-image {
+    position: relative;
+    border-radius: 6%;
+    width: 80vw;
+    max-width: 50vh;
+    background-color: grey;
+    background-size: cover;
+    display: inline-block;
+    flex-shrink: 0;
+    margin: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 1);
+    border: 2px solid #5b5b5b;
 
-  &._queer {
-    transform: rotate(-90deg);
-  }
+    &._queer {
+      transform: rotate(-90deg);
+    }
 
-  .meccg-card-inner {
-    width: 100%;
-    padding-bottom: 140%;
+    .meccg-card-inner {
+      width: 100%;
+      padding-bottom: 140%;
+    }
   }
 }
 
@@ -88,7 +88,6 @@
       app-site-item {
         font-size: 3.5px;
         display: block;
-        width: 200px;
       }
     }
   }
@@ -151,7 +150,8 @@
   }
 }
 
-.main-menu-modal {
+
+.site-selection-modal {
   @extend .slide-in;
   position: relative;
   width: 80vw;
@@ -165,11 +165,61 @@
   background-image: url("../img/map/old-map_sw.jpg");
   background-size: cover;
   border-radius: 0.2em;
+
+  &:before {
+    content: "";
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0.8;
+    position: absolute;
+    background: linear-gradient(0deg, rgb(0, 7, 10) 0%, rgb(30, 49, 68) 100%);
+  }
+
+  .modal-scroll-container {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding: 20px 10px;
+
+    .site-items {
+      position: relative;
+      width: 100%;
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-content: center;
+      justify-content: center;
+      gap: 10px 10px;
+      background-color: transparent;
+
+      app-site-item {
+        font-size: 3.5px;
+        display: block;
+      }
+    }
+  }
+}
+
+
+.main-menu-modal {
+  @extend .slide-in;
+  box-shadow: 0 0 0 2px $colorBlackish,
+  0 0 0 5px $colorCian,
+  0 0 0 9px $colorBlackish,
+  4px 4px 9px 5px rgba(0, 0, 0, 0.2);
+  background-image: url("../img/map/old-map_sw.jpg");
+  background-size: cover;
+  border-radius: 0.2em;
   display: flex;
   flex-direction: column;
-  padding: 5%;
   color: white;
-  font-size: 20px;
+  font-size: 15px;
+  position: relative;
+  width: 80vw;
+  height: 80vh;
+  max-width: 2000px;
+  max-height: 2000px;
 
 
   &:before {
@@ -181,6 +231,20 @@
     opacity: 0.8;
     position: absolute;
     background: linear-gradient(0deg, rgb(0, 7, 10) 0%, rgb(30, 49, 68) 100%);
+  }
+
+  .modal-scroll-container {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+
+    .modal-scroll-container-content {
+      position: relative;
+      background-color: transparent;
+      padding: 5%;
+      width: 100%;
+      z-index: 50;
+    }
   }
 
   .menu-title {
@@ -199,7 +263,6 @@
 
   .select-item {
     position: relative;
-    text-transform: uppercase;
     color: white;
     cursor: pointer;
     align-items: center;

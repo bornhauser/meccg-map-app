@@ -18,7 +18,7 @@ import {MapService} from '../services/map-service';
            class="underdeep-toggle-button">
         <div class="menu-circle"></div>
       </div>
-      <div (click)="toggleTurnDisplay()" class="turn-toggle-button">
+      <div (click)="togglePlayer()" class="turn-toggle-button">
         <div class="menu-circle"></div>
       </div>
       <div (click)="$app.openMainMenuModal = true" class="main-menu-button">
@@ -42,7 +42,7 @@ export class HeaderComponent {
 
   }
 
-  public toggleTurnDisplay() {
+  public togglePlayer() {
     const currentGuiContext: CurrentGuiContext_2 = this.$data.currentGuiContext_persistent;
     currentGuiContext.currentPlayer = currentGuiContext.currentPlayer === PlayerId_e.player_1 ? PlayerId_e.player_2 : PlayerId_e.player_1;
     const otherPlayersGuiContextCopy: CurrentGuiContext_1 | null = copyObject(currentGuiContext.otherPlayersGuiContext);
