@@ -137,6 +137,7 @@ export enum Playable_e {
   information = 'Information',
   palantiri = 'Palantiri',
   scrol_of_isildur = 'Scroll of Isildur',
+  dragonHoard = 'dragonHoard',
 }
 
 export enum CreatureType_e {
@@ -144,11 +145,17 @@ export enum CreatureType_e {
   spiders = 'Spiders',
   men = 'Men',
   dragon = 'Dragon',
+  drake = 'Drake',
   undead = 'Undead',
   pukel_creature = 'Pûkel-creature',
   wolves = 'Wolves',
   troll = 'Troll',
   opponent_may_play = 'opponent may play',
+  dwarves = 'Dwarves',
+  elves = 'Elves',
+  eagle = 'Eagle',
+  maia = 'Maia',
+  dunedain = 'Dunedain',
 }
 
 export interface Playables_i {
@@ -159,6 +166,7 @@ export interface Playables_i {
   [Playable_e.palantiri]: boolean;
   [Playable_e.gold_ring]: boolean;
   [Playable_e.information]: boolean;
+  [Playable_e.dragonHoard]: boolean;
 }
 
 export interface Card_i {
@@ -168,6 +176,8 @@ export interface Card_i {
   routingRegions?: Card_i[];
 
   'Home'?: string;
+  'Mind'?: string;
+  'Prowess'?: number;
   'title-jp'?: string;
   'flip-title'?: string;
   'title-gr'?: string;
@@ -178,12 +188,14 @@ export interface Card_i {
   'title-fn'?: string;
   'gccgAlign'?: string;
   'Secondary'?: string;
+  'Body'?: string,
   'title'?: string;
   'title-fr'?: string;
   'erratum'?: boolean;
   'uniqueness'?: boolean;
   'released'?: boolean;
   'Rarity'?: string;
+  'Direct'?: string,
   'normalizedtitle'?: string;
   'code'?: string;
   'ImageName'?: string;
@@ -214,7 +226,7 @@ export interface Card_i {
   'Playable'?: string;
   'MinorItem'?: boolean;
   'MajorItem'?: boolean;
-  'GreaterItem': boolean;
+  'GreaterItem'?: boolean;
 }
 
 export interface SelectItem {

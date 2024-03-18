@@ -2,9 +2,9 @@
 <svg width="200px" height="200px" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>site/information</title>
     <g id="site/information" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <polygon id="Path-Copy-2" stroke="#000000" stroke-width="10" fill="#05DAFF" points="59.5 150.233918 59.5 50.2339181 159.5 50.2339181 159.5 150.233918"></polygon>
-        <line x1="87.25" y1="85.7339181" x2="132.25" y2="85.7339181" id="Path-4" stroke="#000000" stroke-width="10"></line>
-        <line x1="87.25" y1="104.733918" x2="132.25" y2="104.733918" id="Path-4-Copy" stroke="#000000" stroke-width="10"></line>
-        <line x1="87.25" y1="123.733918" x2="132.25" y2="123.733918" id="Path-4-Copy-2" stroke="#000000" stroke-width="10"></line>
+        <polygon id="Path-Copy-2" stroke="#000000" stroke-width="10.5" fill="#05DAFF" points="47 152 47 47 152 47 152 152"></polygon>
+        <line x1="76" y1="84.5" x2="123" y2="84.5" id="Path-4" stroke="#000000" stroke-width="10.5"></line>
+        <line x1="76" y1="104.5" x2="123" y2="104.5" id="Path-4-Copy" stroke="#000000" stroke-width="10.5"></line>
+        <line x1="76" y1="124.5" x2="123" y2="124.5" id="Path-4-Copy-2" stroke="#000000" stroke-width="10.5"></line>
     </g>
 </svg>

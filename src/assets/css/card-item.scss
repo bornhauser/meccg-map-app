@@ -10,7 +10,11 @@
 
   &._under-deep {
     .pergament {
-      background-image: url("../img/pic/pergament_2.png")!important;
+      background-image: url("../img/pic/pergament_2.png") !important;
+
+      .creature-icon {
+        background-color: #dacec9 !important;
+      }
     }
   }
 
@@ -46,19 +50,21 @@
         font-weight: 800;
         color: #333333;
         white-space: nowrap;
-        min-width: 6em;
+        min-width: 5em;
+        margin-right: 0.5em;
+      }
+
+      .creature-icon {
+        display: inline-block;
+        width: 6em;
+        height: 6em;
+        background-color: #efcc90;
+        border-radius: 50%;
+        border: 0.3em solid $colorBlackish;
+        margin-top: 6em;
+        box-shadow: 0 0 2em rgba(0, 0, 0, 0.5);
       }
     }
-  }
-
-  .creature-icon {
-    display: inline-block;
-    z-index: 50;
-    width: 6em;
-    height: 6em;
-    background-color: #efcc90;
-    border-radius: 50%;
-    border: 0.3em solid $colorBlackish;
   }
 
   .meta-container {
@@ -120,6 +126,18 @@
           background-image: url("../img/site/information.svg");
           background-size: 7em;
           width: 5em;
+          height: 5em;
+          margin-bottom: -1em
+        }
+
+        &._dragon-hoard {
+          background-image: url("../img/site/dragonHoard.svg");
+          margin-top: 1em;
+          border: none;
+          background-color: transparent;
+          border-radius: 0;
+          background-size: 7em;
+          width: 3.5em;
           height: 5em;
           margin-bottom: -1em
         }

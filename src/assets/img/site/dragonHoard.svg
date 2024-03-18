@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="200px" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>site/dragonHoard</title>
+    <defs>
+        <linearGradient x1="50%" y1="81.8309295%" x2="53.3533892%" y2="0%" id="linearGradient-1">
+            <stop stop-color="#FF7360" offset="0%"></stop>
+            <stop stop-color="#880000" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="site/dragonHoard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M53.7401547,52.8867188 L146.49422,52.8867188 C152.017068,52.8867188 156.49422,57.3638713 156.49422,62.8867188 C156.49422,64.4284282 156.137752,65.9492604 155.452667,67.3303926 L109.075634,160.826491 C106.621461,165.774104 100.621127,167.795437 95.6735137,165.341263 C93.7156778,164.370115 92.1298898,162.784327 91.158741,160.826491 L44.7817083,67.3303926 C42.327535,62.3827792 44.3488675,56.3824456 49.2964809,53.9282723 C50.677613,53.2431869 52.1984452,52.8867188 53.7401547,52.8867188 Z" id="Path-6" stroke="#490101" stroke-width="13" fill="url(#linearGradient-1)"></path>
+    </g>
+</svg>

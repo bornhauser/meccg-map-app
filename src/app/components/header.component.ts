@@ -18,8 +18,11 @@ import {MapService} from '../services/map-service';
            class="underdeep-toggle-button">
         <div class="menu-circle"></div>
       </div>
-      <div (click)="togglePlayer()" class="turn-toggle-button">
+      <div (click)="togglePlayer()"
+           [ngClass]="{'_active': $data.currentGuiContext_persistent.currentPlayer === PlayerId_e.player_2}"
+           class="turn-toggle-button">
         <div class="menu-circle"></div>
+        <div class="menu-label" [innerHTML]="'app.' + $data.currentGuiContext_persistent.currentPlayer | translate "></div>
       </div>
       <div (click)="$app.openMainMenuModal = true" class="main-menu-button">
         <div class="menu-circle">
@@ -69,4 +72,6 @@ export class HeaderComponent {
     this.$data.currentGuiContext_persistent.underDeep = !this.$data.currentGuiContext_persistent.underDeep;
     this.$data.saveCurrentStates();
   }
+
+  protected readonly PlayerId_e = PlayerId_e;
 }

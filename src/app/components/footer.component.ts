@@ -28,7 +28,7 @@ import {CardUtilService} from '../services/card-util.service';
                *ngIf="$data.currentGuiContext_notPersitent.currentJourneyRegions.length || $data.currentGuiContext_notPersitent.currentJourneySiteTo">
             <app-route></app-route>
           </div>
-          <div class="buttons-container">
+          <div class="buttons-container" *ngIf="$data.currentGuiContext_persistent.currentSiteOrRegion?.type === CardType_e.Site">
             <button class="epic-button" (click)="$data.startJourney()"
                     *ngIf="$data.currentGuiContext_persistent.currentSiteOrRegion && $data.currentGuiContext_persistent.currentSiteOrRegion.type === CardType_e.Site && !$data.currentGuiContext_notPersitent.currentJourneySiteFrom">
               <div class="button-text">{{ 'app.startJourney' | translate }}</div>

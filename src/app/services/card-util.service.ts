@@ -6,7 +6,7 @@ import {
   CreatureType_e,
   LanguageId_e,
   Playable_e,
-  Playables_i,
+  Playables_i, RegionType_e,
   Set_e
 } from '../interfaces/interfaces';
 import {AppService} from './app-service';
@@ -14,6 +14,7 @@ import {DataService} from './data.service';
 import {hasId} from './utility-methods';
 import {challengeDecksSites} from '../../assets/data/challengeDecks';
 
+declare var meccgCards: Card_i[] | undefined;
 
 @Injectable()
 export class CardUtilService {
@@ -24,6 +25,60 @@ export class CardUtilService {
     public $app: AppService,
   ) {
 
+  }
+
+  public getAllCards(): Card_i[] {
+    const answer: Card_i[] = [];
+    if (meccgCards?.length) {
+      meccgCards.forEach((card: Card_i) => {
+        answer.push({
+          'title-gr': card['title-gr'],
+          Hoard: card.Hoard,
+          ImageName: card.ImageName,
+          RPath: card.RPath,
+          Region: card.Region,
+          alignment: card.alignment,
+          gccgSet: card.gccgSet,
+          normalizedtitle: card.normalizedtitle,
+          set_code: card.set_code,
+          text: card.text,
+          title: card.title,
+          type: card.type,
+          Site: card.Site,
+          id: this.createCardId(card),
+        });
+      });
+      answer.forEach((card: Card_i) => {
+        if (card.RPath === 'Boarder-land') {
+          card.RPath = RegionType_e['Border-land'];
+        }
+        if (card.RPath === 'The Under-gates') {
+          card.RPath = RegionType_e['Under-deeps'];
+        }
+        if (card.normalizedtitle === 'the rusted-deeps') {
+          card.text = card.text?.replace('Iron Hill Dwarf-hold(13)', 'Iron Hill Dwarf-hold (13)')
+        }
+        if (card.normalizedtitle === 'the drowning-deeps') {
+          card.text = card.text?.replace('Blue-mountain Dwarf-hold', 'Blue Mountain Dwarf-hold')
+        }
+        if (card.normalizedtitle === 'remains of thangorodrim') {
+          card.text = card.text?.replace('the Drowning-deeps', 'The Drowning-deeps')
+        }
+        if (card.normalizedtitle === 'the under-gates') {
+          card.text = card.text?.replace('the Under-grottos', 'The Under-grottos')
+        }
+        if (card.normalizedtitle === 'old pukel-land') {
+          card.text = card.text?.replace('Eridaoran Coast', 'Eriadoran Coast')
+        }
+        if (card.normalizedtitle === 'northern rhovanion') {
+          card.text = card.text + ', Southern Rhovanion';
+        }
+        if (card.normalizedtitle === 'anfalas') {
+          card.text = card.text?.replace('Old Pûkel-land', 'Old Pûkel Gap')
+        }
+      });
+    }
+    return answer;
   }
 
   public createCardId(card: Card_i): string {
@@ -108,6 +163,8 @@ export class CardUtilService {
   }
 
   public getPlayablesOfCard(card: Card_i): Playables_i | null {
+
+    const creatureId = this.getCreatureId(card);
     if (card.Playable) {
       return {
         [Playable_e.scrol_of_isildur]: card.Playable.indexOf(Playable_e.scrol_of_isildur) > -1,
@@ -117,6 +174,7 @@ export class CardUtilService {
         [Playable_e.palantiri]: card.Playable.indexOf(Playable_e.palantiri) > -1,
         [Playable_e.gold_ring]: card.Playable.indexOf(Playable_e.gold_ring) > -1,
         [Playable_e.information]: card.Playable.indexOf(Playable_e.information) > -1,
+        [Playable_e.dragonHoard]: creatureId === 'dragon' || card.normalizedtitle === 'framsburg',
       };
     } else {
       return null;
@@ -170,6 +228,20 @@ export class CardUtilService {
         answer = CreatureType_e.troll;
       } else if (card.text.indexOf(CreatureType_e.opponent_may_play) > -1) {
         answer = CreatureType_e.opponent_may_play;
+      } else if (card.text.indexOf(CreatureType_e.drake) > -1) {
+        answer = CreatureType_e.drake;
+      } else if (card.text.indexOf(CreatureType_e.drake) > -1) {
+        answer = CreatureType_e.drake;
+      } else if (card.text.indexOf(CreatureType_e.dwarves) > -1) {
+        answer = CreatureType_e.dwarves;
+      } else if (card.text.indexOf(CreatureType_e.elves) > -1) {
+        answer = CreatureType_e.elves;
+      } else if (card.normalizedtitle === 'eagles\' eyrie') {
+        answer = CreatureType_e.eagle;
+      } else if (card.text.indexOf(CreatureType_e.maia) > -1) {
+        answer = CreatureType_e.maia;
+      } else if (card.text.indexOf('Dúnedain') > -1) {
+        answer = CreatureType_e.dunedain;
       }
     }
     return answer.toLowerCase().replaceAll('û', 'u').replaceAll(' ', '-');

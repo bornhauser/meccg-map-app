@@ -125,7 +125,7 @@
     font-size: 10px;
     position: absolute;
     bottom: 2px;
-    left: 62px;
+    right: 70px;
     padding: 1em;
     cursor: pointer;
     transform: translateY(50%);
@@ -133,8 +133,6 @@
     &._active {
       .menu-circle {
         transform: rotate3d(1, 0, 0, 180deg)
-
-
       }
     }
 
@@ -179,8 +177,40 @@
     padding: 1em;
     cursor: pointer;
     transform: translateY(50%);
+    display: flex;
+    align-items: center;
+
+    &._active {
+      .menu-circle {
+        transform: rotate(180deg)
+      }
+    }
+
+    .menu-label {
+      width: auto;
+      height: 1em;
+      box-shadow: 0 0 0 2px $colorBlackish,
+      0 0 0 5px $colorCian,
+      0 0 0 9px $colorBlackish,
+      4px 4px 9px 5px rgba(0, 0, 0, 0.2);
+      background-color: #151515;
+      border-radius: 20px;
+      color: $colorCian;
+      padding: 0 0.4em;
+      font-size: 1.5em;
+      padding-left: 0.8em;
+      font-weight: 400;
+      transition: all 0.2s;
+      text-transform: uppercase;
+
+      b {
+        font-weight: 800;
+        color: #c8dbfc;
+      }
+    }
 
     .menu-circle {
+      transform: rotate(0deg);
       width: 3em;
       height: 3em;
       display: inline-flex;
@@ -200,7 +230,7 @@
 
     @media (hover: hover) {
       &:hover {
-        .menu-circle {
+        .menu-circle, .menu-label {
           box-shadow: 0 0 0 2px $colorBlackish,
           0 0 0 5px lighten($colorCian, 30%),
           0 0 0 9px $colorBlackish;
@@ -395,8 +425,9 @@
         justify-content: center;
         flex-wrap: wrap;
         max-width: 30vw;
-        gap: 4%;
+        gap: 0.6em;
         width: 100%;
+        padding-top: 1.2em;
 
         .epic-button {
           width: 10em;
@@ -409,11 +440,11 @@
           overflow: hidden;
           box-shadow: 0 0 20px rgba(0, 0, 0, 1);
           border: 2px solid #e7d9ba;
-          height: 70px;
           cursor: pointer;
           flex-shrink: 1;
-          padding: 0.5em;
+          padding: 1em 0.8em;
           max-width: 100%;
+          min-width: 12em;
 
           &:before {
             content: "";

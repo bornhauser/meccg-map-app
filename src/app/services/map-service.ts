@@ -178,9 +178,9 @@ export class MapService {
         const y = passmarkerForRegionLabel.cy.animVal.value;
         const regionLabelSvg: any = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
         regionLabelSvg.setAttribute('class', 'region-label');
-        regionLabelSvg.setAttribute('x', x - 600);
-        regionLabelSvg.setAttribute('y', y - 180);
-        regionLabelSvg.setAttribute('width', '1200');
+        regionLabelSvg.setAttribute('x', x - 700);
+        regionLabelSvg.setAttribute('y', y - 210);
+        regionLabelSvg.setAttribute('width', '1400');
         regionLabelSvg.setAttribute('height', '300');
         regionLabelSvg.setAttribute('id', this.$cardUtil.getRegionLabelId(card));
         regionLabelSvg.innerHTML = `
@@ -244,10 +244,12 @@ export class MapService {
           playableHtml += playables?.[Playable_e.greater] ? '<div class="playable _greater"></div>' : '';
           playableHtml += playables?.[Playable_e.gold_ring] ? '<div class="playable _gold_ring"></div>' : '';
           playableHtml += playables?.[Playable_e.information] ? '<div class="playable _information"></div>' : '';
+          playableHtml += playables?.[Playable_e.dragonHoard] ? '<div class="playable _dragon-hoard"></div>' : '';
           // playableHtml += playables?.[Playable_e.palantiri] ? '<div class="playable _palantiri"></div>' : '';
           // playableHtml += playables?.[Playable_e.scrol_of_isildur] ? '<div class="playable _scrol_of_isildur"></div>' : '';
+          const creatureIconUrl: string = this.$cardUtil.getCreatureIconUrl(card) ?? '';
           const creatureIcon: string = this.$cardUtil.getCreatureId(card) ?
-            `<div class="creature-icon" style="background-image: url('${this.$cardUtil.getCreatureIconUrl(card)}')"></div>` : '';
+            `<div class="creature-icon" style="background-image: url('${creatureIconUrl}')"></div>` : '';
           const meta: string = playableHtml ? `
           <div class="meta-container">
             <div class="meta">
@@ -264,6 +266,7 @@ export class MapService {
                 <div class="pergament">
                   <div class="site-icon" style="background-image: url('${this.$cardUtil.getSiteIconUrl(card)}')"></div>
                   <div class="site-title">${this.$cardUtil.getCardTitle(card)}</div>
+                  ${creatureIconUrl ? creatureIcon : ''}
                 </div>
               </div>
             </div>

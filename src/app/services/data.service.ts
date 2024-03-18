@@ -6,14 +6,11 @@ import {
   CurrentGuiContext_2,
   CurrentGuiContext_3,
   PlayerId_e,
-  RegionType_e,
 } from '../interfaces/interfaces';
 import {copyObject, findId, findIdAndDelete, getStringBetweenStrings, hasId} from './utility-methods';
 import {AppService} from './app-service';
 import {CardUtilService} from './card-util.service';
 import {MapService} from './map-service';
-
-declare var meccgCards: Card_i[] | undefined;
 
 @Injectable()
 export class DataService {
@@ -42,33 +39,10 @@ export class DataService {
   ) {
     $cardUtil.$data = this;
     $app.$data = this;
-    if (meccgCards?.length) {
-      meccgCards.forEach((card) => {
-        card.id = this.$cardUtil.createCardId(card);
-        if (card.RPath === 'Boarder-land') {
-          card.RPath = RegionType_e['Border-land'];
-        }
-        if (card.RPath === 'The Under-gates') {
-          card.RPath = RegionType_e['Under-deeps'];
-        }
-        if (card.normalizedtitle === 'the rusted-deeps') {
-          card.text = card.text?.replace('Iron Hill Dwarf-hold(13)', 'Iron Hill Dwarf-hold (13)')
-        }
-        if (card.normalizedtitle === 'the drowning-deeps') {
-          card.text = card.text?.replace('Blue-mountain Dwarf-hold', 'Blue Mountain Dwarf-hold')
-        }
-        if (card.normalizedtitle === 'remains of thangorodrim') {
-          card.text = card.text?.replace('the Drowning-deeps', 'The Drowning-deeps')
-        }
-        if (card.normalizedtitle === 'the under-gates') {
-          card.text = card.text?.replace('the Under-grottos', 'The Under-grottos')
-        }
-      });
-      this.all_cards = meccgCards;
-      const savedGuiContext = sessionStorage.getItem('meccg-gui-context')
-      if (savedGuiContext) {
-        this.currentGuiContext_persistent = JSON.parse(savedGuiContext);
-      }
+    this.all_cards = this.$cardUtil.getAllCards();
+    const savedGuiContext = sessionStorage.getItem('meccg-gui-context')
+    if (savedGuiContext) {
+      this.currentGuiContext_persistent = JSON.parse(savedGuiContext);
     }
   }
 
@@ -94,6 +68,13 @@ export class DataService {
 
   public calculateReachableRegionsAndSites(): void {
     if (this.currentGuiContext_persistent.currentSiteOrRegion) {
+      const pushSitesOfRegion = (region: Card_i, routingRegions: Card_i[]) => {
+        const sites: Card_i[] = this.getSitesOfRegion(region);
+        sites.forEach((site) => {
+          site.routingRegions = routingRegions;
+          reachableSites.push(site);
+        })
+      };
       const startSite: Card_i = copyObject(this.currentGuiContext_persistent.currentSiteOrRegion);
       const regionLevel_1: Card_i | null = startSite.type === CardType_e.Site ? copyObject(this.getRegionOfSite(startSite)) : null;
       const reachableRegions: Card_i[] = [];
@@ -101,42 +82,33 @@ export class DataService {
       if (regionLevel_1) {
         regionLevel_1.routingSteps = 1;
         reachableRegions.push(regionLevel_1);
-        const sites: Card_i[] = this.getSitesOfRegion(regionLevel_1);
-        sites.forEach((site) => {
-          site.routingRegions = [regionLevel_1];
-          reachableSites.push(site);
-        })
-        regionLevel_1.suroundingRegions = this.getSurroundingRegionsWithoutRedundant(regionLevel_1, regionLevel_1, 1);
-        regionLevel_1.suroundingRegions.forEach((regionLevel_2) => {
-          regionLevel_2.routingSteps = 2;
-          reachableRegions.push(regionLevel_2);
-          const sites: Card_i[] = this.getSitesOfRegion(regionLevel_2);
-          sites.forEach((site) => {
-            site.routingRegions = [regionLevel_1, regionLevel_2];
-            reachableSites.push(site);
-          })
-          regionLevel_2.suroundingRegions = this.getSurroundingRegionsWithoutRedundant(regionLevel_2, regionLevel_1, 2);
-          regionLevel_2.suroundingRegions.forEach((regionLevel_3) => {
-            regionLevel_3.routingSteps = 3;
-            reachableRegions.push(regionLevel_3);
-            const sites: Card_i[] = this.getSitesOfRegion(regionLevel_3);
-            sites.forEach((site) => {
-              site.routingRegions = [regionLevel_1, regionLevel_2, regionLevel_3];
-              reachableSites.push(site);
-            })
-            regionLevel_3.suroundingRegions = this.getSurroundingRegionsWithoutRedundant(regionLevel_3, regionLevel_1, 3);
-            regionLevel_3.suroundingRegions.forEach((regionLevel_4) => {
-              regionLevel_4.routingSteps = 4;
-              reachableRegions.push(regionLevel_4);
-              const sites: Card_i[] = this.getSitesOfRegion(regionLevel_4);
-              sites.forEach((site) => {
-                site.routingRegions = [regionLevel_1, regionLevel_2, regionLevel_3, regionLevel_4];
-                reachableSites.push(site);
-              })
-            });
+        pushSitesOfRegion(regionLevel_1, [regionLevel_1]);
+        regionLevel_1.suroundingRegions = this.getSurroundingRegionsWithoutRedundant(regionLevel_1, regionLevel_1);
+      }
+      regionLevel_1?.suroundingRegions?.forEach((regionLevel_2) => {
+        regionLevel_2.routingSteps = 2;
+        reachableRegions.push(regionLevel_2);
+        pushSitesOfRegion(regionLevel_2, [regionLevel_1, regionLevel_2]);
+        regionLevel_2.suroundingRegions = this.getSurroundingRegionsWithoutRedundant(regionLevel_2, regionLevel_1);
+      });
+      regionLevel_1?.suroundingRegions?.forEach((regionLevel_2) => {
+        regionLevel_2?.suroundingRegions?.forEach((regionLevel_3) => {
+          regionLevel_3.routingSteps = 3;
+          reachableRegions.push(regionLevel_3);
+          pushSitesOfRegion(regionLevel_3, [regionLevel_1, regionLevel_2, regionLevel_3]);
+          regionLevel_3.suroundingRegions = this.getSurroundingRegionsWithoutRedundant(regionLevel_3, regionLevel_1);
+        });
+      });
+      regionLevel_1?.suroundingRegions?.forEach((regionLevel_2) => {
+        regionLevel_2?.suroundingRegions?.forEach((regionLevel_3) => {
+          regionLevel_3?.suroundingRegions?.forEach((regionLevel_4) => {
+            regionLevel_4.routingSteps = 4;
+            reachableRegions.push(regionLevel_4);
+            pushSitesOfRegion(regionLevel_4, [regionLevel_1, regionLevel_2, regionLevel_3, regionLevel_4]);
+            regionLevel_4.suroundingRegions = this.getSurroundingRegionsWithoutRedundant(regionLevel_4, regionLevel_1);
           });
         });
-      }
+      });
       this.getReachableUnderDeepSites(startSite).forEach((card) => {
         reachableSites.push(card);
       })
@@ -179,38 +151,33 @@ export class DataService {
     return answer;
   }
 
-  public getSurroundingRegionsWithoutRedundant(card_region: Card_i, firstRegionComplex?: Card_i, level?: number): Card_i[] {
+  public getSurroundingRegionsWithoutRedundant(card_region: Card_i, firstRegionComplex?: Card_i): Card_i[] {
     const answer: Card_i[] = [];
-    const availableRegions: Card_i[] = copyObject(this.$cardUtil.filterOfficial(this.$cardUtil.filterRegions(this.all_cards)));
-    availableRegions.forEach((card) => {
+    const all_regions: Card_i[] = copyObject(this.$cardUtil.filterOfficial(this.$cardUtil.filterRegions(this.all_cards)));
+    all_regions.forEach((card: Card_i) => {
       if (card.text && card.text.indexOf(card_region.title ?? '') > -1) {
+        if (card_region.title === 'Belfalas' && card.text.indexOf('Bay of Belfalas') > -1 && !(card.text.indexOf(', Belfalas') > -1)) {
+          console.log(card.text)
+          return;
+        }
         const foundExistingRegion: Card_i | null = this.findExistingRegion(card.id ?? '', firstRegionComplex ?? null);
         if (!foundExistingRegion) {
           answer.push(card);
-        } else {
         }
       }
-    })
+    });
     return answer;
   };
 
   public findExistingRegion(id: string, region_1: any): Card_i | null {
     let answer: Card_i | null = null;
-    if (region_1?.id === id) {
-      answer = region_1;
-    }
+    region_1?.id === id ? answer = region_1 : null;
     region_1?.suroundingRegions?.forEach((region_2: Card_i) => {
-      if (region_2.id === id) {
-        answer = region_2;
-      }
+      region_2.id === id ? answer = region_2 : null;
       region_2.suroundingRegions?.forEach((region_3: Card_i) => {
-        if (region_3.id === id) {
-          answer = region_3;
-        }
+        region_3.id === id ? answer = region_3 : null;
         region_3.suroundingRegions?.forEach((region_4: Card_i) => {
-          if (region_4.id === id) {
-            answer = region_4;
-          }
+          region_4.id === id ? answer = region_4 : null;
         });
       });
     });
