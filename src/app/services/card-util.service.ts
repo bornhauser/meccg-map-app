@@ -45,6 +45,7 @@ export class CardUtilService {
           title: card.title,
           type: card.type,
           Site: card.Site,
+          Playable: card.Playable,
           id: this.createCardId(card),
         });
       });

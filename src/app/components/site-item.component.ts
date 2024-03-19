@@ -16,8 +16,6 @@ import {CardUtilService} from '../services/card-util.service';
           <div class="playable _gold_ring" *ngIf="playables?.[Playable_e.gold_ring]"></div>
           <div class="playable _information" *ngIf="playables?.[Playable_e.information]"></div>
           <div class="playable _dragon-hoard" *ngIf="playables?.[Playable_e.dragonHoard]"></div>
-          <!--          <div class="playable _palantiri" *ngIf="playables?.[Playable_e.palantiri]"></div>-->
-          <!--          <div class="playable _scrol_of_isildur" *ngIf="playables?.[Playable_e.scrol_of_isildur]"></div>-->
         </div>
       </div>
       <div class="pergament-container">
