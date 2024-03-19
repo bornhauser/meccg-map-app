@@ -245,8 +245,6 @@ export class MapService {
           playableHtml += playables?.[Playable_e.gold_ring] ? '<div class="playable _gold_ring"></div>' : '';
           playableHtml += playables?.[Playable_e.information] ? '<div class="playable _information"></div>' : '';
           playableHtml += playables?.[Playable_e.dragonHoard] ? '<div class="playable _dragon-hoard"></div>' : '';
-          // playableHtml += playables?.[Playable_e.palantiri] ? '<div class="playable _palantiri"></div>' : '';
-          // playableHtml += playables?.[Playable_e.scrol_of_isildur] ? '<div class="playable _scrol_of_isildur"></div>' : '';
           const creatureIconUrl: string = this.$cardUtil.getCreatureIconUrl(card) ?? '';
           const creatureIcon: string = this.$cardUtil.getCreatureId(card) ?
             `<div class="creature-icon" style="background-image: url('${creatureIconUrl}')"></div>` : '';

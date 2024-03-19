@@ -215,26 +215,29 @@ export class DataService {
       if (card.type === CardType_e.Site) {
         const clickedCard: Card_i = findId(this.currentGuiContext_persistent.currentReachableSites, card.id);
         this.currentGuiContext_notPersitent.currentJourneySiteTo = clickedCard as Card_i;
-        if (!hasId(this.currentGuiContext_notPersitent.currentJourneyRegions, this.getRegionOfSite(card)?.id)) {
+        console.log(this.currentGuiContext_notPersitent.currentJourneyRegions[this.currentGuiContext_notPersitent.currentJourneyRegions.length - 1].id);
+        console.log(this.getRegionOfSite(card)?.id);
+        if (this.currentGuiContext_notPersitent.currentJourneyRegions[this.currentGuiContext_notPersitent.currentJourneyRegions.length - 1].id === this.getRegionOfSite(card)?.id) {
+        } else {
           this.currentGuiContext_notPersitent.currentJourneyRegions = clickedCard?.routingRegions ?? [];
         }
         this.calculateCurrentPlayableHazards();
       } else if (card.type === CardType_e.Region) {
-        if (card.id === this.currentGuiContext_notPersitent.currentJourneyRegions[0]?.id) {
-          this.currentGuiContext_notPersitent.currentJourneyRegions = [this.currentGuiContext_notPersitent.currentJourneyRegions[0]];
-          this.currentGuiContext_notPersitent.currentJourneySiteTo = null;
-        }
         const foundRegions: Card_i[] = this.getSurroundingRegionsWithoutRedundant(card);
-        if (hasId(foundRegions, this.currentGuiContext_notPersitent.currentJourneyRegions[0]?.id)) {
+        if (card.id === this.currentGuiContext_notPersitent.currentJourneyRegions[0]?.id) {
+          this.currentGuiContext_notPersitent.currentJourneyRegions = [card];
+        } else if (card.id === this.currentGuiContext_notPersitent.currentJourneyRegions[1]?.id) {
           this.currentGuiContext_notPersitent.currentJourneyRegions = [this.currentGuiContext_notPersitent.currentJourneyRegions[0], card];
-          this.currentGuiContext_notPersitent.currentJourneySiteTo = null;
-        } else if (hasId(foundRegions, this.currentGuiContext_notPersitent.currentJourneyRegions[1]?.id)) {
+        } else if (card.id === this.currentGuiContext_notPersitent.currentJourneyRegions[2]?.id) {
           this.currentGuiContext_notPersitent.currentJourneyRegions = [this.currentGuiContext_notPersitent.currentJourneyRegions[0], this.currentGuiContext_notPersitent.currentJourneyRegions[1], card];
-          this.currentGuiContext_notPersitent.currentJourneySiteTo = null;
         } else if (hasId(foundRegions, this.currentGuiContext_notPersitent.currentJourneyRegions[2]?.id)) {
           this.currentGuiContext_notPersitent.currentJourneyRegions = [this.currentGuiContext_notPersitent.currentJourneyRegions[0], this.currentGuiContext_notPersitent.currentJourneyRegions[1], this.currentGuiContext_notPersitent.currentJourneyRegions[2], card];
-          this.currentGuiContext_notPersitent.currentJourneySiteTo = null;
+        } else if (hasId(foundRegions, this.currentGuiContext_notPersitent.currentJourneyRegions[1]?.id)) {
+          this.currentGuiContext_notPersitent.currentJourneyRegions = [this.currentGuiContext_notPersitent.currentJourneyRegions[0], this.currentGuiContext_notPersitent.currentJourneyRegions[1], card];
+        } else if (hasId(foundRegions, this.currentGuiContext_notPersitent.currentJourneyRegions[0]?.id)) {
+          this.currentGuiContext_notPersitent.currentJourneyRegions = [this.currentGuiContext_notPersitent.currentJourneyRegions[0], card];
         }
+        this.currentGuiContext_notPersitent.currentJourneySiteTo = null;
       }
     } else {
       this.currentGuiContext_persistent.currentSiteOrRegion = card;
@@ -291,9 +294,6 @@ export class DataService {
 
   public getUnderdeepMoveNumbers(onlyFromThisCard?: Card_i, getAllExisting?: boolean): { [key: string]: number } {
     const answer: { [key: string]: number } = {};
-    if (!onlyFromThisCard || onlyFromThisCard.normalizedtitle === 'cirith gorgor' || onlyFromThisCard.normalizedtitle === 'the under-galleries') {
-      answer['the-under-galleries_cirith-gorgor'] = 0;
-    }
     if (this.currentGuiContext_persistent.currentAlignment === AlignmentType_e.Balrog || getAllExisting) {
       if (!onlyFromThisCard || (onlyFromThisCard.RPath === 'Under-deeps' && onlyFromThisCard.Site === 'Ruins & Lairs')) {
         answer['x_ancient-deep-hold'] = 8;
@@ -301,6 +301,10 @@ export class DataService {
     }
     const all_sites: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, true, getAllExisting ? AlignmentType_e.Balrog : undefined));
     const all_underdeepSites: Card_i[] = this.$cardUtil.filterUnderDeeps(this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, true, getAllExisting ? AlignmentType_e.Balrog : undefined)));
+    if (!onlyFromThisCard || onlyFromThisCard.normalizedtitle === 'cirith gorgor' || onlyFromThisCard.normalizedtitle === 'the under-galleries') {
+      if (getAllExisting || hasId(all_underdeepSites, 'the under-galleries', 'normalizedtitle'))
+        answer['the-under-galleries_cirith-gorgor'] = 0;
+    }
     all_underdeepSites.forEach((underdeepSite: Card_i) => {
       const text = underdeepSite.text;
       if (text && text.indexOf('Adjacent Sites') > -1) {

@@ -46,7 +46,9 @@ export class MainMenuModalComponent {
   public onLanguageChange($event: any) {
     this.$data.resetCurrentGuiContext();
     this.$app.changeAppLanguage($event?.selected ?? null)
-    this.$map.renderRegionLabelAndSites();
+    setTimeout(() => {
+      this.$map.renderRegionLabelAndSites();
+    }, 200);
     setTimeout(() => {
       this.$app.openMainMenuModal = false;
     }, 600)
@@ -55,7 +57,9 @@ export class MainMenuModalComponent {
   public onAlignmentChange($event: any) {
     this.$data.resetCurrentGuiContext();
     this.$data.currentGuiContext_persistent.currentAlignment = $event?.selected ?? AlignmentType_e.Hero;
-    this.$map.renderRegionLabelAndSites();
+    setTimeout(() => {
+      this.$map.renderRegionLabelAndSites();
+    }, 200);
     setTimeout(() => {
       this.$app.openMainMenuModal = false;
     }, 600)

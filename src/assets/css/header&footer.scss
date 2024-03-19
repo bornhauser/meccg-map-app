@@ -41,7 +41,7 @@
 
   .header-content {
     position: relative;
-    top: 30px;
+    top: 0;
     width: auto;
     display: flex;
     justify-content: center;
@@ -49,7 +49,7 @@
     transform: rotate(180deg);
     background-image: url("../img/map/old-map_sw.jpg");
     background-size: 150%;
-    padding: 10px 20px;
+    padding: 10px 20px 50px;
     box-shadow: 0 0 0 2px $colorBlackish,
     0 0 0 5px $colorCian,
     0 0 0 9px $colorBlackish,
@@ -202,6 +202,11 @@
       font-weight: 400;
       transition: all 0.2s;
       text-transform: uppercase;
+      @media only screen and (max-width: $responsiveWidthSmall) {
+        span {
+          font-size: 0;
+        }
+      }
 
       b {
         font-weight: 800;
