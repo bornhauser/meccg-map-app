@@ -7,7 +7,7 @@ import {AppService} from '../../services/app-service';
   template: `
 
     <div class="modal-background" (click)="$app.openSiteSelectionModal = false">
-      <div class="site-selection-modal">
+      <div class="modal _site-selection">
         <div class="modal-scroll-container">
           <div class="site-items">
             <app-site-item *ngFor="let card of $data.currentGuiContext_persistent.currentReachableSites"

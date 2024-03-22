@@ -11,6 +11,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0 80px;
 
   &:before {
     content: "";
@@ -124,7 +125,7 @@
   .underdeep-toggle-button {
     font-size: 10px;
     position: absolute;
-    bottom: 2px;
+    bottom: 1px;
     right: 70px;
     padding: 1em;
     cursor: pointer;
@@ -265,6 +266,28 @@
     font-size: 10px;
   }
 
+  .regions {
+    position: relative;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    flex-wrap: wrap;
+    border: 3px solid transparent;
+    padding: 5px;
+    transform: scale(105%);
+    border-radius: 1em;
+    transition: all 0.2s;
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover {
+        border: 3px solid white;
+      }
+    }
+  }
+
   .journey-icon-container {
     position: relative;
     width: 2.5em;
@@ -290,6 +313,17 @@
 
       &._site {
         transform: scale(130%);
+        background-image: url("../img/region/playableHazard.svg");
+        transition: all 0.2s;
+        border-radius: 10px;
+        border: 2px solid transparent;
+        cursor: pointer;
+
+        @media (hover: hover) {
+          &:hover {
+            border: 2px solid white;
+          }
+        }
       }
 
       &._hazard {
@@ -298,6 +332,7 @@
         transition: all 0.2s;
         border-radius: 10px;
         border: 2px solid transparent;
+        cursor: pointer;
 
         @media (hover: hover) {
           &:hover {

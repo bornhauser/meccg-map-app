@@ -72,3 +72,7 @@ export function getStringBetweenStrings(startStr: string, endStr: string, str: s
   const pos: number = str.indexOf(startStr) + startStr.length;
   return str.substring(pos, str.indexOf(endStr, pos));
 }
+
+export function createRandomId(): string {
+  return 'id_' + Math.floor(Math.random() * 10000000);
+}

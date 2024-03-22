@@ -8,8 +8,8 @@ import {CardUtilService} from '../../services/card-util.service';
   selector: 'app-hazard-cards-modal',
   template: `
 
-    <div class="modal-background" (click)="$app.openHazardCardsModal = false; $app.openModalReversed = false;">
-      <div class="hazard-cards-modal">
+    <div class="modal-background" (click)="$app.openHazardCardsModal = false; $app.haveModalReversed = false;">
+      <div class="modal _hazard-cards">
         <div class="modal-scroll-container">
           <div class="hazard-cards">
             <div class="meccg-card-image"

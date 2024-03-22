@@ -23,6 +23,7 @@ import {AppService} from './services/app-service';
 import {CardUtilService} from './services/card-util.service';
 import {UndergroundSvgComponent} from './components/underground-svg.component';
 import {MapService} from './services/map-service';
+import {RegionNamesModalComponent} from './components/modal/region-names-modal.component';
 
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -43,6 +44,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     MainMenuModalComponent,
     SelectItemComponent,
     UndergroundSvgComponent,
+    RegionNamesModalComponent,
   ],
   imports: [
     CommonModule,

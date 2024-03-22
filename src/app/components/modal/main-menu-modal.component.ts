@@ -9,7 +9,7 @@ import {MapService} from '../../services/map-service';
   template: `
 
     <div class="modal-background" (click)="$app.openMainMenuModal = false;">
-      <div class="main-menu-modal">
+      <div class="modal _main-menu">
         <div class="modal-scroll-container">
           <div class="modal-scroll-container-content">
             <div class="menu-title">{{ 'app.language' | translate }}</div>

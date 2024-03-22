@@ -6,7 +6,8 @@ import {
   CreatureType_e,
   LanguageId_e,
   Playable_e,
-  Playables_i, RegionType_e,
+  Playables_i,
+  RegionType_e,
   Set_e
 } from '../interfaces/interfaces';
 import {AppService} from './app-service';
@@ -36,7 +37,9 @@ export class CardUtilService {
           Hoard: card.Hoard,
           ImageName: card.ImageName,
           RPath: card.RPath,
+          Path: card.Path,
           Region: card.Region,
+          Haven: card.Haven,
           alignment: card.alignment,
           gccgSet: card.gccgSet,
           normalizedtitle: card.normalizedtitle,
@@ -76,6 +79,9 @@ export class CardUtilService {
         }
         if (card.normalizedtitle === 'anfalas') {
           card.text = card.text?.replace('Old Pûkel-land', 'Old Pûkel Gap')
+        }
+        if (card.normalizedtitle === 'cirith gorgor') {
+          card.Path = card.Path?.replace('d s w f b w', 'd d s w f b w')
         }
       });
     }
@@ -314,6 +320,40 @@ export class CardUtilService {
       answer = card['title-gr'] ?? '';
     }
     return answer;
+  }
+
+  public createNonRegionCard(key: string): Card_i | null {
+    let type: RegionType_e | null = null;
+    if (key === 'c') {
+      type = RegionType_e['Coastal Sea']
+    }
+    if (key === 's') {
+      type = RegionType_e['Shadow-land']
+    }
+    if (key === 'w') {
+      type = RegionType_e['Wilderness']
+    }
+    if (key === 'd') {
+      type = RegionType_e['Dark-domain']
+    }
+    if (key === 'b') {
+      type = RegionType_e['Border-land']
+    }
+    if (key === 'f') {
+      type = RegionType_e['Free-domain']
+    }
+    if (type) {
+      return {
+        title: '...',
+        'title-gr': '...',
+        RPath: type,
+        text: '...',
+        type: CardType_e.Region,
+        id: 'xxx',
+      }
+    } else {
+      return null;
+    }
   }
 
 }

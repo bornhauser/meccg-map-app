@@ -4,7 +4,7 @@ import {CardUtilService} from './card-util.service';
 import * as L from 'leaflet';
 import {AlignmentType_e, Card_i, CardType_e, Playable_e, Playables_i} from '../interfaces/interfaces';
 import {DataService} from './data.service';
-import {copyObject} from './utility-methods';
+import {copyObject, createRandomId} from './utility-methods';
 import {Map, MapOptions} from 'leaflet';
 
 @Injectable()
@@ -233,9 +233,9 @@ export class MapService {
           const y = siteSvg.y.animVal.value;
           svgElement.setAttribute('class', 'site-object')
           svgElement.setAttribute('x', x - 70);
-          svgElement.setAttribute('y', y - 50);
+          svgElement.setAttribute('y', y - 70);
           svgElement.setAttribute('width', '1200');
-          svgElement.setAttribute('height', '200');
+          svgElement.setAttribute('height', '220');
           svgElement?.setAttribute('id', this.$cardUtil.getSiteLabelId(card));
           const playables: Playables_i | null = this.$cardUtil.getPlayablesOfCard(card);
           let playableHtml: string = '';
@@ -255,7 +255,7 @@ export class MapService {
             </div>
           </div>` : '';
           this.$cardUtil.getCreatureId(card);
-          const id: string = 'id_' + Math.random();
+          const id: string = card.id + createRandomId();
           svgElement.innerHTML = `
           <div class="content-frame" xmlns="http://www.w3.org/1999/xhtml">
             <div class="site-button ${(this.$cardUtil.isUnderDeepSite(card) ? '_under-deep' : '')}" id="${id}">
@@ -265,6 +265,12 @@ export class MapService {
                   <div class="site-icon" style="background-image: url('${this.$cardUtil.getSiteIconUrl(card)}')"></div>
                   <div class="site-title">${this.$cardUtil.getCardTitle(card)}</div>
                   ${creatureIconUrl ? creatureIcon : ''}
+                  <div class="event-container _gogo">
+                    <div class="event-button _gogo"></div>
+                  </div>
+                  <div class="event-container _end">
+                    <div class="event-button _end"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -279,10 +285,15 @@ export class MapService {
           // @ts-ignore
           const element: any = document.getElementById(id);
           element?.addEventListener('click', function ($event: any) { // @ts-ignore
-            document.onSiteOrRegionClick(card, $event, isUnderDeeps);
+            document.onSiteOrRegionClick(card, $event);
           });
-          element?.addEventListener('dblclick', function ($event: any) { // @ts-ignore
-            document.onSiteOrRegionDoubleClick(card, $event, isUnderDeeps);
+          document.querySelector('#' + id + ' .event-button._gogo')?.addEventListener('click', ($event: any) => {
+            this.$data.startJourney();
+            $event.stopPropagation();
+          });
+          document.querySelector('#' + id + ' .event-button._end')?.addEventListener('click', ($event: any) => {
+            this.$data.endJourney(card);
+            $event.stopPropagation();
           });
         }
       })
@@ -292,69 +303,32 @@ export class MapService {
   public renderActivities() {
     let allSiteCards = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.$data.all_cards, true));
     let allRegionCards = this.$cardUtil.filterOfficial(this.$cardUtil.filterRegions(this.$data.all_cards));
-    // FOCUS SITE
-    allSiteCards.forEach((card) => {
-      const svg: any = document.querySelector('.' + this.layerWithSitesClass + ' #' + this.$cardUtil.getSiteLabelId(card));
-      svg?.setAttribute('aria-describedby', '0');
-      const svg2: any = document.querySelector('.' + this.layerWithUnderdeepSitesClass + ' #' + this.$cardUtil.getSiteLabelId(card));
-      svg2?.setAttribute('aria-describedby', '0');
-    });
-    if (this.$data.currentGuiContext_persistent.currentSiteOrRegion?.type === CardType_e.Site) {
-      const svg: any = document.querySelector('.' + this.layerWithSitesClass + ' #' + this.$cardUtil.getSiteLabelId(this.$data.currentGuiContext_persistent.currentSiteOrRegion));
-      svg?.setAttribute('aria-describedby', '1');
-      const svg2: any = document.querySelector('.' + this.layerWithUnderdeepSitesClass + ' #' + this.$cardUtil.getSiteLabelId(this.$data.currentGuiContext_persistent.currentSiteOrRegion));
-      svg2?.setAttribute('aria-describedby', '1');
-    }
-    // REGIONS
-    allRegionCards.forEach((card) => {
-      const borderSvg: any = document.querySelector('#' + this.$cardUtil.getRegionPathId(card));
-      borderSvg?.setAttribute('aria-description', '0');
-    });
-    this.$data.currentGuiContext_notPersitent.currentJourneyRegions.forEach((card) => {
-      const borderSvg: any = document.querySelector('#' + this.$cardUtil.getRegionPathId(card));
-      borderSvg?.setAttribute('aria-description', '1');
-    });
-    // JOURNEY FOCUS SITES
+    // RESET SITES
     allSiteCards.forEach((card) => {
       const svg: any = document.querySelector('.' + this.layerWithSitesClass + ' #' + this.$cardUtil.getSiteLabelId(card));
       svg?.setAttribute('aria-description', '0');
       const svg2: any = document.querySelector('.' + this.layerWithUnderdeepSitesClass + ' #' + this.$cardUtil.getSiteLabelId(card));
       svg2?.setAttribute('aria-description', '0');
     });
+    // FOCUS SITE
+    if (this.$data.currentGuiContext_persistent.currentSiteOrRegion?.type === CardType_e.Site) {
+      const svg: any = document.querySelector('.' + this.layerWithSitesClass + ' #' + this.$cardUtil.getSiteLabelId(this.$data.currentGuiContext_persistent.currentSiteOrRegion));
+      svg?.setAttribute('aria-description', '1');
+      const svg2: any = document.querySelector('.' + this.layerWithUnderdeepSitesClass + ' #' + this.$cardUtil.getSiteLabelId(this.$data.currentGuiContext_persistent.currentSiteOrRegion));
+      svg2?.setAttribute('aria-description', '1');
+    }
+    // JOURNEY SITES
     if (this.$data.currentGuiContext_notPersitent.currentJourneySiteFrom) {
       const svg: any = document.querySelector('.' + this.layerWithSitesClass + ' #' + this.$cardUtil.getSiteLabelId(this.$data.currentGuiContext_notPersitent.currentJourneySiteFrom));
-      svg?.setAttribute('aria-description', '1');
+      svg?.setAttribute('aria-description', '2');
       const svg2: any = document.querySelector('.' + this.layerWithUnderdeepSitesClass + ' #' + this.$cardUtil.getSiteLabelId(this.$data.currentGuiContext_notPersitent.currentJourneySiteFrom));
-      svg2?.setAttribute('aria-description', '1');
+      svg2?.setAttribute('aria-description', '2');
     }
     if (this.$data.currentGuiContext_notPersitent.currentJourneySiteTo) {
       const svg: any = document.querySelector('.' + this.layerWithSitesClass + ' #' + this.$cardUtil.getSiteLabelId(this.$data.currentGuiContext_notPersitent.currentJourneySiteTo));
-      svg?.setAttribute('aria-description', '1');
+      svg?.setAttribute('aria-description', '3');
       const svg2: any = document.querySelector('.' + this.layerWithUnderdeepSitesClass + ' #' + this.$cardUtil.getSiteLabelId(this.$data.currentGuiContext_notPersitent.currentJourneySiteTo));
-      svg2?.setAttribute('aria-description', '1');
-    }
-    // JOURNEY DISAPEAR REGIONS
-    if (this.$data.currentGuiContext_notPersitent.currentJourneySiteFrom && this.$data.currentGuiContext_persistent.currentReachableRegions) {
-      allRegionCards.forEach((card) => {
-        const svg: any = document.querySelector('#' + this.$cardUtil.getRegionPathId(card));
-        svg?.setAttribute('aria-label', '1');
-        const svg2: any = document.querySelector('#' + this.$cardUtil.getRegionLabelId(card));
-        svg2?.setAttribute('display', 'none');
-      });
-      allRegionCards = this.$data.currentGuiContext_persistent.currentReachableRegions;
-      allRegionCards.forEach((card) => {
-        const svg: any = document.querySelector('#' + this.$cardUtil.getRegionPathId(card));
-        svg?.setAttribute('aria-label', '0');
-        const svg2: any = document.querySelector('#' + this.$cardUtil.getRegionLabelId(card));
-        svg2?.setAttribute('display', 'block');
-      });
-    } else {
-      allRegionCards.forEach((card) => {
-        const svg: any = document.querySelector('#' + this.$cardUtil.getRegionPathId(card));
-        svg?.setAttribute('aria-label', '0');
-        const svg2: any = document.querySelector('#' + this.$cardUtil.getRegionLabelId(card));
-        svg2?.setAttribute('display', 'block');
-      });
+      svg2?.setAttribute('aria-description', '3');
     }
     // JOURNEY DISAPEAR SITES
     if (this.$data.currentGuiContext_notPersitent.currentJourneySiteFrom && this.$data.currentGuiContext_persistent.currentReachableSites) {
@@ -377,6 +351,38 @@ export class MapService {
         const svg: any = document.querySelector('.' + this.layerWithSitesClass + ' #' + this.$cardUtil.getSiteLabelId(card));
         svg?.setAttribute('display', 'block');
         const svg2: any = document.querySelector('.' + this.layerWithUnderdeepSitesClass + ' #' + this.$cardUtil.getSiteLabelId(card));
+        svg2?.setAttribute('display', 'block');
+      });
+    }
+    // REGIONS
+    allRegionCards.forEach((card) => {
+      const borderSvg: any = document.querySelector('#' + this.$cardUtil.getRegionPathId(card));
+      borderSvg?.setAttribute('aria-description', '0');
+    });
+    this.$data.currentGuiContext_notPersitent.currentJourneyRegions.forEach((card) => {
+      const borderSvg: any = document.querySelector('#' + this.$cardUtil.getRegionPathId(card));
+      borderSvg?.setAttribute('aria-description', '1');
+    });
+    // JOURNEY DISAPEAR REGIONS
+    if (this.$data.currentGuiContext_notPersitent.currentJourneySiteFrom && this.$data.currentGuiContext_persistent.currentReachableRegions) {
+      allRegionCards.forEach((card) => {
+        const svg: any = document.querySelector('#' + this.$cardUtil.getRegionPathId(card));
+        svg?.setAttribute('aria-label', '1');
+        const svg2: any = document.querySelector('#' + this.$cardUtil.getRegionLabelId(card));
+        svg2?.setAttribute('display', 'none');
+      });
+      allRegionCards = this.$data.currentGuiContext_persistent.currentReachableRegions;
+      allRegionCards.forEach((card) => {
+        const svg: any = document.querySelector('#' + this.$cardUtil.getRegionPathId(card));
+        svg?.setAttribute('aria-label', '0');
+        const svg2: any = document.querySelector('#' + this.$cardUtil.getRegionLabelId(card));
+        svg2?.setAttribute('display', 'block');
+      });
+    } else {
+      allRegionCards.forEach((card) => {
+        const svg: any = document.querySelector('#' + this.$cardUtil.getRegionPathId(card));
+        svg?.setAttribute('aria-label', '0');
+        const svg2: any = document.querySelector('#' + this.$cardUtil.getRegionLabelId(card));
         svg2?.setAttribute('display', 'block');
       });
     }

@@ -2,11 +2,10 @@
   display: inline-flex;
   flex-direction: column;
   pointer-events: auto;
-  height: 12em;
   width: auto;
   border: 1em solid transparent;
   transition: all 0.2s;
-  border-radius: 1.5em;
+  border-radius: 1em;
 
   &._under-deep {
     .pergament {
@@ -63,12 +62,64 @@
         border: 0.3em solid $colorBlackish;
         margin-top: 6em;
         box-shadow: 0 0 2em rgba(0, 0, 0, 0.5);
+        transition: all 0.2s;
+      }
+
+      .event-container {
+        display: none;
+        height: 100%;
+        width: 0;
+
+        @media (hover: hover) {
+          &:hover .event-button{
+            box-shadow: 0 0 0 1em $colorBlackish,
+            0 0 0 2em white,
+            0 0 0 3.5em $colorBlackish,
+            2em 2em 4.5em 2.5em rgba(0, 0, 0, 0.2)!important;
+          }
+        }
+
+        .event-button {
+          @extend .fade-in;
+          margin-top: -1.2em;
+          //margin-top: 2em;
+          margin-left: 10.5em;
+          margin-left: 5em;
+          width: 10em;
+          height: 10em;
+          cursor: pointer;
+          padding: 1em;
+          border-radius: 1em;
+          transition: all 0.2s;
+        }
+
+        &._gogo {
+          .event-button {
+            box-shadow: 0 0 0 1em $colorBlackish,
+            0 0 0 2em $colorCian,
+            0 0 0 3.5em $colorBlackish,
+            2em 2em 4.5em 2.5em rgba(0, 0, 0, 0.2);
+            background-color: #151515;
+            background-image: url("../img/site/go.svg");
+          }
+        }
+
+        &._end {
+          .event-button {
+            box-shadow: 0 0 0 1em $colorBlackish,
+            0 0 0 2em #e5e5e5,
+            0 0 0 3.5em $colorBlackish,
+            2em 2em 4.5em 2.5em rgba(0, 0, 0, 0.2);
+            background-color: #151515;
+            background-image: url("../img/site/journey_1.svg");
+          }
+        }
       }
     }
   }
 
   .meta-container {
-    margin-top: 4em;
+    margin-top: 3.5em;
     margin-bottom: -11em;
     display: inline-block;
     width: 100%;
@@ -141,13 +192,39 @@
           height: 5em;
           margin-bottom: -1em
         }
-
-        &._palantiri {
-        }
-
-        &._scrol_of_isildur {
-        }
       }
     }
+  }
+}
+
+$colorTurkise2: #00ffc3;
+
+body .site-object[aria-description="1"] .site-button {
+  background-color: white;
+  box-shadow: 0 0 0 1em $colorBlackish,
+  0 0 0 2em $colorCian,
+  0 0 0 3.5em $colorBlackish,
+  2em 2em 4.5em 2.5em rgba(0, 0, 0, 0.2);
+
+  .event-container._gogo {
+    display: block!important;
+  }
+}
+
+body .site-object[aria-description="2"] .site-button,
+body .site-object[aria-description="3"] .site-button {
+  background-color: white;
+  box-shadow: 0 0 0 1em $colorBlackish,
+  0 0 0 2em #e5e5e5,
+  0 0 0 3.5em $colorBlackish,
+  2em 2em 4.5em 2.5em rgba(0, 0, 0, 0.2)!important;
+  .event-container._end {
+    display: block!important;
+  }
+}
+
+body .site-object[aria-description="3"] .site-button {
+  .event-button._end {
+    background-image: url("../img/site/journey_2.svg")!important;
   }
 }

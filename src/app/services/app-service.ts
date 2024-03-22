@@ -10,7 +10,8 @@ export class AppService {
   public availableAppLanguages: string[] = [LanguageId_e.en, LanguageId_e.de];
   public openSiteSelectionModal: boolean = false;
   public openHazardCardsModal: boolean = false;
-  public openModalReversed: boolean = false;
+  public openRegionsModal: boolean = false;
+  public haveModalReversed: boolean = false;
   public openMainMenuModal: boolean = false;
   public mapIsDradding: boolean = false;
   public zoomCard: Card_i | null = null;
@@ -20,13 +21,19 @@ export class AppService {
     private translate: TranslateService,
   ) {
     // @ts-ignore
-    document['onSiteOrRegionClick'] = (card: Card_i, event: any, isUnderDeep: boolean) => {
+    document['onSiteOrRegionClick'] = (card: Card_i, event: any) => {
       if (card && !this.mapIsDradding) {
         this.$data?.onSiteOrRegionClick(card);
       }
     }
     // @ts-ignore
-    document['onSiteOrRegionDoubleClick'] = (card: Card_i, event: any, isUnderDeep: boolean) => {
+    document['onStartJourneyClick'] = (card: Card_i, event: any) => {
+      if (card && !this.mapIsDradding) {
+      //   this.$data?.onSiteOrRegionClick(card);
+      }
+    }
+    // @ts-ignore
+    document['onSiteOrRegionDoubleClick'] = (card: Card_i, event: any) => {
       if (card && !this.mapIsDradding) {
         if (card.id === this.$data?.currentGuiContext_notPersitent.currentJourneySiteFrom?.id) {
           this.$data?.endJourney();

@@ -1,5 +1,29 @@
 // MODAL
 
+.modal-background .meccg-card-image {
+  position: relative;
+  border-radius: 6%;
+  width: 80vw;
+  max-width: 50vh;
+  background-color: grey;
+  background-size: cover;
+  display: inline-block;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 1);
+  border: 2px solid #5b5b5b;
+
+  &._queer {
+    transform: rotate(-90deg);
+  }
+
+  .meccg-card-inner {
+    width: 100%;
+    padding-bottom: 140%;
+  }
+}
+
 .open-modal-reversed .modal-background {
   transform: rotate(180deg);
 }
@@ -17,300 +41,218 @@
   justify-content: center;
   @extend .fade-in;
 
-  .meccg-card-image {
-    position: relative;
-    border-radius: 6%;
-    width: 80vw;
-    max-width: 50vh;
-    background-color: grey;
+
+  .modal {
+    @extend .slide-in;
+    box-shadow: 0 0 0 2px $colorBlackish,
+    0 0 0 5px $colorCian,
+    0 0 0 9px $colorBlackish,
+    4px 4px 9px 5px rgba(0, 0, 0, 0.2);
+    background-image: url("../img/map/old-map_sw.jpg");
     background-size: cover;
-    display: inline-block;
-    flex-shrink: 0;
-    margin: 20px;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 0 50px rgba(0, 0, 0, 1);
-    border: 2px solid #5b5b5b;
+    border-radius: 0.2em;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-size: 15px;
+    position: relative;
+    width: 80vw;
+    height: 80vh;
+    max-width: 2000px;
+    max-height: 2000px;
 
-    &._queer {
-      transform: rotate(-90deg);
+    &:before {
+      content: "";
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      opacity: 0.8;
+      position: absolute;
+      background: linear-gradient(0deg, rgb(0, 7, 10) 0%, rgb(30, 49, 68) 100%);
     }
 
-    .meccg-card-inner {
+    .modal-scroll-container {
+      //position: relative;
       width: 100%;
-      padding-bottom: 140%;
-    }
-  }
-}
+      height: 100%;
+      overflow: auto;
 
-.site-selection-modal {
-  @extend .slide-in;
-  position: relative;
-  width: 80vw;
-  height: 80vh;
-  max-width: 1000px;
-  max-height: 1000px;
-  box-shadow: 0 0 0 2px $colorBlackish,
-  0 0 0 5px $colorCian,
-  0 0 0 9px $colorBlackish,
-  4px 4px 9px 5px rgba(0, 0, 0, 0.2);
-  background-image: url("../img/map/old-map_sw.jpg");
-  background-size: cover;
-  border-radius: 0.2em;
-
-  &:before {
-    content: "";
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    opacity: 0.8;
-    position: absolute;
-    background: linear-gradient(0deg, rgb(0, 7, 10) 0%, rgb(30, 49, 68) 100%);
-  }
-
-  .modal-scroll-container {
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    padding: 20px 10px;
-
-    .site-items {
-      position: relative;
-      width: 100%;
-      display: inline-flex;
-      flex-wrap: wrap;
-      align-content: center;
-      justify-content: center;
-      gap: 10px 10px;
-      background-color: transparent;
-
-      app-site-item {
-        font-size: 3.5px;
-        display: block;
+      .modal-scroll-container-content {
+        position: relative;
+        background-color: transparent;
+        padding: 5%;
+        width: 100%;
+        z-index: 50;
       }
     }
-  }
-}
 
-.hazard-cards-modal {
-  @extend .slide-in;
-  position: relative;
-  width: 80vw;
-  height: 80vh;
-  max-width: 2000px;
-  max-height: 2000px;
-  box-shadow: 0 0 0 2px $colorBlackish,
-  0 0 0 5px $colorCian,
-  0 0 0 9px $colorBlackish,
-  4px 4px 9px 5px rgba(0, 0, 0, 0.2);
-  background-image: url("../img/map/old-map_sw.jpg");
-  background-size: cover;
-  border-radius: 0.2em;
+    // MAIN-MENU
+    &._main-menu {
 
-  &:before {
-    content: "";
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    opacity: 0.8;
-    position: absolute;
-    background: linear-gradient(0deg, rgb(0, 7, 10) 0%, rgb(30, 49, 68) 100%);
-  }
+      .menu-title {
+        position: relative;
+        margin-bottom: 1em;
+        padding-bottom: 1em;
+        border-bottom: 1px solid white;
+      }
 
-  .modal-scroll-container {
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    padding: 20px 10px;
+      .select-items {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1em;
 
-    .hazard-cards {
-      position: relative;
-      width: 100%;
-      display: inline-flex;
-      flex-wrap: wrap;
-      align-content: center;
-      justify-content: center;
-      gap: 10px 10px;
-      background-color: transparent;
+        .select-item {
+          position: relative;
+          color: white;
+          cursor: pointer;
+          align-items: center;
+          gap: 1em;
+          margin-bottom: 20px;
+          display: inline-flex;
+          padding: 0.2em 0;
+          @media (hover: hover) {
+            &:hover {
+              .indicator {
+                box-shadow: 0 0 0 2px $colorBlackish,
+                0 0 0 5px white,
+                0 0 0 9px $colorBlackish,
+              }
+            }
+          }
 
-      .meccg-card-image {
-        width: 300px;
-        transition: all 0.2s;
-        border-width: 1px;
+          &._selected {
+            .indicator {
+              div {
+                opacity: 1;
+              }
+            }
+          }
 
-        @media (hover: hover) {
-          &:hover {
-            border-color: grey;
+          .indicator {
+            width: 1em;
+            height: 1em;
+            border-radius: 50%;
+            box-shadow: 0 0 0 2px $colorBlackish,
+            0 0 0 5px $colorCian,
+            0 0 0 9px $colorBlackish,
+            4px 4px 9px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.2s;
+
+            div {
+              width: 0.3em;
+              height: 0.3em;
+              background-color: $colorCian;
+              border-radius: 50%;
+              box-shadow: 0 0 0 5px $colorCian,
+              0 0 0 9px $colorBlackish;
+              opacity: 0;
+              transition: all 0.2s;
+            }
           }
         }
       }
     }
-  }
-}
 
+    // SITE-SELECTION
+    &._site-selection {
+      max-width: 1000px;
+      max-height: 1000px;
 
-.site-selection-modal {
-  @extend .slide-in;
-  position: relative;
-  width: 80vw;
-  height: 80vh;
-  max-width: 1000px;
-  max-height: 1000px;
-  box-shadow: 0 0 0 2px $colorBlackish,
-  0 0 0 5px $colorCian,
-  0 0 0 9px $colorBlackish,
-  4px 4px 9px 5px rgba(0, 0, 0, 0.2);
-  background-image: url("../img/map/old-map_sw.jpg");
-  background-size: cover;
-  border-radius: 0.2em;
+      .site-items {
+        position: relative;
+        width: 100%;
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+        gap: 10px 10px;
+        background-color: transparent;
 
-  &:before {
-    content: "";
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    opacity: 0.8;
-    position: absolute;
-    background: linear-gradient(0deg, rgb(0, 7, 10) 0%, rgb(30, 49, 68) 100%);
-  }
-
-  .modal-scroll-container {
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    padding: 20px 10px;
-
-    .site-items {
-      position: relative;
-      width: 100%;
-      display: inline-flex;
-      flex-wrap: wrap;
-      align-content: center;
-      justify-content: center;
-      gap: 10px 10px;
-      background-color: transparent;
-
-      app-site-item {
-        font-size: 3.5px;
-        display: block;
-      }
-    }
-  }
-}
-
-
-.main-menu-modal {
-  @extend .slide-in;
-  box-shadow: 0 0 0 2px $colorBlackish,
-  0 0 0 5px $colorCian,
-  0 0 0 9px $colorBlackish,
-  4px 4px 9px 5px rgba(0, 0, 0, 0.2);
-  background-image: url("../img/map/old-map_sw.jpg");
-  background-size: cover;
-  border-radius: 0.2em;
-  display: flex;
-  flex-direction: column;
-  color: white;
-  font-size: 15px;
-  position: relative;
-  width: 80vw;
-  height: 80vh;
-  max-width: 2000px;
-  max-height: 2000px;
-
-
-  &:before {
-    content: "";
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    opacity: 0.8;
-    position: absolute;
-    background: linear-gradient(0deg, rgb(0, 7, 10) 0%, rgb(30, 49, 68) 100%);
-  }
-
-  .modal-scroll-container {
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-
-    .modal-scroll-container-content {
-      position: relative;
-      background-color: transparent;
-      padding: 5%;
-      width: 100%;
-      z-index: 50;
-    }
-  }
-
-  .menu-title {
-    position: relative;
-    margin-bottom: 1em;
-    padding-bottom: 1em;
-    border-bottom: 1px solid white;
-  }
-}
-
-.select-items {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1em;
-
-
-  .select-item {
-    position: relative;
-    color: white;
-    cursor: pointer;
-    align-items: center;
-    gap: 1em;
-    margin-bottom: 20px;
-    display: inline-flex;
-    padding: 0.2em 0;
-    @media (hover: hover) {
-      &:hover {
-        .indicator {
-          box-shadow: 0 0 0 2px $colorBlackish,
-          0 0 0 5px white,
-          0 0 0 9px $colorBlackish,
+        app-site-item {
+          font-size: 3.5px;
+          display: block;
         }
       }
     }
 
-    &._selected {
-      .indicator {
-        div {
-          opacity: 1;
+    // HAZARD-CARDS
+    &._hazard-cards {
+      max-width: 2000px;
+      max-height: 2000px;
+
+      .hazard-cards {
+        padding: 30px 0;
+        position: relative;
+        width: 100%;
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+        gap: 2vw 3%;
+        background-color: transparent;
+
+        .meccg-card-image {
+          width: 300px;
+          max-width: 47%;
+          transition: all 0.2s;
+          border-width: 1px;
+
+          @media (hover: hover) {
+            &:hover {
+              border-color: grey;
+            }
+          }
         }
       }
     }
 
-    .indicator {
-      width: 1em;
-      height: 1em;
-      border-radius: 50%;
-      box-shadow: 0 0 0 2px $colorBlackish,
-      0 0 0 5px $colorCian,
-      0 0 0 9px $colorBlackish,
-      4px 4px 9px 5px rgba(0, 0, 0, 0.2);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: all 0.2s;
+    // SITE-ITEM
+    .modal._site-selection {
+      max-width: 1000px;
+      max-height: 1000px;
 
-      div {
-        width: 0.3em;
-        height: 0.3em;
-        background-color: $colorCian;
-        border-radius: 50%;
-        box-shadow: 0 0 0 5px $colorCian,
-        0 0 0 9px $colorBlackish;
-        opacity: 0;
-        transition: all 0.2s;
+      .site-items {
+        position: relative;
+        width: 100%;
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+        gap: 10px 10px;
+        background-color: transparent;
+
+        app-site-item {
+          font-size: 3.5px;
+          display: block;
+        }
+      }
+    }
+
+    // REGIONS
+    &._region-names {
+      max-width: 400px;
+      max-height: 400px;
+
+      .region-names {
+        position: relative;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+
+        .region-name {
+          color: white;
+          font-size: 2em;
+        }
       }
     }
   }
 }
+

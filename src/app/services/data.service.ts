@@ -109,7 +109,7 @@ export class DataService {
           });
         });
       });
-      this.getReachableUnderDeepSites(startSite).forEach((card) => {
+      this.getReachableUnderDeepSites(startSite).forEach((card: Card_i) => {
         reachableSites.push(card);
       })
       if (startSite.normalizedtitle === 'the under-galleries') {
@@ -118,9 +118,42 @@ export class DataService {
       if (hasId(reachableSites, startSite.id)) {
         findIdAndDelete(reachableSites, startSite.id);
       }
+      this.getReachableHavensOfSite(startSite).forEach((card: Card_i) => {
+        if (!hasId(reachableSites, card.id)) {
+          reachableSites.push(card);
+        }
+      })
+      if (startSite.Haven === startSite.title) {
+        this.getReachableSitesOfHaven(startSite).forEach((card: Card_i) => {
+          if (!hasId(reachableSites, card.id)) {
+            reachableSites.push(card);
+          }
+        })
+      }
       this.currentGuiContext_persistent.currentReachableRegions = reachableRegions;
       this.currentGuiContext_persistent.currentReachableSites = reachableSites;
     }
+  }
+
+  public getReachableHavensOfSite(card: Card_i): Card_i[] {
+    const answer: Card_i[] = [];
+    const all_Sites: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, false));
+    const haven: Card_i | null = findId(all_Sites, card.Haven, false, 'title');
+    if (haven) {
+      answer.push(haven);
+    }
+    return answer;
+  }
+
+  public getReachableSitesOfHaven(card: Card_i): Card_i[] {
+    const answer: Card_i[] = [];
+    const all_Sites: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, false));
+    all_Sites.forEach((site: Card_i)=>{
+      if(site.Haven === card.title){
+        answer.push(site);
+      }
+    })
+    return answer;
   }
 
   public getReachableUnderDeepSites(card: Card_i): Card_i[] {
@@ -157,7 +190,6 @@ export class DataService {
     all_regions.forEach((card: Card_i) => {
       if (card.text && card.text.indexOf(card_region.title ?? '') > -1) {
         if (card_region.title === 'Belfalas' && card.text.indexOf('Bay of Belfalas') > -1 && !(card.text.indexOf(', Belfalas') > -1)) {
-          console.log(card.text)
           return;
         }
         const foundExistingRegion: Card_i | null = this.findExistingRegion(card.id ?? '', firstRegionComplex ?? null);
@@ -215,11 +247,27 @@ export class DataService {
       if (card.type === CardType_e.Site) {
         const clickedCard: Card_i = findId(this.currentGuiContext_persistent.currentReachableSites, card.id);
         this.currentGuiContext_notPersitent.currentJourneySiteTo = clickedCard as Card_i;
-        console.log(this.currentGuiContext_notPersitent.currentJourneyRegions[this.currentGuiContext_notPersitent.currentJourneyRegions.length - 1].id);
-        console.log(this.getRegionOfSite(card)?.id);
-        if (this.currentGuiContext_notPersitent.currentJourneyRegions[this.currentGuiContext_notPersitent.currentJourneyRegions.length - 1].id === this.getRegionOfSite(card)?.id) {
+        if (this.currentGuiContext_notPersitent.currentJourneyRegions.length && this.currentGuiContext_notPersitent.currentJourneyRegions[this.currentGuiContext_notPersitent.currentJourneyRegions.length - 1].id === this.getRegionOfSite(card)?.id) {
         } else {
           this.currentGuiContext_notPersitent.currentJourneyRegions = clickedCard?.routingRegions ?? [];
+        }
+        if (
+          this.currentGuiContext_notPersitent.currentJourneySiteFrom.Haven === this.currentGuiContext_notPersitent.currentJourneySiteTo.title
+        ) {
+          this.currentGuiContext_notPersitent.currentJourneyRegions = [];
+          this.currentGuiContext_notPersitent.currentJourneySiteFrom.Path?.split(' ').forEach((key: string) => {
+            const region: Card_i | null = this.$cardUtil.createNonRegionCard(key);
+            region ? this.currentGuiContext_notPersitent.currentJourneyRegions.push(region) : null;
+          })
+        }
+        if (
+          this.currentGuiContext_notPersitent.currentJourneySiteTo.Haven === this.currentGuiContext_notPersitent.currentJourneySiteFrom.title
+        ) {
+          this.currentGuiContext_notPersitent.currentJourneyRegions = [];
+          this.currentGuiContext_notPersitent.currentJourneySiteTo.Path?.split(' ').forEach((key: string) => {
+            const region: Card_i | null = this.$cardUtil.createNonRegionCard(key);
+            region ? this.currentGuiContext_notPersitent.currentJourneyRegions.push(region) : null;
+          })
         }
         this.calculateCurrentPlayableHazards();
       } else if (card.type === CardType_e.Region) {
@@ -283,11 +331,15 @@ export class DataService {
     }
   }
 
-  public endJourney(): void {
+  public endJourney(newSiteTarget?: Card_i): void {
+    const newSite = newSiteTarget ?? this.currentGuiContext_notPersitent.currentJourneySiteTo;
     this.currentGuiContext_notPersitent.currentJourneySiteFrom = null;
     this.currentGuiContext_notPersitent.currentJourneySiteTo = null;
     this.currentGuiContext_notPersitent.currentJourneyRegions = [];
     this.currentGuiContext_notPersitent.currentPlayableHazards = [];
+    if (newSite) {
+      this.onSiteOrRegionClick(newSite);
+    }
     this.saveCurrentStates();
     this.$map?.renderActivities();
   }
