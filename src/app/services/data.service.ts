@@ -5,7 +5,9 @@ import {
   CardType_e,
   CurrentGuiContext_2,
   CurrentGuiContext_3,
+  ExtraMovement_e,
   PlayerId_e,
+  SubAlignmentType_e,
 } from '../interfaces/interfaces';
 import {copyObject, findId, findIdAndDelete, getStringBetweenStrings, hasId} from './utility-methods';
 import {AppService} from './app-service';
@@ -17,19 +19,22 @@ export class DataService {
   public all_cards: Card_i[] = [];
   public currentGuiContext_persistent: CurrentGuiContext_2 = {
     currentAlignment: AlignmentType_e.Hero,
+    currentSubAlignment_1: SubAlignmentType_e.hero_default,
+    currentSubAlignment_2: SubAlignmentType_e.hero_default,
     currentSiteOrRegion: null,
-    currentReachableRegions: [],
-    currentReachableSites: [],
-    currentSitesOfRegion: [],
     underDeep: false,
     currentPlayer: PlayerId_e.player_1,
     otherPlayersGuiContext: null,
   }
   public currentGuiContext_notPersitent: CurrentGuiContext_3 = {
+    currentReachableRegions: [],
+    currentReachableSites: [],
+    currentSitesOfRegion: [],
     currentJourneySiteFrom: null,
     currentJourneySiteTo: null,
     currentJourneyRegions: [],
     currentPlayableHazards: [],
+    extraMovement: ExtraMovement_e.zero,
   }
   public $map: MapService | null = null;
 
@@ -46,16 +51,40 @@ export class DataService {
     }
   }
 
+  public refreshCalculations() {
+    const savedCurrentSiteOrRegion = this.currentGuiContext_persistent.currentSiteOrRegion;
+    const savedCurrentJourneySiteFrom = this.currentGuiContext_notPersitent.currentJourneySiteFrom;
+    const saveCurrentJourneySiteTo = this.currentGuiContext_notPersitent.currentJourneySiteTo;
+    this.resetCurrentGuiContext();
+    const allSites = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, true));
+    if (savedCurrentSiteOrRegion) {
+      const newCurrentSiteOrRegion = findId(allSites, savedCurrentSiteOrRegion.normalizedtitle, false, 'normalizedtitle');
+      if (newCurrentSiteOrRegion) {
+        this.onSiteOrRegionClick(newCurrentSiteOrRegion, true);
+        if (savedCurrentJourneySiteFrom) {
+          this.startJourney(true);
+          if (saveCurrentJourneySiteTo) {
+            const newCurrentJournesSiteTo = findId(this.currentGuiContext_notPersitent.currentReachableSites, saveCurrentJourneySiteTo.normalizedtitle, false, 'normalizedtitle');
+            if (newCurrentJournesSiteTo) {
+              this.onSiteOrRegionClick(newCurrentJournesSiteTo, true);
+            }
+          }
+        }
+      }
+    }
+    this.$map?.renderMapContent();
+    this.saveCurrentStates();
+  }
+
   public resetCurrentGuiContext() {
     this.currentGuiContext_persistent.currentSiteOrRegion = null;
-    this.currentGuiContext_persistent.currentReachableRegions = [];
-    this.currentGuiContext_persistent.currentReachableSites = [];
-    this.currentGuiContext_persistent.currentSitesOfRegion = [];
+    // this.curent.currentReachableRegions = [];
+    // this.currentGuiContext_persistent.currentReachableSites = [];
+    // this.currentGuiContext_persistent.currentSitesOfRegion = [];
     this.currentGuiContext_notPersitent.currentJourneySiteFrom = null;
     this.currentGuiContext_notPersitent.currentJourneySiteTo = null;
     this.currentGuiContext_notPersitent.currentJourneyRegions = [];
     this.currentGuiContext_notPersitent.currentPlayableHazards = [];
-    this.$map?.renderActivities();
   }
 
   public saveCurrentStates() {
@@ -109,6 +138,37 @@ export class DataService {
           });
         });
       });
+      if (this.currentGuiContext_notPersitent.extraMovement === ExtraMovement_e.one ||
+        this.currentGuiContext_notPersitent.extraMovement === ExtraMovement_e.two) {
+        regionLevel_1?.suroundingRegions?.forEach((regionLevel_2) => {
+          regionLevel_2?.suroundingRegions?.forEach((regionLevel_3) => {
+            regionLevel_3?.suroundingRegions?.forEach((regionLevel_4) => {
+              regionLevel_4?.suroundingRegions?.forEach((regionLevel_5) => {
+                regionLevel_5.routingSteps = 5;
+                reachableRegions.push(regionLevel_5);
+                pushSitesOfRegion(regionLevel_5, [regionLevel_1, regionLevel_2, regionLevel_3, regionLevel_4, regionLevel_5]);
+                regionLevel_5.suroundingRegions = this.getSurroundingRegionsWithoutRedundant(regionLevel_5, regionLevel_1);
+              });
+            });
+          });
+        });
+      }
+      if (this.currentGuiContext_notPersitent.extraMovement === ExtraMovement_e.two) {
+        regionLevel_1?.suroundingRegions?.forEach((regionLevel_2) => {
+          regionLevel_2?.suroundingRegions?.forEach((regionLevel_3) => {
+            regionLevel_3?.suroundingRegions?.forEach((regionLevel_4) => {
+              regionLevel_4?.suroundingRegions?.forEach((regionLevel_5) => {
+                regionLevel_5?.suroundingRegions?.forEach((regionLevel_6) => {
+                  regionLevel_6.routingSteps = 6;
+                  reachableRegions.push(regionLevel_6);
+                  pushSitesOfRegion(regionLevel_6, [regionLevel_1, regionLevel_2, regionLevel_3, regionLevel_4, regionLevel_5, regionLevel_6]);
+                  regionLevel_6.suroundingRegions = this.getSurroundingRegionsWithoutRedundant(regionLevel_6, regionLevel_1);
+                });
+              });
+            });
+          });
+        });
+      }
       this.getReachableUnderDeepSites(startSite).forEach((card: Card_i) => {
         reachableSites.push(card);
       })
@@ -130,8 +190,8 @@ export class DataService {
           }
         })
       }
-      this.currentGuiContext_persistent.currentReachableRegions = reachableRegions;
-      this.currentGuiContext_persistent.currentReachableSites = reachableSites;
+      this.currentGuiContext_notPersitent.currentReachableRegions = reachableRegions;
+      this.currentGuiContext_notPersitent.currentReachableSites = reachableSites;
     }
   }
 
@@ -147,9 +207,9 @@ export class DataService {
 
   public getReachableSitesOfHaven(card: Card_i): Card_i[] {
     const answer: Card_i[] = [];
-    const all_Sites: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, false));
-    all_Sites.forEach((site: Card_i)=>{
-      if(site.Haven === card.title){
+    const all_Sites: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, false, undefined, true));
+    all_Sites.forEach((site: Card_i) => {
+      if (site.Haven === card.title) {
         answer.push(site);
       }
     })
@@ -158,7 +218,7 @@ export class DataService {
 
   public getReachableUnderDeepSites(card: Card_i): Card_i[] {
     const answer: Card_i[] = [];
-    const allUnderdeepSites: Card_i[] = this.$cardUtil.filterUnderDeeps(this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, true)));
+    const allUnderdeepSites: Card_i[] = this.$cardUtil.filterUnderDeeps(this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, true, undefined, true)));
     allUnderdeepSites.forEach((underdeepCard) => {
       if (underdeepCard.text && underdeepCard.text.indexOf(card.title ?? '') > -1) {
         answer.push(underdeepCard);
@@ -232,7 +292,7 @@ export class DataService {
   public getSitesOfRegion(card_region: Card_i): Card_i[] {
     let answer: Card_i[] = [];
     if (card_region.type === CardType_e.Region) {
-      const card_sites: Card_i[] = copyObject(this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards)));
+      const card_sites: Card_i[] = copyObject(this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, false, undefined, true)));
       card_sites.forEach((card_site: Card_i) => {
         if (card_region.title === card_site.Region) {
           answer.push(card_site);
@@ -242,10 +302,10 @@ export class DataService {
     return answer;
   };
 
-  public onSiteOrRegionClick(card: Card_i): void {
+  public onSiteOrRegionClick(card: Card_i, noRender?: boolean): void {
     if (this.currentGuiContext_notPersitent.currentJourneySiteFrom) {
       if (card.type === CardType_e.Site) {
-        const clickedCard: Card_i = findId(this.currentGuiContext_persistent.currentReachableSites, card.id);
+        const clickedCard: Card_i = findId(this.currentGuiContext_notPersitent.currentReachableSites, card.id);
         this.currentGuiContext_notPersitent.currentJourneySiteTo = clickedCard as Card_i;
         if (this.currentGuiContext_notPersitent.currentJourneyRegions.length && this.currentGuiContext_notPersitent.currentJourneyRegions[this.currentGuiContext_notPersitent.currentJourneyRegions.length - 1].id === this.getRegionOfSite(card)?.id) {
         } else {
@@ -290,14 +350,16 @@ export class DataService {
     } else {
       this.currentGuiContext_persistent.currentSiteOrRegion = card;
       if (card.type === CardType_e.Region) {
-        this.currentGuiContext_persistent.currentSitesOfRegion = this.getSitesOfRegion(card);
+        this.currentGuiContext_notPersitent.currentSitesOfRegion = this.getSitesOfRegion(card);
       } else {
-        this.currentGuiContext_persistent.currentSitesOfRegion = [];
+        this.currentGuiContext_notPersitent.currentSitesOfRegion = [];
       }
       this.calculateReachableRegionsAndSites();
     }
     this.saveCurrentStates();
-    this.$map?.renderActivities();
+    if (!noRender) {
+      this.$map?.renderActivities();
+    }
   }
 
   public calculateCurrentPlayableHazards() {
@@ -317,7 +379,7 @@ export class DataService {
     this.currentGuiContext_notPersitent.currentPlayableHazards = filteredHazards;
   }
 
-  public startJourney(): void {
+  public startJourney(noRender?: boolean): void {
     if (this.currentGuiContext_persistent.currentSiteOrRegion?.type === CardType_e.Site) {
       this.currentGuiContext_notPersitent.currentJourneySiteFrom = copyObject(this.currentGuiContext_persistent.currentSiteOrRegion);
       this.saveCurrentStates();
@@ -327,7 +389,9 @@ export class DataService {
           this.currentGuiContext_notPersitent.currentJourneyRegions = [region]
         }
       }
-      this.$map?.renderActivities();
+      if (!noRender) {
+        this.$map?.renderActivities();
+      }
     }
   }
 
@@ -344,18 +408,20 @@ export class DataService {
     this.$map?.renderActivities();
   }
 
-  public getUnderdeepMoveNumbers(onlyFromThisCard?: Card_i, getAllExisting?: boolean): { [key: string]: number } {
+  public getUnderdeepMoveNumbers(onlyFromThisCard?: Card_i, getAllExisting?: boolean, filterChallengeDecks?: boolean): {
+    [key: string]: number
+  } {
     const answer: { [key: string]: number } = {};
-    if (this.currentGuiContext_persistent.currentAlignment === AlignmentType_e.Balrog || getAllExisting) {
-      if (!onlyFromThisCard || (onlyFromThisCard.RPath === 'Under-deeps' && onlyFromThisCard.Site === 'Ruins & Lairs')) {
-        answer['x_ancient-deep-hold'] = 8;
-      }
-    }
-    const all_sites: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, true, getAllExisting ? AlignmentType_e.Balrog : undefined));
-    const all_underdeepSites: Card_i[] = this.$cardUtil.filterUnderDeeps(this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, true, getAllExisting ? AlignmentType_e.Balrog : undefined)));
+    const all_sites: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, true, getAllExisting ? AlignmentType_e.Balrog : undefined, filterChallengeDecks));
+    const all_underdeepSites: Card_i[] = this.$cardUtil.filterUnderDeeps(this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, true, getAllExisting ? AlignmentType_e.Balrog : undefined, filterChallengeDecks)));
     if (!onlyFromThisCard || onlyFromThisCard.normalizedtitle === 'cirith gorgor' || onlyFromThisCard.normalizedtitle === 'the under-galleries') {
       if (getAllExisting || hasId(all_underdeepSites, 'the under-galleries', 'normalizedtitle'))
         answer['the-under-galleries_cirith-gorgor'] = 0;
+    }
+    if (hasId(all_underdeepSites, 'meba_ancientdeephold')) {
+      if (!onlyFromThisCard || (onlyFromThisCard.RPath === 'Under-deeps' && onlyFromThisCard.Site === 'Ruins & Lairs')) {
+        answer['x_ancient-deep-hold'] = 8;
+      }
     }
     all_underdeepSites.forEach((underdeepSite: Card_i) => {
       const text = underdeepSite.text;

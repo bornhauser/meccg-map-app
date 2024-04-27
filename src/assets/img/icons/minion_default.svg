@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="200px" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icons/minion_default</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="99.3198208%" id="linearGradient-1">
+            <stop stop-color="#98A0A6" offset="0%"></stop>
+            <stop stop-color="#213D53" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="icons/minion_default" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle id="Oval" stroke="#1D1D1B" stroke-width="17" fill="url(#linearGradient-1)" cx="99.5" cy="99.5" r="40"></circle>
+    </g>
+</svg>

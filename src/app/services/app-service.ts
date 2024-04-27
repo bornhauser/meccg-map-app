@@ -3,16 +3,18 @@ import {Card_i, LanguageId_e} from '../interfaces/interfaces';
 import {TranslateService} from '@ngx-translate/core';
 import {DataService} from './data.service';
 
-
 @Injectable()
 export class AppService {
   public translationsAreLoaded = false;
   public availableAppLanguages: string[] = [LanguageId_e.en, LanguageId_e.de];
+  public haveModalReversed: boolean = false;
   public openSiteSelectionModal: boolean = false;
   public openHazardCardsModal: boolean = false;
   public openRegionsModal: boolean = false;
-  public haveModalReversed: boolean = false;
   public openMainMenuModal: boolean = false;
+  public openSubAlignmentModal_1: boolean = false;
+  public openSubAlignmentModal_2: boolean = false;
+  public openExtraMovementModal: boolean = false;
   public mapIsDradding: boolean = false;
   public zoomCard: Card_i | null = null;
   public $data: DataService | null = null;
@@ -25,25 +27,6 @@ export class AppService {
       if (card && !this.mapIsDradding) {
         this.$data?.onSiteOrRegionClick(card);
       }
-    }
-    // @ts-ignore
-    document['onStartJourneyClick'] = (card: Card_i, event: any) => {
-      if (card && !this.mapIsDradding) {
-      //   this.$data?.onSiteOrRegionClick(card);
-      }
-    }
-    // @ts-ignore
-    document['onSiteOrRegionDoubleClick'] = (card: Card_i, event: any) => {
-      if (card && !this.mapIsDradding) {
-        if (card.id === this.$data?.currentGuiContext_notPersitent.currentJourneySiteFrom?.id) {
-          this.$data?.endJourney();
-        } else if (this.$data) {
-          this.$data.endJourney();
-          this.$data.onSiteOrRegionClick(card);
-          this.$data.startJourney();
-        }
-      }
-      event.stopPropagation();
     }
   }
 

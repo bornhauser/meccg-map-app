@@ -8,7 +8,8 @@ import {
   Playable_e,
   Playables_i,
   RegionType_e,
-  Set_e
+  Set_e,
+  SubAlignmentType_e
 } from '../interfaces/interfaces';
 import {AppService} from './app-service';
 import {DataService} from './data.service';
@@ -92,51 +93,44 @@ export class CardUtilService {
     return card.ImageName?.replaceAll('.jpg', '') ?? '';
   }
 
-  public filterSites(cards: Card_i[], withUnderDeeps?: boolean, alignment?: AlignmentType_e): Card_i[] {
-    let relevantAlignment: AlignmentType_e = this.$data?.currentGuiContext_persistent.currentAlignment ?? AlignmentType_e.Hero;
-    if (alignment) {
-      relevantAlignment = alignment;
-    }
-    let currentAlignment: AlignmentType_e = relevantAlignment;
-    if (currentAlignment.indexOf('Challenge') > -1) {
-      currentAlignment = AlignmentType_e.Hero;
-      if (relevantAlignment === AlignmentType_e.Challenge_Deck_V) {
-        currentAlignment = AlignmentType_e.Balrog;
-      }
-    }
-    if (currentAlignment === AlignmentType_e['Fallen-wizard_bright'] || currentAlignment === AlignmentType_e['Fallen-wizard_dark']) {
-      currentAlignment = AlignmentType_e['Fallen-wizard'];
-    }
+  public filterSites(cards: Card_i[], withUnderDeeps?: boolean, alignment?: AlignmentType_e, filterChallengeDeck?: boolean, subAlignment?: SubAlignmentType_e): Card_i[] {
+    alignment = alignment ?? this.$data?.currentGuiContext_persistent.currentAlignment ?? AlignmentType_e.Hero;
+    let basicAlignment: AlignmentType_e = this.getUsedBasicAlignment(alignment);
     const allSiteCards: Card_i[] = cards?.filter((card: Card_i) => {
       return card.type === CardType_e.Site;
     });
     let answer = allSiteCards?.filter((card: Card_i) => {
-      return card.alignment === currentAlignment;
+      let cardAlignment: AlignmentType_e = basicAlignment;
+      return card.alignment === cardAlignment;
     });
-    if (currentAlignment === AlignmentType_e.Balrog) {
+    if (basicAlignment === AlignmentType_e.Balrog) {
       allSiteCards.forEach((card: Card_i) => {
         if (card.alignment === AlignmentType_e.Minion && !hasId(answer, card.normalizedtitle, 'normalizedtitle')) {
           answer?.push(card);
         }
       });
     }
-    if (relevantAlignment === AlignmentType_e['Fallen-wizard_dark']) {
+    if (basicAlignment === AlignmentType_e.Fallen_wizard) {
+      const relevantSubAlignment: SubAlignmentType_e = subAlignment ?? SubAlignmentType_e.hero_fallen_wizard;
+      if (relevantSubAlignment === SubAlignmentType_e.hero_default || relevantSubAlignment === SubAlignmentType_e.minion_default) {
+        answer = [];
+      }
       allSiteCards.forEach((card: Card_i) => {
-        if (card.alignment === AlignmentType_e.Minion && !hasId(answer, card.normalizedtitle, 'normalizedtitle')) {
-          answer?.push(card);
+        if (relevantSubAlignment === SubAlignmentType_e.hero_default || relevantSubAlignment === SubAlignmentType_e.hero_fallen_wizard) {
+          if (card.alignment === AlignmentType_e.Hero && !hasId(answer, card.normalizedtitle, 'normalizedtitle')) {
+            answer?.push(card);
+          }
+        }
+        if (relevantSubAlignment === SubAlignmentType_e.minion_default || relevantSubAlignment === SubAlignmentType_e.minion_fallen_wizard) {
+          if (card.alignment === AlignmentType_e.Minion && !hasId(answer, card.normalizedtitle, 'normalizedtitle')) {
+            answer?.push(card);
+          }
         }
       });
     }
-    if (relevantAlignment === AlignmentType_e['Fallen-wizard_bright']) {
-      allSiteCards.forEach((card: Card_i) => {
-        if (card.alignment === AlignmentType_e.Hero && !hasId(answer, card.normalizedtitle, 'normalizedtitle')) {
-          answer?.push(card);
-        }
-      });
-    }
-    if (relevantAlignment.indexOf('Challenge') > -1) {
+    if (filterChallengeDeck && !this.isBasicAlignment(alignment)) {
       answer = answer?.filter((card: Card_i) => {
-        return challengeDecksSites[relevantAlignment].indexOf(card.normalizedtitle ?? '') > -1;
+        return challengeDecksSites[this.$data?.currentGuiContext_persistent.currentAlignment ?? ''].indexOf(card.normalizedtitle ?? '') > -1;
       });
     }
     if (!withUnderDeeps) {
@@ -249,6 +243,8 @@ export class CardUtilService {
         answer = CreatureType_e.maia;
       } else if (card.text.indexOf('Dúnedain') > -1) {
         answer = CreatureType_e.dunedain;
+      } else if (card.text.indexOf('Awakened Plant') > -1) {
+        answer = CreatureType_e.ent;
       }
     }
     return answer.toLowerCase().replaceAll('û', 'u').replaceAll(' ', '-');
@@ -328,7 +324,7 @@ export class CardUtilService {
       type = RegionType_e['Coastal Sea']
     }
     if (key === 's') {
-      type = RegionType_e['Shadow-land']
+      type = RegionType_e['Shadow_land']
     }
     if (key === 'w') {
       type = RegionType_e['Wilderness']
@@ -354,6 +350,61 @@ export class CardUtilService {
     } else {
       return null;
     }
+  }
+
+  public getUsedBasicAlignment(alignmentType: AlignmentType_e): AlignmentType_e {
+    if (
+      alignmentType === AlignmentType_e.Challenge_Deck_A ||
+      alignmentType === AlignmentType_e.Challenge_Deck_B ||
+      alignmentType === AlignmentType_e.Challenge_Deck_C ||
+      alignmentType === AlignmentType_e.Challenge_Deck_D ||
+      alignmentType === AlignmentType_e.Challenge_Deck_E
+    ) {
+      return AlignmentType_e.Hero;
+    } else if (
+      alignmentType === AlignmentType_e.Challenge_Deck_F ||
+      alignmentType === AlignmentType_e.Challenge_Deck_G ||
+      alignmentType === AlignmentType_e.Challenge_Deck_H ||
+      alignmentType === AlignmentType_e.Challenge_Deck_I ||
+      alignmentType === AlignmentType_e.Challenge_Deck_J ||
+      alignmentType === AlignmentType_e.Challenge_Deck_K ||
+      alignmentType === AlignmentType_e.Challenge_Deck_L ||
+      alignmentType === AlignmentType_e.Challenge_Deck_M ||
+      alignmentType === AlignmentType_e.Challenge_Deck_N
+    ) {
+      return AlignmentType_e.Minion;
+    } else if (
+      alignmentType === AlignmentType_e.Challenge_Deck_O ||
+      alignmentType === AlignmentType_e.Challenge_Deck_P ||
+      alignmentType === AlignmentType_e.Challenge_Deck_Q ||
+      alignmentType === AlignmentType_e.Challenge_Deck_R ||
+      alignmentType === AlignmentType_e.Challenge_Deck_S
+    ) {
+      return AlignmentType_e.Fallen_wizard;
+    } else if (
+      alignmentType === AlignmentType_e.Challenge_Deck_T
+    ) {
+      return AlignmentType_e.Hero;
+    } else if (
+      alignmentType === AlignmentType_e.Challenge_Deck_U
+    ) {
+      return AlignmentType_e.Minion;
+    } else if (
+      alignmentType === AlignmentType_e.Challenge_Deck_V
+    ) {
+      return AlignmentType_e.Balrog;
+    } else {
+      return alignmentType;
+    }
+  }
+
+  public isBasicAlignment(alignmentType: AlignmentType_e): boolean {
+    return (
+      alignmentType === AlignmentType_e.Minion ||
+      alignmentType === AlignmentType_e.Hero ||
+      alignmentType === AlignmentType_e.Fallen_wizard ||
+      alignmentType === AlignmentType_e.Balrog
+    )
   }
 
 }

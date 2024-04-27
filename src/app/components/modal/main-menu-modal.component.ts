@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {DataService} from '../../services/data.service';
 import {AppService} from '../../services/app-service';
-import {AlignmentType_e, SelectItem} from '../../interfaces/interfaces';
-import {MapService} from '../../services/map-service';
+import {AlignmentType_e, SelectItem, SubAlignmentType_e} from '../../interfaces/interfaces';
 
 @Component({
   selector: 'app-main-menu-modal',
@@ -13,17 +12,17 @@ import {MapService} from '../../services/map-service';
         <div class="modal-scroll-container">
           <div class="modal-scroll-container-content">
             <div class="menu-title">{{ 'app.language' | translate }}</div>
-            <app-select-item [selectItem]="currentLanguage"
+            <app-select-item [selectItem]="languageSelect"
                              (onChange)="onLanguageChange($event)">
             </app-select-item>
             <div class="menu-title">{{ 'app.allignment' | translate }}</div>
-            <app-select-item [selectItem]="currentAlignment"
+            <app-select-item [selectItem]="alignmentSelect"
                              (onChange)="onAlignmentChange($event)">
             </app-select-item>
             <div class="menu-title">
               {{ 'app.challengeDecks' | translate }}
             </div>
-            <app-select-item [selectItem]="challengeDecks"
+            <app-select-item [selectItem]="challengeDecksSelect"
                              (onChange)="onAlignmentChange($event)">
             </app-select-item>
           </div>
@@ -39,48 +38,44 @@ export class MainMenuModalComponent {
   constructor(
     public $data: DataService,
     public $app: AppService,
-    public $map: MapService,
   ) {
   }
 
   public onLanguageChange($event: any) {
-    this.$data.resetCurrentGuiContext();
     this.$app.changeAppLanguage($event?.selected ?? null)
-    setTimeout(() => {
-      this.$map.renderRegionLabelAndSites();
-    }, 200);
+    this.$data.refreshCalculations();
     setTimeout(() => {
       this.$app.openMainMenuModal = false;
     }, 600)
   }
 
   public onAlignmentChange($event: any) {
-    this.$data.resetCurrentGuiContext();
     this.$data.currentGuiContext_persistent.currentAlignment = $event?.selected ?? AlignmentType_e.Hero;
-    setTimeout(() => {
-      this.$map.renderRegionLabelAndSites();
-    }, 200);
+    if (this.$data.currentGuiContext_persistent.currentAlignment === AlignmentType_e.Fallen_wizard) {
+      this.$data.currentGuiContext_persistent.currentSubAlignment_1 === SubAlignmentType_e.hero_fallen_wizard;
+      this.$data.currentGuiContext_persistent.currentSubAlignment_2 === SubAlignmentType_e.hero_fallen_wizard;
+    }
+    this.$data.refreshCalculations();
     setTimeout(() => {
       this.$app.openMainMenuModal = false;
     }, 600)
   }
 
-  public currentLanguage: SelectItem = {
+  public languageSelect: SelectItem = {
     available: this.$app.availableAppLanguages,
     selected: this.$app.getCurrentAppLanguage(),
   }
 
-  public currentAlignment: SelectItem = {
+  public alignmentSelect: SelectItem = {
     available: [
       AlignmentType_e.Hero,
       AlignmentType_e.Minion,
-      AlignmentType_e['Fallen-wizard_dark'],
-      AlignmentType_e['Fallen-wizard_bright'],
+      AlignmentType_e.Fallen_wizard,
       AlignmentType_e.Balrog],
     selected: this.$data.currentGuiContext_persistent.currentAlignment,
   }
 
-  public challengeDecks: SelectItem = {
+  public challengeDecksSelect: SelectItem = {
     available: [
       AlignmentType_e.Challenge_Deck_A,
       AlignmentType_e.Challenge_Deck_B,

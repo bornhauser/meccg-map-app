@@ -8,8 +8,7 @@ import {AppService} from '../services/app-service';
   template: `
     <div class="route"
          *ngIf="$data.currentGuiContext_notPersitent.currentJourneyRegions || $data.currentGuiContext_notPersitent.currentJourneySiteTo">
-      <div class="regions" (click)="$app.haveModalReversed = reversed; $app.openRegionsModal = true;">
-
+      <div class="regions" (click)="$app.haveModalReversed = reversed; $app.openRegionsModal = true;" *ngIf="$data.currentGuiContext_notPersitent.currentJourneyRegions.length">
         <div class="journey-icon-container _region"
              *ngFor="let card of $data.currentGuiContext_notPersitent.currentJourneyRegions">
           <div class="spacing"></div>

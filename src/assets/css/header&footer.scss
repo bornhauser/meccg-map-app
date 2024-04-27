@@ -1,3 +1,171 @@
+
+.circle-button {
+  font-size: 10px;
+  position: absolute;
+  padding: 1em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  .menu-circle {
+    width: 3em;
+    height: 3em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: 0 0 0 2px $colorBlackish,
+    0 0 0 5px $colorCian,
+    0 0 0 9px $colorBlackish,
+    4px 4px 9px 5px rgba(0, 0, 0, 0.2);
+    background-color: #151515;
+    border-radius: 50%;
+    gap: 0.4em;
+    transition: all 0.2s;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      .menu-circle, .menu-label {
+        box-shadow: 0 0 0 2px $colorBlackish,
+        0 0 0 5px lighten($colorCian, 30%),
+        0 0 0 9px $colorBlackish !important;
+      }
+    }
+  }
+}
+
+.circle-button._open-sub-alignment {
+  z-index: 5;
+
+  .menu-circle {
+    background-size: 200%;
+  }
+
+  &._hero_default .menu-circle {
+    background-image: url("../img/icons/hero_default.svg");
+  }
+
+  &._hero_fallen_wizard .menu-circle {
+    background-image: url("../img/icons/hero_fallen_wizard.svg");
+  }
+
+  &._minion_default .menu-circle {
+    background-image: url("../img/icons/minion_default.svg");
+  }
+
+  &._minion_fallen_wizard .menu-circle {
+    background-image: url("../img/icons/minion_fallen_wizard.svg");
+  }
+
+  &._1 {
+    left: 1vw;
+    top: -20px;
+  }
+
+  &._2 {
+    right: 1vw;
+    top: -20px;
+  }
+}
+
+.circle-button._extra-movement {
+  right: -25px;
+  top: -25px;
+  z-index: 5;
+  .menu-circle {
+    background-position: 50% 7px;
+  }
+  &._zero .menu-circle {
+    background-image: url("../img/icons/zero.svg");
+  }
+
+  &._one .menu-circle {
+    background-image: url("../img/icons/one.svg");
+  }
+
+  &._two .menu-circle {
+    background-image: url("../img/icons/two.svg");
+  }
+
+}
+
+.circle-button._main-menu {
+  bottom: 2px;
+  right: 15px;
+  transform: translateY(50%);
+
+  .line {
+    display: inline-block;
+    height: 0.2em;
+    background-color: $colorCian;
+    border-radius: 0.1em;
+    width: 60%;
+    transition: all 0.2s;
+  }
+}
+
+.circle-button._underdeep {
+  bottom: 1px;
+  right: 70px;
+  transform: translateY(50%);
+
+  &._active {
+    .menu-circle {
+      transform: rotate3d(1, 0, 0, 180deg)
+    }
+  }
+
+  .menu-circle {
+    background-image: url("../img/region/underdeep.svg");
+  }
+}
+
+.circle-button._player {
+  bottom: 2px;
+  left: 15px;
+  transform: translateY(50%);
+
+  .menu-label {
+    width: auto;
+    height: 1em;
+    box-shadow: 0 0 0 2px $colorBlackish,
+    0 0 0 5px $colorCian,
+    0 0 0 9px $colorBlackish,
+    4px 4px 9px 5px rgba(0, 0, 0, 0.2);
+    background-color: #151515;
+    border-radius: 20px;
+    color: $colorCian;
+    padding: 0 0.4em;
+    font-size: 1.5em;
+    padding-left: 0.8em;
+    font-weight: 400;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    @media only screen and (max-width: $responsiveWidthSmall) {
+      span {
+        font-size: 0;
+      }
+    }
+
+    b {
+      font-weight: 800;
+      color: #c8dbfc;
+    }
+  }
+
+  .menu-circle {
+    transform: rotate(0deg);
+    background-image: url("../img/region/turn.svg");
+  }
+
+  &._active {
+    .menu-circle {
+      transform: rotate(180deg)
+    }
+  }
+}
+
 //HEADER
 .header {
   position: fixed;
@@ -71,185 +239,7 @@
     }
 
   }
-
-  .main-menu-button {
-    font-size: 10px;
-    position: absolute;
-    bottom: 2px;
-    right: 15px;
-    padding: 1em;
-    cursor: pointer;
-    transform: translateY(50%);
-
-    .menu-circle {
-      width: 3em;
-      height: 3em;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      box-shadow: 0 0 0 2px $colorBlackish,
-      0 0 0 5px $colorCian,
-      0 0 0 9px $colorBlackish,
-      4px 4px 9px 5px rgba(0, 0, 0, 0.2);
-      background-color: #151515;
-      border-radius: 50%;
-      gap: 0.4em;
-      transition: all 0.2s;
-
-      .line {
-        display: inline-block;
-        height: 0.2em;
-        background-color: $colorCian;
-        border-radius: 0.1em;
-        width: 60%;
-        transition: all 0.2s;
-      }
-    }
-
-    @media (hover: hover) {
-      &:hover {
-        .menu-circle {
-          box-shadow: 0 0 0 2px $colorBlackish,
-          0 0 0 5px lighten($colorCian, 30%),
-          0 0 0 9px $colorBlackish;
-
-          .line {
-            background-color: lighten($colorCian, 30%),
-          }
-        }
-      }
-    }
-  }
-
-  .underdeep-toggle-button {
-    font-size: 10px;
-    position: absolute;
-    bottom: 1px;
-    right: 70px;
-    padding: 1em;
-    cursor: pointer;
-    transform: translateY(50%);
-
-    &._active {
-      .menu-circle {
-        transform: rotate3d(1, 0, 0, 180deg)
-      }
-    }
-
-    .menu-circle {
-      width: 3em;
-      height: 3em;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      box-shadow: 0 0 0 2px $colorBlackish,
-      0 0 0 5px $colorCian,
-      0 0 0 9px $colorBlackish,
-      4px 4px 9px 5px rgba(0, 0, 0, 0.2);
-      background-color: #151515;
-      border-radius: 50%;
-      gap: 0.4em;
-      transition: all 0.4s;
-      background-image: url("../img/region/underdeep.svg");
-    }
-
-    @media (hover: hover) {
-      &:hover {
-        .menu-circle {
-          box-shadow: 0 0 0 2px $colorBlackish,
-          0 0 0 5px lighten($colorCian, 30%),
-          0 0 0 9px $colorBlackish;
-
-          .line {
-            background-color: lighten($colorCian, 30%),
-          }
-        }
-      }
-    }
-  }
-
-  .turn-toggle-button {
-    font-size: 10px;
-    position: absolute;
-    bottom: 2px;
-    left: 15px;
-    padding: 1em;
-    cursor: pointer;
-    transform: translateY(50%);
-    display: flex;
-    align-items: center;
-
-    &._active {
-      .menu-circle {
-        transform: rotate(180deg)
-      }
-    }
-
-    .menu-label {
-      width: auto;
-      height: 1em;
-      box-shadow: 0 0 0 2px $colorBlackish,
-      0 0 0 5px $colorCian,
-      0 0 0 9px $colorBlackish,
-      4px 4px 9px 5px rgba(0, 0, 0, 0.2);
-      background-color: #151515;
-      border-radius: 20px;
-      color: $colorCian;
-      padding: 0 0.4em;
-      font-size: 1.5em;
-      padding-left: 0.8em;
-      font-weight: 400;
-      transition: all 0.2s;
-      text-transform: uppercase;
-      @media only screen and (max-width: $responsiveWidthSmall) {
-        span {
-          font-size: 0;
-        }
-      }
-
-      b {
-        font-weight: 800;
-        color: #c8dbfc;
-      }
-    }
-
-    .menu-circle {
-      transform: rotate(0deg);
-      width: 3em;
-      height: 3em;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      box-shadow: 0 0 0 2px $colorBlackish,
-      0 0 0 5px $colorCian,
-      0 0 0 9px $colorBlackish,
-      4px 4px 9px 5px rgba(0, 0, 0, 0.2);
-      background-color: #151515;
-      border-radius: 50%;
-      gap: 0.4em;
-      transition: all 0.2s;
-      background-image: url("../img/region/turn.svg");
-    }
-
-    @media (hover: hover) {
-      &:hover {
-        .menu-circle, .menu-label {
-          box-shadow: 0 0 0 2px $colorBlackish,
-          0 0 0 5px lighten($colorCian, 30%),
-          0 0 0 9px $colorBlackish;
-
-          .line {
-            background-color: lighten($colorCian, 30%),
-          }
-        }
-      }
-    }
-  }
 }
-
 
 .route {
   position: relative;
@@ -341,18 +331,6 @@
         }
       }
     }
-
-  }
-
-  .journey-site {
-
-
-  }
-
-  .journey-hazard {
-    button.journey-hazard-icon {
-
-    }
   }
 }
 
@@ -415,16 +393,16 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      transform: translate(-50%);
+      transform: translateX(-50%);
       background-image: url("../img/map/old-map_sw.jpg");
-      background-size: 150%;
+      background-size: 800%;
       padding: 10px 15px;
       box-shadow: 0 0 0 2px $colorBlackish,
       0 0 0 5px $colorCian,
       0 0 0 9px $colorBlackish,
       4px 4px 9px 5px rgba(0, 0, 0, 0.2);
       border-radius: 10px;
-      overflow: hidden;
+      //overflow: hidden;
       max-width: 30vw;
 
       &:before {
@@ -440,6 +418,7 @@
     }
 
     .middle-content {
+      position: relative;
       flex-grow: 1;
       flex-shrink: 1;
       height: 100%;
@@ -470,21 +449,24 @@
         padding-top: 1.2em;
 
         .epic-button {
-          width: 10em;
-          display: inline-block;
+          width: 15em;
+          display: inline-flex;
           position: relative;
           white-space: normal;
           background-image: url("../img/map/old-map_sw.jpg");
           background-size: 500%;
           border-radius: 0.5em;
           overflow: hidden;
-          box-shadow: 0 0 20px rgba(0, 0, 0, 1);
+          box-shadow: 0 0 10px rgba(0, 0, 0, 1);
           border: 2px solid #e7d9ba;
           cursor: pointer;
           flex-shrink: 1;
           padding: 1em 0.8em;
           max-width: 100%;
           min-width: 12em;
+          justify-content: center;
+          align-items: center;
+          gap: 0.5em;
 
           &:before {
             content: "";
@@ -502,6 +484,24 @@
               .button-text {
                 color: white;
               }
+
+              .button-icon {
+                &._start {
+                  background-image: url("../img/icons/strartYourney_white.svg");
+                }
+
+                &._cancel {
+                  background-image: url("../img/icons/cancel_white.svg");
+                }
+
+                &._end {
+                  background-image: url("../img/icons/endYourney_white.svg");
+                }
+
+                &._site-list {
+                  background-image: url("../img/icons/siteList_white.svg");
+                }
+              }
             }
           }
 
@@ -517,12 +517,37 @@
             justify-content: center;
             text-transform: uppercase;
           }
+
+          .button-icon {
+            position: relative;
+            width: 1em;
+            height: 1em;
+            background-size: 150%;
+            opacity: 0.9;
+            margin-right: -0.5em;
+
+            &._start {
+              background-image: url("../img/icons/startYourney.svg");
+            }
+
+            &._end {
+              background-image: url("../img/icons/endYourney.svg");
+            }
+
+            &._cancel {
+              background-image: url("../img/icons/cancel.svg");
+            }
+
+            &._site-list {
+              background-image: url("../img/icons/siteList.svg");
+            }
+          }
         }
       }
 
       .card-items {
         padding-left: 2vw;
-        padding-top: 6em;
+        padding-top: 9em;
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -535,16 +560,16 @@
         width: 100%;
 
         &._region-sites {
-          font-size: 4px;
+          font-size: 3.5px;
         }
       }
     }
-
 
     .card-container, .placeholder {
       width: 400px;
       max-width: 30vw;
       flex-shrink: 0;
+      pointer-events: none;
 
       &._left {
         padding-left: 1vw;
@@ -558,9 +583,8 @@
 
       .meccg-card-image {
         position: relative;
-        border-radius: 6%;
+        border-radius: 1.2vw;
         width: 100%;
-        max-width: 30vw;
         background-color: grey;
         background-size: cover;
         display: inline-block;
@@ -569,6 +593,7 @@
         @extend .fade-in;
         box-shadow: 0 0 50px rgb(0, 0, 0);
         border: 1px solid #3f3f3f;
+        pointer-events: auto;
 
         @media (hover: hover) {
           &:hover {
@@ -577,12 +602,7 @@
         }
 
         &._queer {
-          transform: rotate(-90deg);
-          width: 280px;
-          max-width: 25vw;
-          left: 60px !important;
-          bottom: -60px !important;
-          margin-right: 140px;
+          transform: rotate(-90deg) scale(70%) translateX(-50%);
         }
 
         .meccg-card-inner {

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="200px" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icons/endYourney_white</title>
+    <g id="icons/endYourney_white" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(99.766093, 100.023101) rotate(-90.000000) translate(-99.766093, -100.023101) translate(67.266093, 46.023101)" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="5">
+            <path d="M32.5,-5 C36.6421356,-5 40,-1.64213562 40,2.5 L40,62.5 C40,66.6421356 36.6421356,70 32.5,70 C28.3578644,70 25,66.6421356 25,62.5 L25,2.5 C25,-1.64213562 28.3578644,-5 32.5,-5 Z" id="Rectangle" transform="translate(32.500000, 32.500000) rotate(45.000000) translate(-32.500000, -32.500000) "></path>
+            <path d="M32.5,37.6867707 C36.6421356,37.6867707 40,41.044635 40,45.1867707 L40,105.186771 C40,109.328906 36.6421356,112.686771 32.5,112.686771 C28.3578644,112.686771 25,109.328906 25,105.186771 L25,45.1867707 C25,41.044635 28.3578644,37.6867707 32.5,37.6867707 Z" id="Rectangle-Copy" transform="translate(32.500000, 75.186771) rotate(-45.000000) translate(-32.500000, -75.186771) "></path>
+        </g>
+    </g>
+</svg>

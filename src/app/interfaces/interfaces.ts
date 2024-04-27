@@ -1,7 +1,3 @@
-export enum PagePath_e {
-  undefined = 'undefined',
-}
-
 export enum LanguageId_e {
   de = 'de',
   en = 'en',
@@ -14,10 +10,9 @@ export enum PlayerId_e {
 
 export interface CurrentGuiContext_1 {
   currentAlignment: AlignmentType_e;
+  currentSubAlignment_1: SubAlignmentType_e;
+  currentSubAlignment_2: SubAlignmentType_e;
   currentSiteOrRegion: Card_i | null;
-  currentReachableRegions: Card_i[];
-  currentReachableSites: Card_i[];
-  currentSitesOfRegion: Card_i[];
   underDeep: boolean;
 }
 
@@ -27,10 +22,14 @@ export interface CurrentGuiContext_2 extends CurrentGuiContext_1 {
 }
 
 export interface CurrentGuiContext_3 {
+  currentReachableRegions: Card_i[];
+  currentReachableSites: Card_i[];
+  currentSitesOfRegion: Card_i[];
   currentJourneySiteFrom: Card_i | null;
   currentJourneySiteTo: Card_i | null;
   currentJourneyRegions: Card_i[];
   currentPlayableHazards: Card_i[];
+  extraMovement: ExtraMovement_e;
 }
 
 export enum Set_e {
@@ -41,15 +40,12 @@ export enum Set_e {
   AS = 'AS', // Against the Shadow
   WH = 'WH', // The White Hand
   BA = 'BA', // The Balrog
-
   UL = 'UL', // The Wizards (Unlimited)
-
   FB = 'FB', // Firstborn
   DF = 'DF', // Durin's Folk
   NE = 'NE', // The Necromancer
   NW = 'NW', // The Northern Waste
   ML = 'ML', // Morgoth's Legacy
-
   GW = 'GW', // The Great Wyrms
   CP = 'CP', // The Great Central Plains
   SL = 'SL', // The Sunlands
@@ -64,23 +60,10 @@ export enum Set_e {
   MM = 'MM', // Nine Rings for Mortal Men
 }
 
-export enum Race_e {
-  Dunadan = 'Dúnadan',
-}
-
-export enum Path_e {
-  w = 'w',
-  s = 's',
-}
-
 export enum AlignmentType_e {
   Minion = 'Minion',
-  Neutral = 'Neutral',
   Hero = 'Hero',
-  Dual = 'Dual',
-  'Fallen-wizard' = 'Fallen-wizard',
-  'Fallen-wizard_dark' = 'Fallen-wizard_dark',
-  'Fallen-wizard_bright' = 'Fallen-wizard_bright',
+  Fallen_wizard = 'Fallen-wizard',
   Balrog = 'Balrog',
   Challenge_Deck_A = 'Challenge_Deck_A',
   Challenge_Deck_B = 'Challenge_Deck_B',
@@ -106,19 +89,26 @@ export enum AlignmentType_e {
   Challenge_Deck_V = 'Challenge_Deck_V',
 }
 
+export enum SubAlignmentType_e {
+  hero_default = 'hero_default',
+  hero_fallen_wizard = 'hero_fallen_wizard',
+  minion_default = 'minion_default',
+  minion_fallen_wizard = 'minion_fallen_wizard',
+}
+
 export enum RegionType_e {
-  'Shadow-land' = 'Shadow-land',
-  'Wilderness' = 'Wilderness',
+  Shadow_land = 'Shadow-land',
+  Wilderness = 'Wilderness',
   'Border-land' = 'Border-land',
   'Coastal Sea' = 'Coastal Sea',
   'Under-deeps' = 'Under-deeps',
   'Dark-domain' = 'Dark-domain',
   'Free-domain' = 'Free-domain',
-  // "Jungle" = "Jungle",
-  // "Dungeon" = "Dungeon",
-  // "Double Desert" = "Double Desert",
-  // "Double Wilderness" = "Double Wilderness",
-  // "Triple Coastal Seas" = "Triple Coastal Seas",
+  Jungle = 'Jungle',
+  Dungeon = 'Dungeon',
+  'Double Desert' = 'Double Desert',
+  'Double Wilderness' = 'Double Wilderness',
+  'Triple Coastal Seas' = 'Triple Coastal Seas',
 }
 
 export enum CardType_e {
@@ -127,6 +117,12 @@ export enum CardType_e {
   Character = 'Character',
   Resource = 'Resource',
   Hazard = 'Hazard',
+}
+
+export enum ExtraMovement_e {
+  zero = 'zero',
+  one = 'one',
+  two = 'two',
 }
 
 export enum Playable_e {
@@ -156,6 +152,7 @@ export enum CreatureType_e {
   eagle = 'Eagle',
   maia = 'Maia',
   dunedain = 'Dunedain',
+  ent = 'ent',
 }
 
 export interface Playables_i {
@@ -174,59 +171,57 @@ export interface Card_i {
   suroundingRegions?: Card_i[];
   routingSteps?: number;
   routingRegions?: Card_i[];
-
-  'Home'?: string;
-  'Mind'?: string;
-  'Prowess'?: number;
+  Home?: string;
+  Mind?: string;
+  Prowess?: number;
   'title-jp'?: string;
   'flip-title'?: string;
   'title-gr'?: string;
-  'DCpath'?: string;
-  'alignment'?: string;
-  'Gear'?: string;
-  'type'?: CardType_e;
+  DCpath?: string;
+  alignment?: string;
+  Gear?: string;
+  type?: CardType_e;
   'title-fn'?: string;
-  'gccgAlign'?: string;
-  'Secondary'?: string;
-  'Body'?: string,
-  'title'?: string;
+  gccgAlign?: string;
+  Secondary?: string;
+  Body?: string,
+  title?: string;
   'title-fr'?: string;
-  'erratum'?: boolean;
-  'uniqueness'?: boolean;
-  'released'?: boolean;
-  'Rarity'?: string;
-  'Direct'?: string,
-  'normalizedtitle'?: string;
-  'code'?: string;
-  'ImageName'?: string;
-  'Hoard'?: string;
-  'dreamcard'?: boolean;
-  'full_set'?: string;
-  'Non'?: string;
-  'trimCode'?: string;
+  erratum?: boolean;
+  uniqueness?: boolean;
+  released?: boolean;
+  Rarity?: string;
+  Direct?: string,
+  normalizedtitle?: string;
+  code?: string;
+  ImageName?: string;
+  Hoard?: string;
+  dreamcard?: boolean;
+  full_set?: string;
+  Non?: string;
+  trimCode?: string;
   'title-it'?: string;
   'title-es'?: string;
-  'gccgSet'?: Set_e,
-  'errata'?: any;
-  'set_code'?: string;
-  'Artist'?: string;
-  'Precise'?: string;
-  'extras'?: boolean;
-  'subtype'?: string;
-  'Race'?: string;
+  gccgSet?: Set_e,
+  errata?: any;
+  set_code?: string;
+  Artist?: string;
+  Precise?: string;
+  extras?: boolean;
+  subtype?: string;
+  Race?: string;
   'title-du'?: string;
-  'text'?: string;
-
-  'Path'?: string;
-  'RPath'?: string;
-  'GoldRing'?: boolean;
-  'Haven'?: string;
-  'Region'?: string;
-  'Site'?: string;
-  'Playable'?: string;
-  'MinorItem'?: boolean;
-  'MajorItem'?: boolean;
-  'GreaterItem'?: boolean;
+  text?: string;
+  Path?: string;
+  RPath?: string;
+  GoldRing?: boolean;
+  Haven?: string;
+  Region?: string;
+  Site?: string;
+  Playable?: string;
+  MinorItem?: boolean;
+  MajorItem?: boolean;
+  GreaterItem?: boolean;
 }
 
 export interface SelectItem {

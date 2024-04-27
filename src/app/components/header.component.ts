@@ -1,7 +1,13 @@
 import {Component} from '@angular/core';
 import {DataService} from '../services/data.service';
 import {AppService} from '../services/app-service';
-import {AlignmentType_e, CurrentGuiContext_1, CurrentGuiContext_2, PlayerId_e} from '../interfaces/interfaces';
+import {
+  AlignmentType_e,
+  CurrentGuiContext_1,
+  CurrentGuiContext_2,
+  PlayerId_e,
+  SubAlignmentType_e
+} from '../interfaces/interfaces';
 import {copyObject} from '../services/utility-methods';
 import {MapService} from '../services/map-service';
 
@@ -15,16 +21,16 @@ import {MapService} from '../services/map-service';
         <app-route [reversed]="true"></app-route>
       </div>
       <div (click)="toggleUnderdeep()" [ngClass]="{'_active': $data.currentGuiContext_persistent.underDeep}"
-           class="underdeep-toggle-button">
+           class="circle-button _underdeep">
         <div class="menu-circle"></div>
       </div>
       <div (click)="togglePlayer()"
            [ngClass]="{'_active': $data.currentGuiContext_persistent.currentPlayer === PlayerId_e.player_2}"
-           class="turn-toggle-button">
+           class="circle-button _player">
         <div class="menu-circle"></div>
         <div class="menu-label" [innerHTML]="'app.' + $data.currentGuiContext_persistent.currentPlayer | translate "></div>
       </div>
-      <div (click)="$app.openMainMenuModal = true" class="main-menu-button">
+      <div (click)="$app.openMainMenuModal = true" class="circle-button _main-menu">
         <div class="menu-circle">
           <div class="line _1"></div>
           <div class="line _2"></div>
@@ -52,19 +58,23 @@ export class HeaderComponent {
     currentGuiContext.otherPlayersGuiContext = {
       currentAlignment: currentGuiContext?.currentAlignment ?? AlignmentType_e.Hero,
       currentSiteOrRegion: currentGuiContext?.currentSiteOrRegion ?? null,
-      currentReachableRegions: currentGuiContext?.currentReachableRegions ?? [],
-      currentReachableSites: currentGuiContext?.currentReachableSites ?? [],
-      currentSitesOfRegion: currentGuiContext?.currentSitesOfRegion ?? [],
+      currentSubAlignment_1: currentGuiContext?.currentSubAlignment_1 ?? SubAlignmentType_e.hero_default,
+      currentSubAlignment_2: currentGuiContext?.currentSubAlignment_2 ?? SubAlignmentType_e.hero_default,
+      // currentReachableRegions: currentGuiContext?.currentReachableRegions ?? [],
+      // currentReachableSites: currentGuiContext?.currentReachableSites ?? [],
+      // currentSitesOfRegion: currentGuiContext?.currentSitesOfRegion ?? [],
       underDeep: currentGuiContext?.underDeep ?? false,
     };
     currentGuiContext.currentAlignment = otherPlayersGuiContextCopy?.currentAlignment ?? AlignmentType_e.Hero;
     currentGuiContext.currentSiteOrRegion = otherPlayersGuiContextCopy?.currentSiteOrRegion ?? null;
-    currentGuiContext.currentReachableRegions = otherPlayersGuiContextCopy?.currentReachableRegions ?? [];
-    currentGuiContext.currentReachableSites = otherPlayersGuiContextCopy?.currentReachableSites ?? [];
-    currentGuiContext.currentSitesOfRegion = otherPlayersGuiContextCopy?.currentSitesOfRegion ?? [];
+    currentGuiContext.currentSubAlignment_1 = otherPlayersGuiContextCopy?.currentSubAlignment_1 ?? SubAlignmentType_e.hero_default;
+    currentGuiContext.currentSubAlignment_2 = otherPlayersGuiContextCopy?.currentSubAlignment_2 ?? SubAlignmentType_e.hero_default;
+    // currentGuiContext.currentReachableRegions = otherPlayersGuiContextCopy?.currentReachableRegions ?? [];
+    // currentGuiContext.currentReachableSites = otherPlayersGuiContextCopy?.currentReachableSites ?? [];
+    // currentGuiContext.currentSitesOfRegion = otherPlayersGuiContextCopy?.currentSitesOfRegion ?? [];
     currentGuiContext.underDeep = otherPlayersGuiContextCopy?.underDeep ?? false;
     this.$data.saveCurrentStates();
-    this.$map.renderRegionLabelAndSites();
+    this.$map.renderMapContent();
   }
 
   public toggleUnderdeep() {

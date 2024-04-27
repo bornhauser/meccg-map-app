@@ -22,30 +22,50 @@ import {CardUtilService} from '../services/card-util.service';
             <div class="meccg-card-inner"></div>
           </div>
         </div>
+        <div class="footer-route-containter"
+             *ngIf="$data.currentGuiContext_notPersitent.currentJourneyRegions.length || $data.currentGuiContext_notPersitent.currentJourneySiteTo">
+          <app-route></app-route>
+          <div (click)="$app.openExtraMovementModal = true" class="circle-button _extra-movement"
+               [ngClass]="'_' + $data.currentGuiContext_notPersitent.extraMovement">
+            <div class="menu-circle"></div>
+          </div>
+        </div>
         <!-- MIDDLE-->
         <div class="middle-content">
-          <div class="footer-route-containter"
-               *ngIf="$data.currentGuiContext_notPersitent.currentJourneyRegions.length || $data.currentGuiContext_notPersitent.currentJourneySiteTo">
-            <app-route></app-route>
+          <div (click)="$app.openSubAlignmentModal_1 = true" class="circle-button _open-sub-alignment _1"
+               [ngClass]="'_' + $data.currentGuiContext_persistent.currentSubAlignment_1">
+            <div class="menu-circle"></div>
           </div>
-          <div class="buttons-container" *ngIf="$data.currentGuiContext_persistent.currentSiteOrRegion?.type === CardType_e.Site">
+          <div (click)="$app.openSubAlignmentModal_2 = true" class="circle-button _open-sub-alignment _2"
+               [ngClass]="'_' + $data.currentGuiContext_persistent.currentSubAlignment_2">
+            <div class="menu-circle"></div>
+          </div>
+          <div class="buttons-container"
+               *ngIf="$data.currentGuiContext_persistent.currentSiteOrRegion?.type === CardType_e.Site">
             <button class="epic-button" (click)="$data.startJourney()"
                     *ngIf="$data.currentGuiContext_persistent.currentSiteOrRegion && $data.currentGuiContext_persistent.currentSiteOrRegion.type === CardType_e.Site && !$data.currentGuiContext_notPersitent.currentJourneySiteFrom">
               <div class="button-text">{{ 'app.startJourney' | translate }}</div>
+              <div class="button-icon _start"></div>
             </button>
             <button class="epic-button" *ngIf="$data.currentGuiContext_notPersitent.currentJourneySiteFrom"
                     (click)="$app.openSiteSelectionModal = true">
               <div class="button-text">{{ 'app.sitesAsList' | translate }}</div>
+              <div class="button-icon _site-list"></div>
             </button>
             <button class="epic-button" *ngIf="$data.currentGuiContext_notPersitent.currentJourneySiteFrom"
                     (click)="$data.endJourney()">
-              <div class="button-text">{{ 'app.endJourney' | translate }}</div>
+              <div class="button-text"
+                   *ngIf="!$data.currentGuiContext_notPersitent.currentJourneySiteTo">{{ 'app.cancelJourney' | translate }}</div>
+              <div class="button-text"
+                   *ngIf="$data.currentGuiContext_notPersitent.currentJourneySiteTo">{{ 'app.endJourney' | translate }}</div>
+              <div class="button-icon _cancel" *ngIf="!$data.currentGuiContext_notPersitent.currentJourneySiteTo"></div>
+              <div class="button-icon _end" *ngIf="$data.currentGuiContext_notPersitent.currentJourneySiteTo"></div>
             </button>
           </div>
           <div class="card-items _region-sites"
                *ngIf="$data.currentGuiContext_persistent.currentSiteOrRegion && $data.currentGuiContext_persistent?.currentSiteOrRegion?.type === CardType_e.Region">
             <app-site-item
-              *ngFor="let card of $data.currentGuiContext_persistent.currentSitesOfRegion"
+              *ngFor="let card of $data.currentGuiContext_notPersitent.currentSitesOfRegion"
               [card]="card"
               (onClick)="$data.onSiteOrRegionClick(card)">
             </app-site-item>

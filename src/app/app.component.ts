@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {DataService} from './services/data.service';
 import {AppService} from './services/app-service';
-import {PlayerId_e} from './interfaces/interfaces';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +19,9 @@ import {PlayerId_e} from './interfaces/interfaces';
       <app-hazard-cards-modal *ngIf="$app.openHazardCardsModal"></app-hazard-cards-modal>
       <app-main-menu-modal *ngIf="$app.openMainMenuModal"></app-main-menu-modal>
       <app-card-zoom-modal *ngIf="$app.zoomCard"></app-card-zoom-modal>
+      <app-sub-alignment-select-modal *ngIf="$app.openSubAlignmentModal_1" [key]="1"></app-sub-alignment-select-modal>
+      <app-sub-alignment-select-modal *ngIf="$app.openSubAlignmentModal_2" [key]="2"></app-sub-alignment-select-modal>
+      <app-extra-movement-modal *ngIf="$app.openExtraMovementModal"></app-extra-movement-modal>
     </div>
   `,
 })

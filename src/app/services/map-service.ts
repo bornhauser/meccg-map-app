@@ -4,7 +4,7 @@ import {CardUtilService} from './card-util.service';
 import * as L from 'leaflet';
 import {AlignmentType_e, Card_i, CardType_e, Playable_e, Playables_i} from '../interfaces/interfaces';
 import {DataService} from './data.service';
-import {copyObject, createRandomId} from './utility-methods';
+import {copyObject, createRandomId, hasId} from './utility-methods';
 import {Map, MapOptions} from 'leaflet';
 
 @Injectable()
@@ -14,14 +14,12 @@ export class MapService {
   public height: number = 663;
   public width: number = 989;
   public bounds: any = [[0, 0], [this.height, this.width]];
-
   public layerWithUnderdeepImage: L.ImageOverlay | null = null;
   public layerWithUnderdeepSvg: L.SVGOverlay | null = null;
   public layerWithUnderdeepSites: any;
   public layerWithUnderdeepSitesClass: string = 'svg-layer-underdeep-sites';
   public layerWithUnderdeepNumbers: L.SVGOverlay | null = null;
   public layerWithUnderdeepNumbersClass: string = 'svg-layer-underdeep-numbers';
-
   public layerWithRegionLabel: any;
   public layerWithRegionLabelClass: string = 'svg-layer-region-labels';
   public layerWithSites: any;
@@ -69,7 +67,7 @@ export class MapService {
       className: 'meccg-map-image _surface',
       interactive: false,
     }).addTo(this.map);
-    L.imageOverlay('assets/img/map/border_smaller.png', this.bounds, {
+    L.imageOverlay('assets/img/map/border.png', this.bounds, {
       className: 'meccg-border _surface',
       interactive: false,
     }).addTo(this.map);
@@ -77,22 +75,20 @@ export class MapService {
       className: 'svg-layer _surface',
       interactive: true,
     }).addTo(this.map);
-    document.querySelector('.svg-layer path#mountain-1')?.setAttribute('class', 'mountain-svg');
-    document.querySelector('.svg-layer path#mountain-2')?.setAttribute('class', 'mountain-svg');
-    document.querySelector('.svg-layer path#mountain-3')?.setAttribute('class', 'mountain-svg');
-    document.querySelector('.svg-layer path#mountain-4')?.setAttribute('class', 'mountain-svg');
-    document.querySelector('.svg-layer path#mountain-5')?.setAttribute('class', 'mountain-svg');
-    document.querySelector('.svg-layer path#mountain-6')?.setAttribute('class', 'mountain-svg');
-    document.querySelector('.svg-layer path#mountain-7')?.setAttribute('class', 'mountain-svg');
-    document.querySelector('.svg-layer path#mountain-8')?.setAttribute('class', 'mountain-svg');
-    document.querySelector('.svg-layer path#mountain-9')?.setAttribute('class', 'mountain-svg');
-    this.renderRegionLabelAndSites();
+    document.querySelector('.svg-layer polygon#mountain-1')?.setAttribute('class', 'mountain-svg');
+    document.querySelector('.svg-layer polygon#mountain-2')?.setAttribute('class', 'mountain-svg');
+    document.querySelector('.svg-layer polygon#mountain-3')?.setAttribute('class', 'mountain-svg');
+    document.querySelector('.svg-layer polygon#mountain-4')?.setAttribute('class', 'mountain-svg');
+    document.querySelector('.svg-layer polygon#mountain-5')?.setAttribute('class', 'mountain-svg');
+    document.querySelector('.svg-layer polygon#mountain-6')?.setAttribute('class', 'mountain-svg');
+    document.querySelector('.svg-layer polygon#mountain-7')?.setAttribute('class', 'mountain-svg');
+    document.querySelector('.svg-layer polygon#mountain-8')?.setAttribute('class', 'mountain-svg');
+    document.querySelector('.svg-layer polygon#mountain-9')?.setAttribute('class', 'mountain-svg');
+    this.renderMapContent();
   }
 
-  public renderRegionLabelAndSites() {
+  public renderMapContent() {
     if (this.map) {
-
-      this.$data.endJourney();
       if (this.layerWithUnderdeepSites) {
         this.map.removeLayer(this.layerWithUnderdeepSites);
       }
@@ -125,7 +121,7 @@ export class MapService {
         className: this.layerWithUnderdeepNumbersClass,
         interactive: false
       }).addTo(this.map);
-      const underdeepNumbers = this.$data.getUnderdeepMoveNumbers();
+      const underdeepNumbers = this.$data.getUnderdeepMoveNumbers(undefined, undefined, true);
       for (let key in underdeepNumbers) {
         const underDeepsCircle: any = document.querySelector('.svg-layer-underdeeps circle#' + key);
         if (underDeepsCircle) {
@@ -168,7 +164,7 @@ export class MapService {
       }).addTo(this.map);
       let allRegionCards: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterRegions(this.$data.all_cards));
       allRegionCards.forEach((card) => {
-        const regionPathSvg: any = document.querySelector('.svg-layer path' + this.$data.getSketchId(card));
+        const regionPathSvg: any = document.querySelector('.svg-layer polygon' + this.$data.getSketchId(card));
         regionPathSvg?.setAttribute('class', 'region-path');
         regionPathSvg?.setAttribute('aria-label', '0');
         regionPathSvg?.setAttribute('aria-description', '0');
@@ -211,8 +207,8 @@ export class MapService {
           interactive: true,
         }).addTo(this.map);
       }
-      let all_siteCards: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.$data.all_cards, isUnderDeeps));
-      all_siteCards.forEach((card) => {
+      let siteCards: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.$data.all_cards, isUnderDeeps, undefined, true));
+      siteCards.forEach((card) => {
         let siteSvg: any
         if (isUnderDeeps) {
           if (
@@ -282,7 +278,6 @@ export class MapService {
           } else {
             document.querySelector('.' + this.layerWithSitesClass)?.appendChild(svgElement);
           }
-          // @ts-ignore
           const element: any = document.getElementById(id);
           element?.addEventListener('click', function ($event: any) { // @ts-ignore
             document.onSiteOrRegionClick(card, $event);
@@ -331,14 +326,14 @@ export class MapService {
       svg2?.setAttribute('aria-description', '3');
     }
     // JOURNEY DISAPEAR SITES
-    if (this.$data.currentGuiContext_notPersitent.currentJourneySiteFrom && this.$data.currentGuiContext_persistent.currentReachableSites) {
+    if (this.$data.currentGuiContext_notPersitent.currentJourneySiteFrom && this.$data.currentGuiContext_notPersitent.currentReachableSites) {
       allSiteCards.forEach((card) => {
         const svg: any = document.querySelector('.' + this.layerWithSitesClass + ' #' + this.$cardUtil.getSiteLabelId(card));
         svg?.setAttribute('display', 'none');
         const svg2: any = document.querySelector('.' + this.layerWithUnderdeepSitesClass + ' #' + this.$cardUtil.getSiteLabelId(card));
         svg2?.setAttribute('display', 'none');
       });
-      const allReachableSiteCards: Card_i[] = copyObject(this.$data.currentGuiContext_persistent.currentReachableSites);
+      const allReachableSiteCards: Card_i[] = copyObject(this.$data.currentGuiContext_notPersitent.currentReachableSites);
       allReachableSiteCards.push(this.$data.currentGuiContext_notPersitent.currentJourneySiteFrom);
       allReachableSiteCards.forEach((card) => {
         const svg: any = document.querySelector('.' + this.layerWithSitesClass + ' #' + this.$cardUtil.getSiteLabelId(card));
@@ -364,14 +359,14 @@ export class MapService {
       borderSvg?.setAttribute('aria-description', '1');
     });
     // JOURNEY DISAPEAR REGIONS
-    if (this.$data.currentGuiContext_notPersitent.currentJourneySiteFrom && this.$data.currentGuiContext_persistent.currentReachableRegions) {
+    if (this.$data.currentGuiContext_notPersitent.currentJourneySiteFrom && this.$data.currentGuiContext_notPersitent.currentReachableRegions) {
       allRegionCards.forEach((card) => {
         const svg: any = document.querySelector('#' + this.$cardUtil.getRegionPathId(card));
         svg?.setAttribute('aria-label', '1');
         const svg2: any = document.querySelector('#' + this.$cardUtil.getRegionLabelId(card));
         svg2?.setAttribute('display', 'none');
       });
-      allRegionCards = this.$data.currentGuiContext_persistent.currentReachableRegions;
+      allRegionCards = this.$data.currentGuiContext_notPersitent.currentReachableRegions;
       allRegionCards.forEach((card) => {
         const svg: any = document.querySelector('#' + this.$cardUtil.getRegionPathId(card));
         svg?.setAttribute('aria-label', '0');
@@ -396,7 +391,7 @@ export class MapService {
       })
     }
     if (this.$data.currentGuiContext_notPersitent.currentJourneySiteFrom) {
-      const all_underDeepNumbersFromThisSite = this.$data.getUnderdeepMoveNumbers(this.$data.currentGuiContext_notPersitent.currentJourneySiteFrom);
+      const all_underDeepNumbersFromThisSite = this.$data.getUnderdeepMoveNumbers(this.$data.currentGuiContext_notPersitent.currentJourneySiteFrom, undefined, true);
       for (let key in all_underDeepNumbersFromThisSite) {
         document.querySelector('.svg-layer-underdeeps g#' + key)?.setAttribute('aria-description', '1');
         document.querySelector('.under-deep-number-foreign-object#' + key)?.setAttribute('aria-description', '1');
@@ -405,13 +400,13 @@ export class MapService {
         }
       }
     } else {
-      if (this.$data.currentGuiContext_persistent.currentAlignment === AlignmentType_e.Balrog) {
-        document.querySelector('.svg-layer-underdeeps g#any-ancient-deep-hold')?.setAttribute('aria-description', '1');
-      }
-      const relevant_underDeepNumbers = this.$data.getUnderdeepMoveNumbers();
+      const relevant_underDeepNumbers = this.$data.getUnderdeepMoveNumbers(undefined, false, true);
       for (let key in relevant_underDeepNumbers) {
         document.querySelector('.svg-layer-underdeeps g#' + key)?.setAttribute('aria-description', '1');
         document.querySelector('.under-deep-number-foreign-object#' + key)?.setAttribute('aria-description', '1');
+        if (key === 'x_ancient-deep-hold') {
+          document.querySelector('.svg-layer-underdeeps g#any-ancient-deep-hold')?.setAttribute('aria-description', '1');
+        }
       }
     }
   }

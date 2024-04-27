@@ -24,6 +24,8 @@ import {CardUtilService} from './services/card-util.service';
 import {UndergroundSvgComponent} from './components/underground-svg.component';
 import {MapService} from './services/map-service';
 import {RegionNamesModalComponent} from './components/modal/region-names-modal.component';
+import {SubAlignmentSelectModalComponent} from './components/modal/sub-alignment-select-modal.component';
+import {ExtraMovementModalComponent} from './components/modal/extra-movement-modal.component';
 
 export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -45,6 +47,8 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     SelectItemComponent,
     UndergroundSvgComponent,
     RegionNamesModalComponent,
+    SubAlignmentSelectModalComponent,
+    ExtraMovementModalComponent,
   ],
   imports: [
     CommonModule,
