@@ -1,11 +1,13 @@
+$colorYourney: white;
+$colorFocus: $colorCian;
+
 .site-button {
   display: inline-flex;
   flex-direction: column;
   pointer-events: auto;
   width: auto;
-  border: 1em solid transparent;
-  transition: all 0.2s;
-  border-radius: 1em;
+  padding: 3em;
+  margin: -3em;
 
   &._under-deep {
     .pergament {
@@ -18,179 +20,199 @@
   }
 
   @media (hover: hover) {
-    &:hover {
+    &:hover .activation-border {
       border: 1em solid white;
     }
   }
 
-  .pergament-container {
+  .activation-border {
+    display: inline-flex;
+    flex-direction: column;
+    border: 1em solid transparent;
+    transition: all 0.2s;
+    border-radius: 1em;
 
-    .pergament {
-      background-image: url("../img/pic/pergament.png");
-      padding: 0 7em 0 4em;
-      display: flex;
-      align-items: center;
-      background-size: 100% 100%;
-      height: 8em;
-      background-color: rgba(0, 0, 0, 0.4);
-      box-shadow: 0 0 3em rgba(0, 0, 0, 0.8);
+    .pergament-container {
 
-      .site-icon {
-        display: inline-block;
-        width: 8em;
+      .pergament {
+        background-image: url("../img/pic/pergament.png");
+        padding: 0 7em 0 4em;
+        display: flex;
+        align-items: center;
+        background-size: 100% 100%;
         height: 8em;
-        margin-right: 0.5em;
-      }
+        background-color: rgba(0, 0, 0, 0.4);
+        box-shadow: 0 0 3em rgba(0, 0, 0, 0.8);
 
-      .site-title {
-        display: inline-block;
-        font-size: 4em;
-        font-family: "Alice", serif;
-        font-weight: 800;
-        color: #333333;
-        white-space: nowrap;
-        min-width: 5em;
-        margin-right: 0.5em;
-      }
-
-      .creature-icon {
-        display: inline-block;
-        width: 6em;
-        height: 6em;
-        background-color: #efcc90;
-        border-radius: 50%;
-        border: 0.3em solid $colorBlackish;
-        margin-top: 6em;
-        box-shadow: 0 0 2em rgba(0, 0, 0, 0.5);
-        transition: all 0.2s;
-      }
-
-      .event-container {
-        display: none;
-        height: 100%;
-        width: 0;
-
-        @media (hover: hover) {
-          &:hover .event-button{
-            box-shadow: 0 0 0 1em $colorBlackish,
-            0 0 0 2em white,
-            0 0 0 3.5em $colorBlackish,
-            2em 2em 4.5em 2.5em rgba(0, 0, 0, 0.2)!important;
-          }
+        .site-icon {
+          display: inline-block;
+          width: 8em;
+          height: 8em;
+          margin-right: 0.5em;
         }
 
-        .event-button {
-          @extend .fade-in;
-          margin-top: -1.2em;
-          //margin-top: 2em;
-          margin-left: 10.5em;
-          margin-left: 5em;
-          width: 10em;
-          height: 10em;
-          cursor: pointer;
-          padding: 1em;
-          border-radius: 1em;
+        .site-title {
+          display: inline-block;
+          font-size: 4em;
+          font-family: "Alice", serif;
+          font-weight: 800;
+          color: #333333;
+          white-space: nowrap;
+          min-width: 5em;
+          margin-right: 0.5em;
+        }
+
+        .creature-icon {
+          display: inline-block;
+          width: 6em;
+          height: 6em;
+          background-color: #efcc90;
+          border-radius: 50%;
+          border: 0.3em solid $colorBlackish;
+          margin-top: 6em;
+          box-shadow: 0 0 2em rgba(0, 0, 0, 0.5);
           transition: all 0.2s;
         }
 
-        &._gogo {
-          .event-button {
-            box-shadow: 0 0 0 1em $colorBlackish,
-            0 0 0 2em $colorCian,
-            0 0 0 3.5em $colorBlackish,
-            2em 2em 4.5em 2.5em rgba(0, 0, 0, 0.2);
-            background-color: #151515;
-            background-image: url("../img/site/go.svg");
-          }
-        }
+        .event-container {
+          display: none;
+          height: 100%;
+          width: 0;
+          margin-left: 5em;
+          margin-top: -2.5em;
 
-        &._end {
+          @media (hover: hover) {
+            &:hover .event-button._gogo .event-button-activation-border {
+              box-shadow: 0 0 0 1em $colorBlackish,
+              0 0 0 2em $colorYourney,
+              0 0 0 3.5em $colorBlackish,
+              2em 2em 4.5em 2.5em rgba(0, 0, 0, 0.2) !important;
+            }
+
+            &:hover .event-button._end .event-button-activation-border {
+              box-shadow: 0 0 0 1em $colorBlackish,
+              0 0 0 2em white,
+              0 0 0 3.5em $colorBlackish,
+              2em 2em 4.5em 2.5em rgba(0, 0, 0, 0.2) !important;
+            }
+          }
+
           .event-button {
-            box-shadow: 0 0 0 1em $colorBlackish,
-            0 0 0 2em #e5e5e5,
-            0 0 0 3.5em $colorBlackish,
-            2em 2em 4.5em 2.5em rgba(0, 0, 0, 0.2);
-            background-color: #151515;
-            background-image: url("../img/site/journey_1.svg");
+            @extend .fade-in;
+            margin-top: -1.2em;
+            width: 16em;
+            height: 16em;
+            cursor: pointer;
+            padding: 3em;
+            margin: -3em;
+
+            .event-button-activation-border {
+              padding: 1em;
+              transition: all 0.2s;
+              border-radius: 1em;
+              height: 100%;
+            }
+          }
+
+          &._gogo {
+            .event-button .event-button-activation-border {
+              box-shadow: 0 0 0 1em $colorBlackish,
+              0 0 0 2em $colorFocus,
+              0 0 0 3.5em $colorBlackish,
+              2em 2em 4.5em 2.5em rgba(0, 0, 0, 0.2);
+              background-color: #151515;
+              background-image: url("../img/site/go.svg");
+            }
+          }
+
+          &._end {
+            .event-button .event-button-activation-border {
+              box-shadow: 0 0 0 1em $colorBlackish,
+              0 0 0 2em $colorYourney,
+              0 0 0 3.5em $colorBlackish,
+              2em 2em 4.5em 2.5em rgba(0, 0, 0, 0.2);
+              background-color: #151515;
+              background-image: url("../img/site/journey_1.svg");
+            }
           }
         }
       }
     }
-  }
 
-  .meta-container {
-    margin-top: 3.5em;
-    margin-bottom: -11em;
-    display: inline-block;
-    width: 100%;
-    padding: 0 4em;
-    text-align: center;
+    .meta-container {
+      margin-top: 3.5em;
+      margin-bottom: -11em;
+      display: inline-block;
+      width: 100%;
+      padding: 0 4em;
+      text-align: center;
 
-    .meta {
-      width: auto;
-      border-radius: 1em;
-      background-color: #2a0a0a;
-      height: 7em;
-      display: inline-flex;
-      align-items: flex-end;
-      justify-content: center;
-      gap: 1em;
-      padding: 0 3em;
+      .meta {
+        width: auto;
+        border-radius: 1em;
+        background-color: #2a0a0a;
+        height: 7em;
+        display: inline-flex;
+        align-items: flex-end;
+        justify-content: center;
+        gap: 1em;
+        padding: 0 3em;
 
-      .playable {
-        margin-top: 1em;
-        top: 0.8em;
-        display: inline-block;
-        width: 4em;
-        height: 4em;
-        border-radius: 50%;
-        border: 0.5em solid black;
-        margin-bottom: -0.5em;
-
-        &._minor {
-          background-color: #54c750;
-        }
-
-        &._major {
-          background-color: #ff9100;
-        }
-
-        &._greater {
-          background-color: #dd00ff;
-        }
-
-        &._gold_ring {
-          width: 3.5em;
-          height: 3.5em;
+        .playable {
+          margin-top: 1em;
+          top: 0.8em;
+          display: inline-block;
+          width: 4em;
+          height: 4em;
           border-radius: 50%;
           border: 0.5em solid black;
-          box-shadow: 0 0 0 0.8em #ffdd00,
-          0 0 0 1em black;
-          margin: 0.5em 1.5em;
-        }
+          margin-bottom: -0.5em;
 
-        &._information {
-          margin-top: 1em;
-          border: none;
-          background-color: transparent;
-          border-radius: 0;
-          background-image: url("../img/site/information.svg");
-          background-size: 7em;
-          width: 5em;
-          height: 5em;
-          margin-bottom: -1em
-        }
+          &._minor {
+            background-color: #54c750;
+          }
 
-        &._dragon-hoard {
-          background-image: url("../img/site/dragonHoard.svg");
-          margin-top: 1em;
-          border: none;
-          background-color: transparent;
-          border-radius: 0;
-          background-size: 7em;
-          width: 3.5em;
-          height: 5em;
-          margin-bottom: -1em
+          &._major {
+            background-color: #ff9100;
+          }
+
+          &._greater {
+            background-color: #dd00ff;
+          }
+
+          &._gold_ring {
+            width: 3.5em;
+            height: 3.5em;
+            border-radius: 50%;
+            border: 0.5em solid black;
+            box-shadow: 0 0 0 0.8em #ffdd00,
+            0 0 0 1em black;
+            margin: 0.5em 1.5em;
+          }
+
+          &._information {
+            margin-top: 1em;
+            border: none;
+            background-color: transparent;
+            border-radius: 0;
+            background-image: url("../img/site/information.svg");
+            background-size: 7em;
+            width: 5em;
+            height: 5em;
+            margin-bottom: -1em
+          }
+
+          &._dragon-hoard {
+            background-image: url("../img/site/dragonHoard.svg");
+            margin-top: 1em;
+            border: none;
+            background-color: transparent;
+            border-radius: 0;
+            background-size: 7em;
+            width: 3.5em;
+            height: 5em;
+            margin-bottom: -1em
+          }
         }
       }
     }
@@ -199,32 +221,35 @@
 
 $colorTurkise2: #00ffc3;
 
-body .site-object[aria-description="1"] .site-button {
+body .site-object[aria-description="1"] .site-button .activation-border {
   background-color: white;
   box-shadow: 0 0 0 1em $colorBlackish,
-  0 0 0 2em $colorCian,
+  0 0 0 2em $colorFocus,
   0 0 0 3.5em $colorBlackish,
   2em 2em 4.5em 2.5em rgba(0, 0, 0, 0.2);
 
   .event-container._gogo {
-    display: block!important;
+    display: block !important;
   }
 }
 
-body .site-object[aria-description="2"] .site-button,
-body .site-object[aria-description="3"] .site-button {
-  background-color: white;
-  box-shadow: 0 0 0 1em $colorBlackish,
-  0 0 0 2em #e5e5e5,
-  0 0 0 3.5em $colorBlackish,
-  2em 2em 4.5em 2.5em rgba(0, 0, 0, 0.2)!important;
-  .event-container._end {
-    display: block!important;
+body .site-object[aria-description="2"], body .site-object[aria-description="3"] {
+
+  .site-button .activation-border {
+    background-color: white;
+    box-shadow: 0 0 0 1em $colorBlackish,
+    0 0 0 2em $colorYourney,
+    0 0 0 3.5em $colorBlackish,
+    2em 2em 4.5em 2.5em rgba(0, 0, 0, 0.2) !important;
+
+    .event-container._end {
+      display: block !important;
+    }
   }
 }
 
-body .site-object[aria-description="3"] .site-button {
-  .event-button._end {
-    background-image: url("../img/site/journey_2.svg")!important;
+body .site-object[aria-description="3"] .site-button .activation-border {
+  .event-button._end .event-button-activation-border {
+    background-image: url("../img/site/journey_2.svg") !important;
   }
 }

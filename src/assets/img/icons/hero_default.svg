@@ -3,11 +3,16 @@
     <title>icons/hero_default</title>
     <defs>
         <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
-            <stop stop-color="#FCDBA9" offset="0%"></stop>
-            <stop stop-color="#B8A97B" offset="100%"></stop>
+            <stop stop-color="#FDF2E0" offset="0%"></stop>
+            <stop stop-color="#CDC5B6" offset="72.2820149%"></stop>
+            <stop stop-color="#9D988C" offset="100%"></stop>
         </linearGradient>
     </defs>
     <g id="icons/hero_default" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <circle id="Oval" stroke="#1D1D1B" stroke-width="17" fill="url(#linearGradient-1)" cx="99.5" cy="99.5" r="40"></circle>
+        <g id="Group" transform="translate(0.000000, -0.050162)" fill="url(#linearGradient-1)" stroke="#1D1D1B" stroke-width="17">
+            <g id="Oval">
+                <circle cx="99.5" cy="98.5" r="40"></circle>
+            </g>
+        </g>
     </g>
 </svg>

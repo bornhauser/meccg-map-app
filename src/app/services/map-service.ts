@@ -2,13 +2,21 @@ import {Injectable} from '@angular/core';
 import {AppService} from './app-service';
 import {CardUtilService} from './card-util.service';
 import * as L from 'leaflet';
-import {AlignmentType_e, Card_i, CardType_e, Playable_e, Playables_i} from '../interfaces/interfaces';
-import {DataService} from './data.service';
-import {copyObject, createRandomId, hasId} from './utility-methods';
 import {Map, MapOptions} from 'leaflet';
+import {
+  AlignmentType_e,
+  Card_i,
+  CardType_e,
+  Playable_e,
+  Playables_i,
+  SubAlignmentType_e
+} from '../interfaces/interfaces';
+import {DataService} from './data.service';
+import {copyObject, createRandomId} from './utility-methods';
 
 @Injectable()
 export class MapService {
+
 
   public map: Map | null = null;
   public height: number = 663;
@@ -52,6 +60,7 @@ export class MapService {
       }).on('dblclick', () => {
         setTimeout(() => {
           this.$data.resetCurrentGuiContext();
+          this.$data.refreshCalculations();
         }, 100);
       });
     this.map.setView([this.height / 2, this.width / 2], 0.3);
@@ -84,7 +93,7 @@ export class MapService {
     document.querySelector('.svg-layer polygon#mountain-7')?.setAttribute('class', 'mountain-svg');
     document.querySelector('.svg-layer polygon#mountain-8')?.setAttribute('class', 'mountain-svg');
     document.querySelector('.svg-layer polygon#mountain-9')?.setAttribute('class', 'mountain-svg');
-    this.renderMapContent();
+    this.$data.refreshCalculations();
   }
 
   public renderMapContent() {
@@ -162,7 +171,7 @@ export class MapService {
         className: this.layerWithRegionLabelClass + ' _surface',
         interactive: false,
       }).addTo(this.map);
-      let allRegionCards: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterRegions(this.$data.all_cards));
+      let allRegionCards: Card_i[] = this.$cardUtil.filterRegions(this.$data.all_cards);
       allRegionCards.forEach((card) => {
         const regionPathSvg: any = document.querySelector('.svg-layer polygon' + this.$data.getSketchId(card));
         regionPathSvg?.setAttribute('class', 'region-path');
@@ -207,7 +216,11 @@ export class MapService {
           interactive: true,
         }).addTo(this.map);
       }
-      let siteCards: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.$data.all_cards, isUnderDeeps, undefined, true));
+      let relevantSubAlignment: SubAlignmentType_e = this.$data.currentGuiContext_persistent.currentSubAlignment_1 ?? SubAlignmentType_e.hero_fallen_wizard;
+      if (this.$data.currentGuiContext_notPersitent.currentJourneySiteFrom && this.$data.currentGuiContext_persistent.currentSubAlignment_2) {
+        relevantSubAlignment = this.$data.currentGuiContext_persistent.currentSubAlignment_2;
+      }
+      let siteCards: Card_i[] = this.$cardUtil.filterSites(isUnderDeeps, undefined, true, relevantSubAlignment);
       siteCards.forEach((card) => {
         let siteSvg: any
         if (isUnderDeeps) {
@@ -255,17 +268,23 @@ export class MapService {
           svgElement.innerHTML = `
           <div class="content-frame" xmlns="http://www.w3.org/1999/xhtml">
             <div class="site-button ${(this.$cardUtil.isUnderDeepSite(card) ? '_under-deep' : '')}" id="${id}">
-              ${meta}
-              <div class="pergament-container">
-                <div class="pergament">
-                  <div class="site-icon" style="background-image: url('${this.$cardUtil.getSiteIconUrl(card)}')"></div>
-                  <div class="site-title">${this.$cardUtil.getCardTitle(card)}</div>
-                  ${creatureIconUrl ? creatureIcon : ''}
-                  <div class="event-container _gogo">
-                    <div class="event-button _gogo"></div>
-                  </div>
-                  <div class="event-container _end">
-                    <div class="event-button _end"></div>
+              <div class="activation-border">
+                ${meta}
+                <div class="pergament-container">
+                  <div class="pergament">
+                    <div class="site-icon" style="background-image: url('${this.$cardUtil.getSiteIconUrl(card)}')"></div>
+                    <div class="site-title">${this.$cardUtil.getCardTitle(card)}</div>
+                    ${creatureIconUrl ? creatureIcon : ''}
+                    <div class="event-container _gogo">
+                      <div class="event-button _gogo">
+                        <div class="event-button-activation-border"></div>
+                      </div>
+                    </div>
+                    <div class="event-container _end">
+                      <div class="event-button _end">
+                        <div class="event-button-activation-border"></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -296,17 +315,15 @@ export class MapService {
   }
 
   public renderActivities() {
-    let allSiteCards = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.$data.all_cards, true));
-    let allRegionCards = this.$cardUtil.filterOfficial(this.$cardUtil.filterRegions(this.$data.all_cards));
+    let allSiteCards = this.$cardUtil.filterSites(true);
+    let allRegionCards = this.$cardUtil.filterRegions(this.$data.all_cards);
     // RESET SITES
-    allSiteCards.forEach((card) => {
-      const svg: any = document.querySelector('.' + this.layerWithSitesClass + ' #' + this.$cardUtil.getSiteLabelId(card));
-      svg?.setAttribute('aria-description', '0');
-      const svg2: any = document.querySelector('.' + this.layerWithUnderdeepSitesClass + ' #' + this.$cardUtil.getSiteLabelId(card));
-      svg2?.setAttribute('aria-description', '0');
+    document.querySelectorAll('.site-object').forEach((card) => {
+      card.setAttribute('aria-description', '0');
     });
     // FOCUS SITE
     if (this.$data.currentGuiContext_persistent.currentSiteOrRegion?.type === CardType_e.Site) {
+      console.log(this.$cardUtil.getSiteLabelId(this.$data.currentGuiContext_persistent.currentSiteOrRegion))
       const svg: any = document.querySelector('.' + this.layerWithSitesClass + ' #' + this.$cardUtil.getSiteLabelId(this.$data.currentGuiContext_persistent.currentSiteOrRegion));
       svg?.setAttribute('aria-description', '1');
       const svg2: any = document.querySelector('.' + this.layerWithUnderdeepSitesClass + ' #' + this.$cardUtil.getSiteLabelId(this.$data.currentGuiContext_persistent.currentSiteOrRegion));
@@ -327,11 +344,8 @@ export class MapService {
     }
     // JOURNEY DISAPEAR SITES
     if (this.$data.currentGuiContext_notPersitent.currentJourneySiteFrom && this.$data.currentGuiContext_notPersitent.currentReachableSites) {
-      allSiteCards.forEach((card) => {
-        const svg: any = document.querySelector('.' + this.layerWithSitesClass + ' #' + this.$cardUtil.getSiteLabelId(card));
-        svg?.setAttribute('display', 'none');
-        const svg2: any = document.querySelector('.' + this.layerWithUnderdeepSitesClass + ' #' + this.$cardUtil.getSiteLabelId(card));
-        svg2?.setAttribute('display', 'none');
+      document.querySelectorAll('.site-object').forEach((card) => {
+        card.setAttribute('display', 'none');
       });
       const allReachableSiteCards: Card_i[] = copyObject(this.$data.currentGuiContext_notPersitent.currentReachableSites);
       allReachableSiteCards.push(this.$data.currentGuiContext_notPersitent.currentJourneySiteFrom);
@@ -349,15 +363,20 @@ export class MapService {
         svg2?.setAttribute('display', 'block');
       });
     }
-    // REGIONS
-    allRegionCards.forEach((card) => {
-      const borderSvg: any = document.querySelector('#' + this.$cardUtil.getRegionPathId(card));
-      borderSvg?.setAttribute('aria-description', '0');
+    // RESET REGIONS
+    document.querySelectorAll('.region-path').forEach((card) => {
+      card.setAttribute('aria-description', '0');
     });
+    // SELECTED REGIONS
     this.$data.currentGuiContext_notPersitent.currentJourneyRegions.forEach((card) => {
       const borderSvg: any = document.querySelector('#' + this.$cardUtil.getRegionPathId(card));
       borderSvg?.setAttribute('aria-description', '1');
     });
+    // FOCUSED REGION
+    if (this.$data.currentGuiContext_persistent.currentSiteOrRegion?.type === CardType_e.Region) {
+      const borderSvg: any = document.querySelector('#' + this.$cardUtil.getRegionPathId(this.$data.currentGuiContext_persistent.currentSiteOrRegion));
+      borderSvg?.setAttribute('aria-description', '2');
+    }
     // JOURNEY DISAPEAR REGIONS
     if (this.$data.currentGuiContext_notPersitent.currentJourneySiteFrom && this.$data.currentGuiContext_notPersitent.currentReachableRegions) {
       allRegionCards.forEach((card) => {

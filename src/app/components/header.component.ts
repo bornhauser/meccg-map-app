@@ -9,7 +9,6 @@ import {
   SubAlignmentType_e
 } from '../interfaces/interfaces';
 import {copyObject} from '../services/utility-methods';
-import {MapService} from '../services/map-service';
 
 @Component({
   selector: 'app-header',
@@ -46,7 +45,6 @@ export class HeaderComponent {
   constructor(
     public $data: DataService,
     public $app: AppService,
-    public $map: MapService,
   ) {
 
   }
@@ -60,27 +58,22 @@ export class HeaderComponent {
       currentSiteOrRegion: currentGuiContext?.currentSiteOrRegion ?? null,
       currentSubAlignment_1: currentGuiContext?.currentSubAlignment_1 ?? SubAlignmentType_e.hero_default,
       currentSubAlignment_2: currentGuiContext?.currentSubAlignment_2 ?? SubAlignmentType_e.hero_default,
-      // currentReachableRegions: currentGuiContext?.currentReachableRegions ?? [],
-      // currentReachableSites: currentGuiContext?.currentReachableSites ?? [],
-      // currentSitesOfRegion: currentGuiContext?.currentSitesOfRegion ?? [],
       underDeep: currentGuiContext?.underDeep ?? false,
     };
     currentGuiContext.currentAlignment = otherPlayersGuiContextCopy?.currentAlignment ?? AlignmentType_e.Hero;
     currentGuiContext.currentSiteOrRegion = otherPlayersGuiContextCopy?.currentSiteOrRegion ?? null;
     currentGuiContext.currentSubAlignment_1 = otherPlayersGuiContextCopy?.currentSubAlignment_1 ?? SubAlignmentType_e.hero_default;
     currentGuiContext.currentSubAlignment_2 = otherPlayersGuiContextCopy?.currentSubAlignment_2 ?? SubAlignmentType_e.hero_default;
-    // currentGuiContext.currentReachableRegions = otherPlayersGuiContextCopy?.currentReachableRegions ?? [];
-    // currentGuiContext.currentReachableSites = otherPlayersGuiContextCopy?.currentReachableSites ?? [];
-    // currentGuiContext.currentSitesOfRegion = otherPlayersGuiContextCopy?.currentSitesOfRegion ?? [];
     currentGuiContext.underDeep = otherPlayersGuiContextCopy?.underDeep ?? false;
     this.$data.saveCurrentStates();
-    this.$map.renderMapContent();
+    this.$data.refreshCalculations();
   }
 
   public toggleUnderdeep() {
     this.$data.resetCurrentGuiContext();
     this.$data.currentGuiContext_persistent.underDeep = !this.$data.currentGuiContext_persistent.underDeep;
     this.$data.saveCurrentStates();
+    this.$data.refreshCalculations();
   }
 
   protected readonly PlayerId_e = PlayerId_e;

@@ -3,11 +3,15 @@
     <title>icons/minion_default</title>
     <defs>
         <linearGradient x1="50%" y1="0%" x2="50%" y2="99.3198208%" id="linearGradient-1">
-            <stop stop-color="#98A0A6" offset="0%"></stop>
-            <stop stop-color="#213D53" offset="100%"></stop>
+            <stop stop-color="#A7A5A8" offset="0%"></stop>
+            <stop stop-color="#4D3D56" offset="100%"></stop>
         </linearGradient>
     </defs>
     <g id="icons/minion_default" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <circle id="Oval" stroke="#1D1D1B" stroke-width="17" fill="url(#linearGradient-1)" cx="99.5" cy="99.5" r="40"></circle>
+        <g id="Group" transform="translate(0.000000, -0.050162)" fill="url(#linearGradient-1)" stroke="#1D1D1B" stroke-width="17">
+            <g id="Oval">
+                <circle cx="99.5" cy="99.5" r="40"></circle>
+            </g>
+        </g>
     </g>
 </svg>

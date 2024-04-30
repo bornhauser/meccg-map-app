@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {DataService} from '../services/data.service';
-import {CardType_e} from '../interfaces/interfaces';
+import {AlignmentType_e, CardType_e} from '../interfaces/interfaces';
 import {AppService} from '../services/app-service';
 import {CardUtilService} from '../services/card-util.service';
 
@@ -33,10 +33,12 @@ import {CardUtilService} from '../services/card-util.service';
         <!-- MIDDLE-->
         <div class="middle-content">
           <div (click)="$app.openSubAlignmentModal_1 = true" class="circle-button _open-sub-alignment _1"
+               *ngIf="$cardUtil.getUsedBasicAlignment() === AlignmentType_e.Fallen_wizard"
                [ngClass]="'_' + $data.currentGuiContext_persistent.currentSubAlignment_1">
             <div class="menu-circle"></div>
           </div>
           <div (click)="$app.openSubAlignmentModal_2 = true" class="circle-button _open-sub-alignment _2"
+               *ngIf="$cardUtil.getUsedBasicAlignment() === AlignmentType_e.Fallen_wizard && $data.currentGuiContext_notPersitent.currentJourneySiteFrom"
                [ngClass]="'_' + $data.currentGuiContext_persistent.currentSubAlignment_2">
             <div class="menu-circle"></div>
           </div>
@@ -89,6 +91,7 @@ import {CardUtilService} from '../services/card-util.service';
 export class FooterComponent {
 
   CardType_e = CardType_e;
+  AlignmentType_e = AlignmentType_e;
 
   constructor(
     public $data: DataService,

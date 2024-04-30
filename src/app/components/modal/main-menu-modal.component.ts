@@ -52,8 +52,8 @@ export class MainMenuModalComponent {
   public onAlignmentChange($event: any) {
     this.$data.currentGuiContext_persistent.currentAlignment = $event?.selected ?? AlignmentType_e.Hero;
     if (this.$data.currentGuiContext_persistent.currentAlignment === AlignmentType_e.Fallen_wizard) {
-      this.$data.currentGuiContext_persistent.currentSubAlignment_1 === SubAlignmentType_e.hero_fallen_wizard;
-      this.$data.currentGuiContext_persistent.currentSubAlignment_2 === SubAlignmentType_e.hero_fallen_wizard;
+      this.$data.currentGuiContext_persistent.currentSubAlignment_1 = SubAlignmentType_e.hero_fallen_wizard;
+      this.$data.currentGuiContext_persistent.currentSubAlignment_2 = SubAlignmentType_e.hero_fallen_wizard;
     }
     this.$data.refreshCalculations();
     setTimeout(() => {

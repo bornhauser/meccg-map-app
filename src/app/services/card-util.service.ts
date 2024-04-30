@@ -8,12 +8,12 @@ import {
   Playable_e,
   Playables_i,
   RegionType_e,
-  Set_e,
+  Set_e, SiteType_e,
   SubAlignmentType_e
 } from '../interfaces/interfaces';
 import {AppService} from './app-service';
 import {DataService} from './data.service';
-import {hasId} from './utility-methods';
+import {getStringBetweenStrings, hasId} from './utility-methods';
 import {challengeDecksSites} from '../../assets/data/challengeDecks';
 
 declare var meccgCards: Card_i[] | undefined;
@@ -93,9 +93,12 @@ export class CardUtilService {
     return card.ImageName?.replaceAll('.jpg', '') ?? '';
   }
 
-  public filterSites(cards: Card_i[], withUnderDeeps?: boolean, alignment?: AlignmentType_e, filterChallengeDeck?: boolean, subAlignment?: SubAlignmentType_e): Card_i[] {
-    alignment = alignment ?? this.$data?.currentGuiContext_persistent.currentAlignment ?? AlignmentType_e.Hero;
+  public filterSites(withUnderDeeps?: boolean, alignment?: AlignmentType_e | null, filterChallengeDeck?: boolean, subAlignment?: SubAlignmentType_e): Card_i[] {
+    if (!alignment) {
+      alignment = this.$data?.currentGuiContext_persistent.currentAlignment ?? AlignmentType_e.Hero;
+    }
     let basicAlignment: AlignmentType_e = this.getUsedBasicAlignment(alignment);
+    const cards = this.$data?.all_cards ?? [];
     const allSiteCards: Card_i[] = cards?.filter((card: Card_i) => {
       return card.type === CardType_e.Site;
     });
@@ -121,8 +124,18 @@ export class CardUtilService {
             answer?.push(card);
           }
         }
-        if (relevantSubAlignment === SubAlignmentType_e.minion_default || relevantSubAlignment === SubAlignmentType_e.minion_fallen_wizard) {
+        if (relevantSubAlignment === SubAlignmentType_e.minion_default) {
           if (card.alignment === AlignmentType_e.Minion && !hasId(answer, card.normalizedtitle, 'normalizedtitle')) {
+            answer?.push(card);
+          }
+        }
+        if (relevantSubAlignment === SubAlignmentType_e.minion_fallen_wizard) {
+          if (((card.alignment === AlignmentType_e.Hero && (
+              card.Site === SiteType_e.Dark_hold || card.Site === SiteType_e.Shadow_hold
+            )) || (card.alignment === AlignmentType_e.Minion && (
+              card.Site === SiteType_e.Free_hold || card.Site === SiteType_e.Border_hold || card.Site === SiteType_e.Ruins_and_Lairs
+            ))
+          ) && !hasId(answer, card.normalizedtitle, 'normalizedtitle')) {
             answer?.push(card);
           }
         }
@@ -197,11 +210,7 @@ export class CardUtilService {
   }
 
   public getSiteIconName(card: Card_i): string {
-    let siteName = card.Site ?? '';
-    if (siteName === 'darkhold') {
-      siteName = 'dark-hold';
-    }
-    return siteName.toLowerCase().replaceAll('&', 'and').replaceAll(' ', '-').replaceAll('\'', '-') ?? '';
+    return (card.Site ?? '').toLowerCase().replaceAll('&', 'and').replaceAll(' ', '-').replaceAll('\'', '-') ?? '';
   }
 
   public getCardImageUrl(card: Card_i): string {
@@ -211,39 +220,40 @@ export class CardUtilService {
   public getCreatureId(card: Card_i): string {
     let answer = '';
     if (card.text && card.text.indexOf('Automatic-attack') > -1) {
-      if (card.text.indexOf(CreatureType_e.orcs) > -1) {
+      const text = getStringBetweenStrings('Automatic-attack', '"', card.text) ?? '';
+      if (text.indexOf(CreatureType_e.orcs) > -1) {
         answer = CreatureType_e.orcs;
-      } else if (card.text.indexOf(CreatureType_e.spiders) > -1) {
+      } else if (text.indexOf(CreatureType_e.spiders) > -1) {
         answer = CreatureType_e.spiders;
-      } else if (card.text.indexOf(CreatureType_e.men) > -1) {
+      } else if (text.indexOf(CreatureType_e.men) > -1) {
         answer = CreatureType_e.men;
-      } else if (card.text.indexOf(CreatureType_e.dragon) > -1) {
+      } else if (text.indexOf(CreatureType_e.dragon) > -1) {
         answer = CreatureType_e.dragon;
-      } else if (card.text.indexOf(CreatureType_e.undead) > -1) {
+      } else if (text.indexOf(CreatureType_e.undead) > -1) {
         answer = CreatureType_e.undead;
-      } else if (card.text.indexOf(CreatureType_e.pukel_creature) > -1) {
+      } else if (text.indexOf(CreatureType_e.pukel_creature) > -1) {
         answer = CreatureType_e.pukel_creature;
-      } else if (card.text.indexOf(CreatureType_e.wolves) > -1) {
+      } else if (text.indexOf(CreatureType_e.wolves) > -1) {
         answer = CreatureType_e.wolves;
-      } else if (card.text.indexOf(CreatureType_e.troll) > -1) {
+      } else if (text.indexOf(CreatureType_e.troll) > -1) {
         answer = CreatureType_e.troll;
-      } else if (card.text.indexOf(CreatureType_e.opponent_may_play) > -1) {
+      } else if (text.indexOf(CreatureType_e.opponent_may_play) > -1) {
         answer = CreatureType_e.opponent_may_play;
-      } else if (card.text.indexOf(CreatureType_e.drake) > -1) {
+      } else if (text.indexOf(CreatureType_e.drake) > -1) {
         answer = CreatureType_e.drake;
-      } else if (card.text.indexOf(CreatureType_e.drake) > -1) {
+      } else if (text.indexOf(CreatureType_e.drake) > -1) {
         answer = CreatureType_e.drake;
-      } else if (card.text.indexOf(CreatureType_e.dwarves) > -1) {
+      } else if (text.indexOf(CreatureType_e.dwarves) > -1) {
         answer = CreatureType_e.dwarves;
-      } else if (card.text.indexOf(CreatureType_e.elves) > -1) {
+      } else if (text.indexOf(CreatureType_e.elves) > -1) {
         answer = CreatureType_e.elves;
       } else if (card.normalizedtitle === 'eagles\' eyrie') {
         answer = CreatureType_e.eagle;
-      } else if (card.text.indexOf(CreatureType_e.maia) > -1) {
+      } else if (text.indexOf(CreatureType_e.maia) > -1) {
         answer = CreatureType_e.maia;
-      } else if (card.text.indexOf('Dúnedain') > -1) {
+      } else if (text.indexOf('Dúnedain') > -1) {
         answer = CreatureType_e.dunedain;
-      } else if (card.text.indexOf('Awakened Plant') > -1) {
+      } else if (text.indexOf('Awakened Plant') > -1) {
         answer = CreatureType_e.ent;
       }
     }
@@ -307,7 +317,7 @@ export class CardUtilService {
   }
 
   public getSiteLabelId(card: Card_i): string {
-    return `siteLabelId_` + card.id;
+    return `siteLabelId_` + card.normalizedtitle?.replaceAll(' ', '').replaceAll('\'', '');
   }
 
   public getCardTitle(card: Card_i): string {
@@ -352,7 +362,10 @@ export class CardUtilService {
     }
   }
 
-  public getUsedBasicAlignment(alignmentType: AlignmentType_e): AlignmentType_e {
+  public getUsedBasicAlignment(alignmentType?: AlignmentType_e): AlignmentType_e {
+    if (!alignmentType) {
+      alignmentType = this.$data?.currentGuiContext_persistent.currentAlignment ?? AlignmentType_e.Hero;
+    }
     if (
       alignmentType === AlignmentType_e.Challenge_Deck_A ||
       alignmentType === AlignmentType_e.Challenge_Deck_B ||

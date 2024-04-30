@@ -147,9 +147,9 @@ foreignObject.site-object {
 
   .region-path {
     opacity: 1;
-    transition: stroke 0.2s;
     fill: transparent;
     stroke: #492045;
+    transition: all 0.2s;
 
     &[aria-label="1"] {
       fill: rgba(141, 141, 141, 0.9);
@@ -157,12 +157,22 @@ foreignObject.site-object {
 
     &[aria-description="1"] {
       stroke: white !important;
+      stroke-width: 1.1em!important;
+      box-shadow: 0px 0px 100px black;
+      fill: rgba(255, 255, 255, 0.2);
+      filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.4));
+    }
+
+    &[aria-description="2"] {
+      stroke: white !important;
+      stroke-width: 1.2em!important;
     }
   }
 }
 
 @media (hover: hover) {
   .root-container:not(.journey-mode) .svg-layer .region-path:hover {
+    stroke-width: 0.6em;
     stroke: white;
   }
 }

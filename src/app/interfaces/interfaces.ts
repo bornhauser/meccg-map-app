@@ -111,6 +111,16 @@ export enum RegionType_e {
   'Triple Coastal Seas' = 'Triple Coastal Seas',
 }
 
+export enum SiteType_e {
+  Dark_hold = 'Dark-hold',
+  Shadow_hold = 'Shadow-hold',
+  Border_hold = 'Border-hold',
+  Free_hold = 'Free-hold',
+  Ruins_and_Lairs = 'Ruins & Lairs',
+  Darkhaven = 'Darkhaven',
+  Haven = 'Haven',
+}
+
 export enum CardType_e {
   Site = 'Site',
   Region = 'Region',

@@ -44,7 +44,7 @@ export class DataService {
   ) {
     $cardUtil.$data = this;
     $app.$data = this;
-    this.all_cards = this.$cardUtil.getAllCards();
+    this.all_cards = this.$cardUtil.filterOfficial(this.$cardUtil.getAllCards());
     const savedGuiContext = sessionStorage.getItem('meccg-gui-context')
     if (savedGuiContext) {
       this.currentGuiContext_persistent = JSON.parse(savedGuiContext);
@@ -56,10 +56,17 @@ export class DataService {
     const savedCurrentJourneySiteFrom = this.currentGuiContext_notPersitent.currentJourneySiteFrom;
     const saveCurrentJourneySiteTo = this.currentGuiContext_notPersitent.currentJourneySiteTo;
     this.resetCurrentGuiContext();
-    const allSites = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, true));
+    const allSites = this.$cardUtil.filterSites(true);
     if (savedCurrentSiteOrRegion) {
-      const newCurrentSiteOrRegion = findId(allSites, savedCurrentSiteOrRegion.normalizedtitle, false, 'normalizedtitle');
+      let newCurrentSiteOrRegion = findId(allSites, savedCurrentSiteOrRegion.normalizedtitle, false, 'normalizedtitle');
       if (newCurrentSiteOrRegion) {
+        if (this.$cardUtil.getUsedBasicAlignment() === AlignmentType_e.Fallen_wizard) {
+          this.$cardUtil.filterSites(true, undefined, false, this.currentGuiContext_persistent.currentSubAlignment_1).forEach((card) => {
+            if (card.normalizedtitle === newCurrentSiteOrRegion.normalizedtitle) {
+              newCurrentSiteOrRegion = card;
+            }
+          });
+        }
         this.onSiteOrRegionClick(newCurrentSiteOrRegion, true);
         if (savedCurrentJourneySiteFrom) {
           this.startJourney(true);
@@ -76,11 +83,93 @@ export class DataService {
     this.saveCurrentStates();
   }
 
+  public onSiteOrRegionClick(card: Card_i, noRender?: boolean): void {
+    if (this.currentGuiContext_notPersitent.currentJourneySiteFrom) {
+      if (card.type === CardType_e.Site) {
+        const clickedCard: Card_i = findId(this.currentGuiContext_notPersitent.currentReachableSites, card.normalizedtitle, false, 'normalizedtitle');
+        this.currentGuiContext_notPersitent.currentJourneySiteTo = clickedCard as Card_i;
+        if (this.currentGuiContext_notPersitent.currentJourneyRegions.length && this.currentGuiContext_notPersitent.currentJourneyRegions[this.currentGuiContext_notPersitent.currentJourneyRegions.length - 1].id === this.getRegionOfSite(card)?.id) {
+        } else {
+          this.currentGuiContext_notPersitent.currentJourneyRegions = clickedCard?.routingRegions ?? [];
+        }
+        if (
+          this.currentGuiContext_notPersitent.currentJourneySiteFrom?.Haven === this.currentGuiContext_notPersitent.currentJourneySiteTo?.title
+        ) {
+          this.currentGuiContext_notPersitent.currentJourneyRegions = [];
+          this.currentGuiContext_notPersitent.currentJourneySiteFrom.Path?.split(' ').forEach((key: string) => {
+            const region: Card_i | null = this.$cardUtil.createNonRegionCard(key);
+            region ? this.currentGuiContext_notPersitent.currentJourneyRegions.push(region) : null;
+          })
+        }
+        if (
+          this.currentGuiContext_notPersitent.currentJourneySiteTo.Haven === this.currentGuiContext_notPersitent.currentJourneySiteFrom.title
+        ) {
+          this.currentGuiContext_notPersitent.currentJourneyRegions = [];
+          this.currentGuiContext_notPersitent.currentJourneySiteTo.Path?.split(' ').forEach((key: string) => {
+            const region: Card_i | null = this.$cardUtil.createNonRegionCard(key);
+            region ? this.currentGuiContext_notPersitent.currentJourneyRegions.push(region) : null;
+          })
+        }
+        if (this.$cardUtil.getUsedBasicAlignment() === AlignmentType_e.Fallen_wizard) {
+          this.$cardUtil.filterSites(true, undefined, false, this.currentGuiContext_persistent.currentSubAlignment_2).forEach((card) => {
+            if (card.normalizedtitle === this.currentGuiContext_notPersitent.currentJourneySiteTo?.normalizedtitle) {
+              this.currentGuiContext_notPersitent.currentJourneySiteTo = card;
+            }
+          });
+        }
+        if (card.normalizedtitle === this.currentGuiContext_notPersitent.currentJourneySiteFrom.normalizedtitle) {
+          this.currentGuiContext_notPersitent.currentJourneyRegions = [];
+          // findIdAndDelete(reachableSites, startSite.id);
+        }
+        this.calculateCurrentPlayableHazards();
+      } else if (card.type === CardType_e.Region) {
+        const foundRegions: Card_i[] = this.getSurroundingRegionsWithoutRedundant(card);
+        const selectedRegions = this.currentGuiContext_notPersitent.currentJourneyRegions;
+        if (card.id === selectedRegions[0]?.id) {
+          // on already selected region click
+          this.currentGuiContext_notPersitent.currentJourneyRegions = [card];
+        } else if (card.id === selectedRegions[1]?.id) {
+          this.currentGuiContext_notPersitent.currentJourneyRegions = [selectedRegions[0], card];
+        } else if (card.id === selectedRegions[2]?.id) {
+          this.currentGuiContext_notPersitent.currentJourneyRegions = [selectedRegions[0], selectedRegions[1], card];
+        } else if (this.currentGuiContext_notPersitent.extraMovement !== ExtraMovement_e.zero && card.id === selectedRegions[3]?.id) {
+          this.currentGuiContext_notPersitent.currentJourneyRegions = [selectedRegions[0], selectedRegions[1], selectedRegions[2], card];
+        } else if (this.currentGuiContext_notPersitent.extraMovement === ExtraMovement_e.two && card.id === selectedRegions[4]?.id) {
+          this.currentGuiContext_notPersitent.currentJourneyRegions = [selectedRegions[0], selectedRegions[1], selectedRegions[2], selectedRegions[3], card];
+          // on neighbour of selected region click
+        } else if (this.currentGuiContext_notPersitent.extraMovement === ExtraMovement_e.two && hasId(foundRegions, selectedRegions[4]?.id)) {
+          this.currentGuiContext_notPersitent.currentJourneyRegions = [selectedRegions[0], selectedRegions[1], selectedRegions[2], selectedRegions[3], selectedRegions[4], card];
+        } else if (this.currentGuiContext_notPersitent.extraMovement !== ExtraMovement_e.zero && hasId(foundRegions, selectedRegions[3]?.id)) {
+          this.currentGuiContext_notPersitent.currentJourneyRegions = [selectedRegions[0], selectedRegions[1], selectedRegions[2], selectedRegions[3], card];
+        } else if (hasId(foundRegions, selectedRegions[2]?.id)) {
+          this.currentGuiContext_notPersitent.currentJourneyRegions = [selectedRegions[0], selectedRegions[1], selectedRegions[2], card];
+        } else if (hasId(foundRegions, selectedRegions[1]?.id)) {
+          this.currentGuiContext_notPersitent.currentJourneyRegions = [selectedRegions[0], selectedRegions[1], card];
+        } else if (hasId(foundRegions, selectedRegions[0]?.id)) {
+          this.currentGuiContext_notPersitent.currentJourneyRegions = [selectedRegions[0], card];
+        }
+        this.currentGuiContext_notPersitent.currentJourneySiteTo = null;
+      }
+    } else {
+      this.currentGuiContext_persistent.currentSiteOrRegion = card;
+      if (card.type === CardType_e.Region) {
+        this.currentGuiContext_notPersitent.currentSitesOfRegion = this.getSitesOfRegion(card);
+      } else {
+        this.currentGuiContext_notPersitent.currentSitesOfRegion = [];
+        // if (!noRender) {
+        //   this.startJourney();
+        // }
+        this.calculateReachableRegionsAndSites();
+      }
+    }
+    this.saveCurrentStates();
+    if (!noRender) {
+      this.$map?.renderActivities();
+    }
+  }
+
   public resetCurrentGuiContext() {
     this.currentGuiContext_persistent.currentSiteOrRegion = null;
-    // this.curent.currentReachableRegions = [];
-    // this.currentGuiContext_persistent.currentReachableSites = [];
-    // this.currentGuiContext_persistent.currentSitesOfRegion = [];
     this.currentGuiContext_notPersitent.currentJourneySiteFrom = null;
     this.currentGuiContext_notPersitent.currentJourneySiteTo = null;
     this.currentGuiContext_notPersitent.currentJourneyRegions = [];
@@ -173,10 +262,7 @@ export class DataService {
         reachableSites.push(card);
       })
       if (startSite.normalizedtitle === 'the under-galleries') {
-        reachableSites.push(findId(this.$cardUtil.filterSites(this.all_cards), 'cirith gorgor', false, 'normalizedtitle'));
-      }
-      if (hasId(reachableSites, startSite.id)) {
-        findIdAndDelete(reachableSites, startSite.id);
+        reachableSites.push(findId(this.$cardUtil.filterSites(), 'cirith gorgor', false, 'normalizedtitle'));
       }
       this.getReachableHavensOfSite(startSite).forEach((card: Card_i) => {
         if (!hasId(reachableSites, card.id)) {
@@ -197,7 +283,7 @@ export class DataService {
 
   public getReachableHavensOfSite(card: Card_i): Card_i[] {
     const answer: Card_i[] = [];
-    const all_Sites: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, false));
+    const all_Sites: Card_i[] = this.$cardUtil.filterSites(false, undefined, true, this.currentGuiContext_persistent.currentSubAlignment_1);
     const haven: Card_i | null = findId(all_Sites, card.Haven, false, 'title');
     if (haven) {
       answer.push(haven);
@@ -207,7 +293,7 @@ export class DataService {
 
   public getReachableSitesOfHaven(card: Card_i): Card_i[] {
     const answer: Card_i[] = [];
-    const all_Sites: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, false, undefined, true));
+    const all_Sites: Card_i[] = this.$cardUtil.filterSites(false, undefined, true, this.currentGuiContext_persistent.currentSubAlignment_1);
     all_Sites.forEach((site: Card_i) => {
       if (site.Haven === card.title) {
         answer.push(site);
@@ -218,7 +304,7 @@ export class DataService {
 
   public getReachableUnderDeepSites(card: Card_i): Card_i[] {
     const answer: Card_i[] = [];
-    const allUnderdeepSites: Card_i[] = this.$cardUtil.filterUnderDeeps(this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, true, undefined, true)));
+    const allUnderdeepSites: Card_i[] = this.$cardUtil.filterUnderDeeps(this.$cardUtil.filterSites(true, undefined, true, this.currentGuiContext_persistent.currentSubAlignment_1));
     allUnderdeepSites.forEach((underdeepCard) => {
       if (underdeepCard.text && underdeepCard.text.indexOf(card.title ?? '') > -1) {
         answer.push(underdeepCard);
@@ -234,7 +320,7 @@ export class DataService {
       }
     });
     if (this.$cardUtil.isUnderDeepSite(card)) {
-      const allSites: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards));
+      const allSites: Card_i[] = this.$cardUtil.filterSites();
       allSites.forEach((surfaceCard) => {
         if (card.text && card.text.indexOf(surfaceCard.title ?? '') > -1) {
           answer.push(surfaceCard);
@@ -246,7 +332,7 @@ export class DataService {
 
   public getSurroundingRegionsWithoutRedundant(card_region: Card_i, firstRegionComplex?: Card_i): Card_i[] {
     const answer: Card_i[] = [];
-    const all_regions: Card_i[] = copyObject(this.$cardUtil.filterOfficial(this.$cardUtil.filterRegions(this.all_cards)));
+    const all_regions: Card_i[] = copyObject(this.$cardUtil.filterRegions(this.all_cards));
     all_regions.forEach((card: Card_i) => {
       if (card.text && card.text.indexOf(card_region.title ?? '') > -1) {
         if (card_region.title === 'Belfalas' && card.text.indexOf('Bay of Belfalas') > -1 && !(card.text.indexOf(', Belfalas') > -1)) {
@@ -279,7 +365,7 @@ export class DataService {
   public getRegionOfSite(card_site: Card_i): Card_i | null {
     let answer: Card_i | null = null;
     if (card_site.type === CardType_e.Site && !this.$cardUtil.isUnderDeepSite(card_site)) {
-      const regions: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterRegions(this.all_cards));
+      const regions: Card_i[] = this.$cardUtil.filterRegions(this.all_cards);
       regions.forEach((card_region: Card_i) => {
         if (card_region.title === card_site.Region) {
           answer = card_region;
@@ -292,7 +378,7 @@ export class DataService {
   public getSitesOfRegion(card_region: Card_i): Card_i[] {
     let answer: Card_i[] = [];
     if (card_region.type === CardType_e.Region) {
-      const card_sites: Card_i[] = copyObject(this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, false, undefined, true)));
+      const card_sites: Card_i[] = copyObject(this.$cardUtil.filterSites(false, undefined, true, this.currentGuiContext_persistent.currentSubAlignment_1));
       card_sites.forEach((card_site: Card_i) => {
         if (card_region.title === card_site.Region) {
           answer.push(card_site);
@@ -302,68 +388,8 @@ export class DataService {
     return answer;
   };
 
-  public onSiteOrRegionClick(card: Card_i, noRender?: boolean): void {
-    if (this.currentGuiContext_notPersitent.currentJourneySiteFrom) {
-      if (card.type === CardType_e.Site) {
-        const clickedCard: Card_i = findId(this.currentGuiContext_notPersitent.currentReachableSites, card.id);
-        this.currentGuiContext_notPersitent.currentJourneySiteTo = clickedCard as Card_i;
-        if (this.currentGuiContext_notPersitent.currentJourneyRegions.length && this.currentGuiContext_notPersitent.currentJourneyRegions[this.currentGuiContext_notPersitent.currentJourneyRegions.length - 1].id === this.getRegionOfSite(card)?.id) {
-        } else {
-          this.currentGuiContext_notPersitent.currentJourneyRegions = clickedCard?.routingRegions ?? [];
-        }
-        if (
-          this.currentGuiContext_notPersitent.currentJourneySiteFrom.Haven === this.currentGuiContext_notPersitent.currentJourneySiteTo.title
-        ) {
-          this.currentGuiContext_notPersitent.currentJourneyRegions = [];
-          this.currentGuiContext_notPersitent.currentJourneySiteFrom.Path?.split(' ').forEach((key: string) => {
-            const region: Card_i | null = this.$cardUtil.createNonRegionCard(key);
-            region ? this.currentGuiContext_notPersitent.currentJourneyRegions.push(region) : null;
-          })
-        }
-        if (
-          this.currentGuiContext_notPersitent.currentJourneySiteTo.Haven === this.currentGuiContext_notPersitent.currentJourneySiteFrom.title
-        ) {
-          this.currentGuiContext_notPersitent.currentJourneyRegions = [];
-          this.currentGuiContext_notPersitent.currentJourneySiteTo.Path?.split(' ').forEach((key: string) => {
-            const region: Card_i | null = this.$cardUtil.createNonRegionCard(key);
-            region ? this.currentGuiContext_notPersitent.currentJourneyRegions.push(region) : null;
-          })
-        }
-        this.calculateCurrentPlayableHazards();
-      } else if (card.type === CardType_e.Region) {
-        const foundRegions: Card_i[] = this.getSurroundingRegionsWithoutRedundant(card);
-        if (card.id === this.currentGuiContext_notPersitent.currentJourneyRegions[0]?.id) {
-          this.currentGuiContext_notPersitent.currentJourneyRegions = [card];
-        } else if (card.id === this.currentGuiContext_notPersitent.currentJourneyRegions[1]?.id) {
-          this.currentGuiContext_notPersitent.currentJourneyRegions = [this.currentGuiContext_notPersitent.currentJourneyRegions[0], card];
-        } else if (card.id === this.currentGuiContext_notPersitent.currentJourneyRegions[2]?.id) {
-          this.currentGuiContext_notPersitent.currentJourneyRegions = [this.currentGuiContext_notPersitent.currentJourneyRegions[0], this.currentGuiContext_notPersitent.currentJourneyRegions[1], card];
-        } else if (hasId(foundRegions, this.currentGuiContext_notPersitent.currentJourneyRegions[2]?.id)) {
-          this.currentGuiContext_notPersitent.currentJourneyRegions = [this.currentGuiContext_notPersitent.currentJourneyRegions[0], this.currentGuiContext_notPersitent.currentJourneyRegions[1], this.currentGuiContext_notPersitent.currentJourneyRegions[2], card];
-        } else if (hasId(foundRegions, this.currentGuiContext_notPersitent.currentJourneyRegions[1]?.id)) {
-          this.currentGuiContext_notPersitent.currentJourneyRegions = [this.currentGuiContext_notPersitent.currentJourneyRegions[0], this.currentGuiContext_notPersitent.currentJourneyRegions[1], card];
-        } else if (hasId(foundRegions, this.currentGuiContext_notPersitent.currentJourneyRegions[0]?.id)) {
-          this.currentGuiContext_notPersitent.currentJourneyRegions = [this.currentGuiContext_notPersitent.currentJourneyRegions[0], card];
-        }
-        this.currentGuiContext_notPersitent.currentJourneySiteTo = null;
-      }
-    } else {
-      this.currentGuiContext_persistent.currentSiteOrRegion = card;
-      if (card.type === CardType_e.Region) {
-        this.currentGuiContext_notPersitent.currentSitesOfRegion = this.getSitesOfRegion(card);
-      } else {
-        this.currentGuiContext_notPersitent.currentSitesOfRegion = [];
-      }
-      this.calculateReachableRegionsAndSites();
-    }
-    this.saveCurrentStates();
-    if (!noRender) {
-      this.$map?.renderActivities();
-    }
-  }
-
   public calculateCurrentPlayableHazards() {
-    const allHazardCards: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterHazards(this.all_cards));
+    const allHazardCards: Card_i[] = this.$cardUtil.filterHazards(this.all_cards);
     const filteredHazards: Card_i[] = allHazardCards.filter((card: Card_i) => {
       let answer = false;
       this.currentGuiContext_notPersitent.currentJourneyRegions.forEach((regionCard: Card_i) => {
@@ -390,7 +416,7 @@ export class DataService {
         }
       }
       if (!noRender) {
-        this.$map?.renderActivities();
+        this.refreshCalculations();
       }
     }
   }
@@ -402,18 +428,18 @@ export class DataService {
     this.currentGuiContext_notPersitent.currentJourneyRegions = [];
     this.currentGuiContext_notPersitent.currentPlayableHazards = [];
     if (newSite) {
-      this.onSiteOrRegionClick(newSite);
+      this.onSiteOrRegionClick(newSite, true);
+      this.currentGuiContext_persistent.currentSubAlignment_1 = this.currentGuiContext_persistent.currentSubAlignment_2;
     }
-    this.saveCurrentStates();
-    this.$map?.renderActivities();
+    this.refreshCalculations();
   }
 
   public getUnderdeepMoveNumbers(onlyFromThisCard?: Card_i, getAllExisting?: boolean, filterChallengeDecks?: boolean): {
     [key: string]: number
   } {
     const answer: { [key: string]: number } = {};
-    const all_sites: Card_i[] = this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, true, getAllExisting ? AlignmentType_e.Balrog : undefined, filterChallengeDecks));
-    const all_underdeepSites: Card_i[] = this.$cardUtil.filterUnderDeeps(this.$cardUtil.filterOfficial(this.$cardUtil.filterSites(this.all_cards, true, getAllExisting ? AlignmentType_e.Balrog : undefined, filterChallengeDecks)));
+    const all_sites: Card_i[] = this.$cardUtil.filterSites(true, getAllExisting ? AlignmentType_e.Balrog : undefined, filterChallengeDecks);
+    const all_underdeepSites: Card_i[] = this.$cardUtil.filterUnderDeeps(this.$cardUtil.filterSites(true, getAllExisting ? AlignmentType_e.Balrog : undefined, filterChallengeDecks));
     if (!onlyFromThisCard || onlyFromThisCard.normalizedtitle === 'cirith gorgor' || onlyFromThisCard.normalizedtitle === 'the under-galleries') {
       if (getAllExisting || hasId(all_underdeepSites, 'the under-galleries', 'normalizedtitle'))
         answer['the-under-galleries_cirith-gorgor'] = 0;

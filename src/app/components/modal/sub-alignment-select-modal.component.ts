@@ -58,6 +58,9 @@ export class SubAlignmentSelectModalComponent implements OnInit {
   public onSubAlignmentChange($event: any) {
     if (this.key === 1) {
       this.$data.currentGuiContext_persistent.currentSubAlignment_1 = $event?.selected ?? SubAlignmentType_e.hero_default;
+      if(!this.$data.currentGuiContext_notPersitent.currentJourneySiteTo) {
+        this.$data.currentGuiContext_persistent.currentSubAlignment_2 = $event?.selected ?? SubAlignmentType_e.hero_default;
+      }
     } else if (this.key === 2) {
       this.$data.currentGuiContext_persistent.currentSubAlignment_2 = $event?.selected ?? SubAlignmentType_e.hero_default;
     }

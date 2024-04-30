@@ -3,15 +3,15 @@
     <title>icons/minion_fallen_wizard</title>
     <defs>
         <linearGradient x1="50%" y1="0%" x2="50%" y2="99.3198208%" id="linearGradient-1">
-            <stop stop-color="#98A0A6" offset="0%"></stop>
-            <stop stop-color="#213D53" offset="100%"></stop>
+            <stop stop-color="#A7A5A8" offset="0%"></stop>
+            <stop stop-color="#4D3D56" offset="100%"></stop>
         </linearGradient>
         <text id="text-2" font-family="Apple-Chancery, Apple Chancery" font-size="50" font-weight="normal" letter-spacing="1.32584965" fill="#FFFFFF">
             <tspan x="91.5367822" y="111">f</tspan>
         </text>
-        <filter x="-10.9%" y="-11.4%" width="121.8%" height="127.8%" filterUnits="objectBoundingBox" id="filter-3">
-            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+        <filter x="-15.8%" y="-20.3%" width="131.7%" height="140.5%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="4" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
             <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
         </filter>
     </defs>
@@ -21,7 +21,7 @@
                 <circle cx="99.5" cy="99.5" r="40"></circle>
             </g>
         </g>
-        <g id="f-copy" stroke="#FFFFFF" stroke-width="8">
+        <g id="f-copy-2" stroke="#FFFFFF" stroke-width="8">
             <use fill="#FFFFFF" fill-opacity="1" stroke-opacity="1" filter="url(#filter-3)" xlink:href="#text-2"></use>
             <use fill="#FFFFFF" fill-opacity="1" stroke-opacity="1" xlink:href="#text-2"></use>
             <use xlink:href="#text-2"></use>
